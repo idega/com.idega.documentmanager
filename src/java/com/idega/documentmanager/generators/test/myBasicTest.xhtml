@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xf="http://www.w3.org/2002/xforms"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <head>
+        <title>formbuilder controls</title>
+
+        <xf:model id="m-schema" schema="generic.xsd">
+            <xf:instance id="i-listing" xmlns="">
+                <data>
+                	<text />
+                	<textarea />
+                	<secret />
+                	<multiple_select_minimal />
+                	<single_select_minimal />
+                	<multiple_select />
+                	<single_select />
+                </data>
+            </xf:instance>
+            <xf:bind id="i-text" nodeset="text" type="string" />
+            <xf:bind id="i-textarea" nodeset="textarea" type="string" />
+            <xf:bind id="i-secret" nodeset="secret" type="string" />
+            <xf:bind id="i-multiple_select_minimal" nodeset="multiple_select_minimal" type="string" />
+            <xf:bind id="i-single_select_minimal" nodeset="single_select_minimal" type="string" />
+            <xf:bind id="i-multiple_select" nodeset="multiple_select" type="string" />
+            <xf:bind id="i-single_select" nodeset="single_select" type="string" />
+        </xf:model>
+    </head>
+
+    <body>
+        <xf:group appearance="full">
+            <xf:input bind="i-text" id="fbcomp_text">
+                <xf:label>Single Line Field</xf:label>
+            </xf:input>
+            <xf:textarea bind="i-textarea" id="fbcomp_textarea">
+                <xf:label>Paragraph Text</xf:label>
+            </xf:textarea>
+            <xf:secret bind="i-secret" id="fbcomp_secret">
+                <xf:label>Password Line Field</xf:label>
+            </xf:secret>
+            <xf:select bind="i-multiple_select_minimal" id="fbcomp_multiple_select_minimal" appearance="minimal">
+                <xf:label>Multiple Select from a set</xf:label>
+                <xf:item>
+	                <xf:label>empty</xf:label>
+	                <xf:value />
+                </xf:item>
+            </xf:select>
+            <xf:select1 bind="i-single_select_minimal" id="fbcomp_single_select_minimal" appearance="minimal">
+                <xf:label>Single Select from a set</xf:label>
+                <xf:item>
+	                <xf:label>empty</xf:label>
+	                <xf:value />
+                </xf:item>
+            </xf:select1>
+						<xf:select bind="i-multiple_select" id="fbcomp_multiple_select" appearance="full">
+                <xf:label>Checkboxes from a set</xf:label>
+                <xf:item>
+	                <xf:label>empty</xf:label>
+	                <xf:value />
+                </xf:item>
+            </xf:select>
+						<xf:select1 bind="i-single_select" id="fbcomp_single_select" appearance="full">
+                <xf:label>Radioboxes from a set</xf:label>
+                <xf:item>
+	                <xf:label>empty</xf:label>
+	                <xf:value />
+                </xf:item>
+            </xf:select1>
+        </xf:group>
+    </body>
+</html>

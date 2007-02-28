@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<choiceListData
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.idega.is/select-data-src/ select-data-src.xsd">
+
+		<localizedEntries lang="en"> 
+			<item>
+        <item_label>choose coountry</item_label>
+        <item_value></item_value>
+      </item>
+			<item>
+        <item_label>english label1</item_label>
+        <item_value>d</item_value>
+      </item>
+			<item>
+        <item_label>english label2</item_label>
+        <item_value>Vanilla2</item_value>
+      </item>
+		</localizedEntries>
+		<localizedEntries lang="is">
+			<item>
+        <item_label>islandisks labelius1</item_label>
+        <item_value>Vanilla</item_value>
+      </item>
+			<item>
+        <item_label>isl label2</item_label>
+        <item_value>Vanilla2</item_value>
+      </item>
+		</localizedEntries>
+</choiceListData>

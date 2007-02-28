@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.idega.is/select-data-src/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.idega.is/select-data-src/" elementFormDefault="qualified">
+
+	<xs:element name="choiceListData" type="choiceListDataType"></xs:element>
+
+	<xs:complexType name="choiceListDataType">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="localizedEntries"
+				type="localizedEntriesType" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="localizedEntriesType">
+		<xs:sequence>
+			<xs:element name="item" type="itemType" minOccurs="0"
+				maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="lang" type="xs:string"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="itemType">
+		<xs:sequence>
+			<xs:element name="item_label" type="xs:string"></xs:element>
+			<xs:element name="item_value" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
