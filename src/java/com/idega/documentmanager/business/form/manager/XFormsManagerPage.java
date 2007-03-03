@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.form.beans.FormComponentFactory;
+import com.idega.documentmanager.business.form.beans.IFormComponent;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
 
 /**
@@ -86,5 +87,10 @@ public class XFormsManagerPage extends XFormsManagerContainer {
 				(Element)((Element)((Element)element_to_move.getParentNode()).insertBefore(element_to_move, element_to_insert_before))
 				.getElementsByTagName(FormManagerUtil.group_tag).item(0)
 		);
+	}
+	
+	@Override
+	protected Element getInsertBeforeComponentElement(IFormComponent component_after_this) {
+		return (Element)component_after_this.getComponentXFormsManager().getComponentElement().getParentNode();
 	}
 }

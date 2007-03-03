@@ -33,7 +33,7 @@ public class FormComponentDocument extends FormComponentContainer implements com
 	}
 	
 	@Override
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		
 		if(xforms_manager == null) {
 			
@@ -150,6 +150,7 @@ public class FormComponentDocument extends FormComponentContainer implements com
 				confirmation_page_id = page.getId();
 			else if(page.getType().equals(FormComponentFactory.page_type_thx))
 				thx_page_id = page.getId();
+				
 			i++;
 		}
 		announceRegisteredForLastPage();
@@ -259,5 +260,12 @@ public class FormComponentDocument extends FormComponentContainer implements com
 		thx_page_id = null;
 		registered_for_last_page_id_pages = null;
 		super.clear();
+	}
+	
+	@Override
+	public void unregisterComponent(String component_id) {
+		
+		super.unregisterComponent(component_id);
+		getRegisteredForLastPageIdPages().remove(component_id);
 	}
 }

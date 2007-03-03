@@ -190,24 +190,25 @@ public class XFormsManager implements IXFormsManager {
 		Element component_element = xforms_component.getElement();
 		
 		component_element = (Element)xforms_doc.importNode(component_element, true);
-		xforms_component.setElement(component_element);
 		
 		String component_id = component.getId();
 		component_element.setAttribute(FormManagerUtil.id_att, component_id);
 		
 		localizeComponent(component_id, component_element, xforms_doc, cache_manager.getComponentsXforms());
 		FormManagerUtil.removeTextNodes(component_element);
+		xforms_component.setElement(component_element);
 		
 		setBindingsAndNodesets();
 		
 		if(component.getComponentAfterThis() == null) {
 			Element components_container = component_parent.getComponentXFormsManager().getComponentElement();
-			components_container.appendChild(component_element);
+			component_element = (Element)components_container.appendChild(component_element);
 			component_parent.getContainedComponentsIdList().add(component_id);
 			
 		} else {
-			Element component_after_me = component.getComponentAfterThis().getComponentXFormsManager().getComponentElement();
-			component_after_me.getParentNode().insertBefore(component_element, component_after_me);
+			
+			Element component_after_me = getInsertBeforeComponentElement(component.getComponentAfterThis());
+			component_element = (Element)component_after_me.getParentNode().insertBefore(component_element, component_after_me);
 			
 			List<String> parent_components_id_list = component_parent.getContainedComponentsIdList();
 			
@@ -221,6 +222,12 @@ public class XFormsManager implements IXFormsManager {
 				}
 			}
 		}
+		xforms_component.setElement(component_element);
+	}
+	
+	protected Element getInsertBeforeComponentElement(IFormComponent component_after_this) {
+		
+		return component_after_this.getComponentXFormsManager().getComponentElement();
 	}
 	
 	protected void localizeComponent(String comp_id, Element component_container, Document xforms_doc_to, Document xforms_doc_from) {
@@ -744,7 +751,7 @@ public class XFormsManager implements IXFormsManager {
 			else {
 				
 				Element output_element = createPreviewElement();
-				output_element = (Element)output_element.getParentNode().insertBefore(output_element, preview_after);
+				output_element = (Element)preview_after.getParentNode().insertBefore(output_element, preview_after);
 				xforms_component.setPreviewElement(output_element);
 			}
 			
@@ -757,10 +764,10 @@ public class XFormsManager implements IXFormsManager {
 	
 	protected Element createPreviewElement() {
 		
-		Element output_element = form_document.getXformsDocument().createElement(FormManagerUtil.output_tag);
+		Element output_element = form_document.getXformsDocument().createElementNS(xforms_component.getElement().getNamespaceURI(), FormManagerUtil.output_tag);
 		
 		output_element.setAttribute(FormManagerUtil.id_att, FormManagerUtil.preview+'.'+component.getId());
-		output_element.setAttribute(FormManagerUtil.ref_s_att, xforms_component.getBind().getAttribute(FormManagerUtil.nodeset_att));
+		output_element.setAttribute(FormManagerUtil.bind_att, xforms_component.getBind().getAttribute(FormManagerUtil.id_att));
 		
 		Element component_element = xforms_component.getElement();
 		Element component_label = DOMUtil.getChildElement(component_element, FormManagerUtil.label_tag);

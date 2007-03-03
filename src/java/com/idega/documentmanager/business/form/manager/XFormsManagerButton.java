@@ -72,6 +72,11 @@ public class XFormsManagerButton extends XFormsManager {
 		} else if(component.getType().equals(ConstButtonType.submit_form_button)) {
 
 			form_document.registerForLastPage(((IFormComponentButtonArea)component_parent).getCurrentPage().getId());
+			
+			if(form_document.getThxPage() == null)
+				throw new NullPointerException("Thanks page not found");
+			
+			toggle_element.setAttribute(FormManagerUtil.case_att, form_document.getThxPage().getId());
 		}
 	}
 	@Override

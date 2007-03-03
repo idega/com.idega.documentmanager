@@ -26,7 +26,7 @@ public class FormComponentThankYouPage extends FormComponentPage implements Page
 	}
 	
 	@Override
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		if(xforms_manager == null) {
 			
 			xforms_manager = new XFormsManagerThankYouPage();

@@ -13,7 +13,7 @@ import com.idega.documentmanager.business.form.manager.XFormsManagerSelect;
  */
 public class FormComponentSelect extends FormComponent implements ComponentSelect {
 	
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		
 		if(xforms_manager == null) {
 			

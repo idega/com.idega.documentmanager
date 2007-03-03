@@ -50,7 +50,7 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 	}
 	
 	@Override
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		
 		if(xforms_manager == null) {
 			
@@ -183,15 +183,16 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 
 	@Override
 	public void addToConfirmationPage() {
-		super.addToConfirmationPage();
 		
-		for (String components_id_list : getContainedComponentsIdList())
-			getContainedComponents().get(components_id_list).addToConfirmationPage();
+		List<String> ids = getContainedComponentsIdList();
+		
+		for (int i = ids.size()-1; i >= 0; i--)
+			getContainedComponents().get(ids.get(i)).addToConfirmationPage();
 	}
 	
 	public void clear() {
-		contained_components_id_sequence.clear();
-		contained_components.clear();
+		getContainedComponentsIdList().clear();
+		getContainedComponents().clear();
 		super.clear();
 	}
 }

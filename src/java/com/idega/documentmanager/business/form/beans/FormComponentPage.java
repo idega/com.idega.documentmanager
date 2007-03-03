@@ -31,7 +31,7 @@ public class FormComponentPage extends FormComponentContainer implements Page, I
 	}
 	
 	@Override
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		
 		if(xforms_manager == null) {
 			
@@ -48,8 +48,10 @@ public class FormComponentPage extends FormComponentContainer implements Page, I
 	@Override
 	public void remove() {
 		
-		if(getType().equals(FormComponentFactory.page_type_thx))
-			throw new IllegalArgumentException("No thx. I'm mr. thx page.");
+		if(getType().equals(FormComponentFactory.page_type_thx)) {
+			//TODO: log warning
+			System.out.println("removing page thx");
+		}
 		
 		super.remove();
 		parent.componentsOrderChanged();

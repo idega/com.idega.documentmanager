@@ -15,7 +15,7 @@ import com.idega.documentmanager.business.form.manager.XFormsManagerButton;
 public class FormComponentButton extends FormComponent implements Button, IFormComponentButton {
 	
 	@Override
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		if(xforms_manager == null) {
 			
 			xforms_manager = new XFormsManagerButton();
@@ -30,9 +30,11 @@ public class FormComponentButton extends FormComponent implements Button, IFormC
 	
 	@Override
 	public void render() {
+		boolean load = this.load;
 		super.render();
 		IFormComponentButtonArea my_button_area = (IFormComponentButtonArea)parent;
-		setSiblingsAndParentPages(my_button_area.getPreviousPage(), my_button_area.getNextPage());
+		if(!load)
+			setSiblingsAndParentPages(my_button_area.getPreviousPage(), my_button_area.getNextPage());
 		((IFormComponentButtonArea)parent).setButtonMapping(getType(), getId());
 	}
 	

@@ -87,6 +87,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 	public void addToConfirmationPage() {
 		
 		if(FormComponentFactory.getInstance().isNormalFormElement(this)) {
+			
 			IFormComponentPage confirmation_page = (IFormComponentPage)form_document.getConfirmationPage();
 			
 			if(confirmation_page != null) {
@@ -198,7 +199,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 		return properties;
 	}
 
-	protected IXFormsManager getXFormsManager() {
+	public IXFormsManager getXFormsManager() {
 		
 		if(xforms_manager == null) {
 			

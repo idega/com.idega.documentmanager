@@ -214,30 +214,28 @@ public class SandboxFormManagerTest {
 	        	}
 			}
 	        
-	        stream = new FileInputStream(new File("/Users/civilis/tmp/badform3.xml"));
+	        Page cpp = xx.getConfirmationPage();
+	        cpp.remove();
+	        xx.addConfirmationPage(null);
+	        
+//	        sss-Thu_Mar_01_15_42_07_EET_2007.xhtml
+	        System.out.println("__________________________________3 ___________________");
+	        stream = new FileInputStream(new File("/Users/civilis/tmp/badform.xml"));
 	        doc = FormManagerUtil.getDocumentBuilder().parse(stream);
 	        stream.close();
 	        xx = ((FormManager)fm).openForm(doc);
+	        System.out.println("faaaaaaaaaaaaaaaaaa: "+xx.getThxPage());
 	        
-	        p = xx.getPage(xx.getContainedPagesIdList().get(0));
 	        
-	        for (String contained : p.getContainedComponentsIdList()) {
-				
-	        	Component coco = p.getComponent(contained);
-	        	
-	        	if(!(coco instanceof Container)) {
-	        		System.out.println("selxsxs: "+coco.getHtmlRepresentation(new Locale("en")));
-	    	        DOMUtil.prettyPrintDOM(coco.getHtmlRepresentation(new Locale("en")));
-	    	        LocalizedStringBean lab = coco.getProperties().getLabel();
-	    	        lab.setString(new Locale("en"), "fuckinfuck");
-	    	        coco.getProperties().setLabel(lab);
-	    	        System.out.println("label: "+coco.getProperties().getLabel());
-	        	}
-			}
+	        Page conf_p = xx.addConfirmationPage(xx.getThxPage().getId());
+	        conf_p.createButtonArea(null).addButton(new ConstButtonType(ConstButtonType.submit_form_button), null);
+	        conf_p.getButtonArea().addButton(new ConstButtonType(ConstButtonType.next_page_button), null);
+	        conf_p.getButtonArea().addButton(new ConstButtonType(ConstButtonType.previous_page_button), null);
+	        System.out.println("faaaaaaaaaaaaaaaaaa xxxxxxxxxxx: "+xx.getThxPage());
 	        
 	        
 			System.out.println("source code___________");
-			System.out.println(fm.getCurrentDocument().getFormSourceCode());
+			System.out.println(xx.getFormSourceCode());
 			
 			System.out.println("the end");
 			

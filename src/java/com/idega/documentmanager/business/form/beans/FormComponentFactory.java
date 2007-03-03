@@ -41,6 +41,7 @@ public class FormComponentFactory implements Singleton {
 		types.add("fbcomp_secret");
 		types.add("fbcomp_email");
 		types.add("fbcomp_upload_file");
+		types.add("xf:input");
 		components_tags_classified.put(type_simple, types);
 		
 		List<String> non_display_types = new ArrayList<String>();
