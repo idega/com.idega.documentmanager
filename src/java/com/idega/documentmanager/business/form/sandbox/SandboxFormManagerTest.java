@@ -220,19 +220,14 @@ public class SandboxFormManagerTest {
 	        
 //	        sss-Thu_Mar_01_15_42_07_EET_2007.xhtml
 	        System.out.println("__________________________________3 ___________________");
-	        stream = new FileInputStream(new File("/Users/civilis/tmp/badform.xml"));
+	        stream = new FileInputStream(new File("/Users/civilis/tmp/badform4.xml"));
 	        doc = FormManagerUtil.getDocumentBuilder().parse(stream);
 	        stream.close();
 	        xx = ((FormManager)fm).openForm(doc);
 	        System.out.println("faaaaaaaaaaaaaaaaaa: "+xx.getThxPage());
-	        
+	        System.out.println("xxxxx: "+fm.getAvailableFormComponentsTypesList(new ConstComponentCategory(ConstComponentCategory.BASIC)));
 	        
 	        Page conf_p = xx.addConfirmationPage(xx.getThxPage().getId());
-	        conf_p.createButtonArea(null).addButton(new ConstButtonType(ConstButtonType.submit_form_button), null);
-	        conf_p.getButtonArea().addButton(new ConstButtonType(ConstButtonType.next_page_button), null);
-	        conf_p.getButtonArea().addButton(new ConstButtonType(ConstButtonType.previous_page_button), null);
-	        System.out.println("faaaaaaaaaaaaaaaaaa xxxxxxxxxxx: "+xx.getThxPage());
-	        
 	        
 			System.out.println("source code___________");
 			System.out.println(xx.getFormSourceCode());

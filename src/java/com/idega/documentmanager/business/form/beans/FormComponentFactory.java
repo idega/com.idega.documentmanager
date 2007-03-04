@@ -42,6 +42,8 @@ public class FormComponentFactory implements Singleton {
 		types.add("fbcomp_email");
 		types.add("fbcomp_upload_file");
 		types.add("xf:input");
+		types.add("xf:secret");
+		types.add("xf:textarea");
 		components_tags_classified.put(type_simple, types);
 		
 		List<String> non_display_types = new ArrayList<String>();
@@ -65,6 +67,7 @@ public class FormComponentFactory implements Singleton {
 	
 	public static FormComponentFactory getInstance() {
 		
+		me = null;
 		if (me == null) {
 			
 			synchronized (FormComponentFactory.class) {
@@ -106,7 +109,6 @@ public class FormComponentFactory implements Singleton {
 	public boolean isNormalFormElement(IFormComponent form_component) {
 		
 		String type = form_component.getType();
-		
 		return 
 			components_tags_classified.get(type_select).contains(type) ||
 			components_tags_classified.get(type_simple).contains(type);
