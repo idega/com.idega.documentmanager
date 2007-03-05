@@ -100,6 +100,7 @@ public class FormManagerUtil {
 	public static final String autofill_setvalue_ending = "-autofill-setvalue";
 	public static final String value_att = "value";
 	public static final String autofill_key_prefix = "fb-afk-";
+	public static final String refresh_tag = "xf:refresh";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";

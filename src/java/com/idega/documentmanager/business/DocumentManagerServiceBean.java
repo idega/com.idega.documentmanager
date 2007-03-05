@@ -35,9 +35,19 @@ public class DocumentManagerServiceBean extends IBOServiceBean implements Docume
 		return FormManager.getInstance();
 	}
 	
-	public static  DocumentManager sandboxNewFormManager() throws Exception {
+	public static DocumentManager sandboxNewFormManager() throws Exception {
 		
-		FormManager.init(null);
+		if(!FormManager.isInited()) {
+			
+			synchronized(DocumentManagerServiceBean.class) {
+					
+				if(!FormManager.isInited()) {
+						
+					FormManager.init(null);
+				}
+			}
+		}
+		
 		return FormManager.getInstance();
 	}
 }

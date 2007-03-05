@@ -195,4 +195,14 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 		getContainedComponents().clear();
 		super.clear();
 	}
+	
+	@Override
+	public void remove() {
+		
+		for (String cid : getContainedComponentsIdList()) {
+			
+			getComponent(cid).remove();
+		}
+		super.remove();
+	}
 }

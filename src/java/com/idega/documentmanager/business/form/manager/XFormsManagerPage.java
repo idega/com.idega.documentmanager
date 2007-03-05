@@ -30,7 +30,7 @@ public class XFormsManagerPage extends XFormsManagerContainer {
 		Element group_element = xforms_component.getElement();
 		
 		String component_id = group_element.getAttribute(FormManagerUtil.id_att);
-		Element case_element = group_element.getOwnerDocument().createElement(FormManagerUtil.case_tag);
+		Element case_element = group_element.getOwnerDocument().createElementNS(group_element.getNamespaceURI(), FormManagerUtil.case_tag);
 		String name = group_element.getAttribute(FormManagerUtil.name_att);
 		if(name != null && !name.equals("")) {
 			
