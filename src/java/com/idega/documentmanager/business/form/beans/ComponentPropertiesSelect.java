@@ -12,7 +12,7 @@ public class ComponentPropertiesSelect extends ComponentProperties implements Pr
 	private LocalizedStringBean empty_element_label;
 	private String external_data_src;
 	private ILocalizedItemset itemset;
-	private Integer data_src_used = LOCAL_DATA_SRC;
+	private Integer data_src_used;
 	
 	public ILocalizedItemset getItemset() {
 		return itemset;
