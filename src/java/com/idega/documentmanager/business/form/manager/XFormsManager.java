@@ -195,7 +195,9 @@ public class XFormsManager implements IXFormsManager {
 		component_element.setAttribute(FormManagerUtil.id_att, component_id);
 		
 		localizeComponent(component_id, component_element, xforms_doc, cache_manager.getComponentsXforms());
-		FormManagerUtil.removeTextNodes(component_element);
+		
+		if(removeTextNodes())
+			FormManagerUtil.removeTextNodes(component_element);
 		xforms_component.setElement(component_element);
 		
 		setBindingsAndNodesets();
@@ -223,6 +225,10 @@ public class XFormsManager implements IXFormsManager {
 			}
 		}
 		xforms_component.setElement(component_element);
+	}
+	
+	protected boolean removeTextNodes() {
+		return true;
 	}
 	
 	protected Element getInsertBeforeComponentElement(IFormComponent component_after_this) {

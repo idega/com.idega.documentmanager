@@ -39,7 +39,7 @@ public class XFormsManagerPlain extends XFormsManager {
 		FormManagerUtil.removeTextNodes(c_el);
 		
 		if(text != null && !text.equals(""))
-			c_el.appendChild(form_document.getXformsDocument().createTextNode(text));
+			c_el.appendChild(c_el.getOwnerDocument().createTextNode(text));
 	}
 	
 	public String getText() {
@@ -47,5 +47,10 @@ public class XFormsManagerPlain extends XFormsManager {
 		Element c_el = xforms_component.getElement();
 		String text = c_el.getTextContent();
 		return text == null ? "" : text;
+	}
+	
+	@Override
+	protected boolean removeTextNodes() {
+		return false;
 	}
 }
