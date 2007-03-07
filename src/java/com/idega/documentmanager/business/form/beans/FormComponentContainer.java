@@ -1,5 +1,6 @@
 package com.idega.documentmanager.business.form.beans;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -199,11 +200,11 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 	
 	@Override
 	public void remove() {
-		
-		for (String cid : getContainedComponentsIdList()) {
-			
+
+		List<String> contained_comps = new ArrayList<String>(getContainedComponentsIdList());
+		for (String cid : contained_comps)
 			getComponent(cid).remove();
-		}
+		
 		super.remove();
 	}
 }
