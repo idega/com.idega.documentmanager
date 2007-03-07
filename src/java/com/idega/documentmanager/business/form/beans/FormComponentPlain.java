@@ -1,5 +1,9 @@
 package com.idega.documentmanager.business.form.beans;
 
+import java.util.Locale;
+
+import org.w3c.dom.Element;
+
 import com.idega.documentmanager.business.form.ComponentPlain;
 import com.idega.documentmanager.business.form.PropertiesPlain;
 import com.idega.documentmanager.business.form.manager.CacheManager;
@@ -69,6 +73,12 @@ public class FormComponentPlain extends FormComponent implements ComponentPlain 
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	public Element getHtmlRepresentation(Locale locale) throws Exception {
+		
+		return getXFormsManager().getComponentElement();
 	}
 	
 	@Override
