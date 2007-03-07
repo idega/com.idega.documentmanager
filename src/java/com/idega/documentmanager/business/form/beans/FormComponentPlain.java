@@ -78,7 +78,7 @@ public class FormComponentPlain extends FormComponent implements ComponentPlain 
 	@Override
 	public Element getHtmlRepresentation(Locale locale) throws Exception {
 		
-		return getXFormsManager().getComponentElement();
+		return (Element)getXFormsManager().getComponentElement().cloneNode(true);
 	}
 	
 	@Override
