@@ -40,8 +40,8 @@ public class XFormsManagerContainer extends XFormsManager {
 				
 				String name_val = component_element.getAttribute(FormManagerUtil.name_att);
 				
-				if(name_val != null && name_val.equals(FormComponentFactory.button_area_type))
-					tag_name_and_id[0] = FormComponentFactory.button_area_type;
+				if(name_val != null && name_val.equals(FormComponentFactory.fbcomp_button_area))
+					tag_name_and_id[0] = FormComponentFactory.fbcomp_button_area;
 			} else if(tag_name_and_id[0].equals(FormManagerUtil.case_tag)) {
 				
 				String name_val = component_element.getAttribute(FormManagerUtil.name_att);
