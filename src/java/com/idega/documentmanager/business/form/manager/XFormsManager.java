@@ -664,8 +664,11 @@ public class XFormsManager implements IXFormsManager {
 				
 			} else {
 
-				Element inst_el = FormManagerUtil.createAutofillInstance(form_document.getXformsDocument());
-				inst_el = (Element)form_document.getFormDataModelElement().appendChild(inst_el);
+				Element model = form_document.getFormDataModelElement();
+				Element inst_el = model.getOwnerDocument().createElementNS(model.getNamespaceURI(), FormManagerUtil.instance_tag);
+				inst_el.setAttribute(FormManagerUtil.relevant_att, FormManagerUtil.xpath_false);
+				
+				inst_el = (Element)model.appendChild(inst_el);
 				inst_el.setAttribute(FormManagerUtil.src_att, src);
 				inst_el.setAttribute(FormManagerUtil.id_att, component.getId()+FormManagerUtil.autofill_instance_ending);
 				xforms_component.setKeyExtInstance(inst_el);
@@ -684,9 +687,9 @@ public class XFormsManager implements IXFormsManager {
 				xforms_component.getKeySetvalue().setAttribute(FormManagerUtil.value_att, value);
 				
 			} else {
-				
-				Element setval_el = form_document.getXformsDocument().createElement(FormManagerUtil.setvalue_tag);
-				setval_el = (Element)form_document.getAutofillModelElement().appendChild(setval_el);
+				Element autofill_model = form_document.getAutofillModelElement();
+				Element setval_el = autofill_model.getOwnerDocument().createElementNS(autofill_model.getNamespaceURI(), FormManagerUtil.setvalue_tag);
+				setval_el = (Element)autofill_model.appendChild(setval_el);
 				setval_el.setAttribute(FormManagerUtil.bind_att, xforms_component.getBind().getAttribute(FormManagerUtil.id_att));
 				setval_el.setAttribute(FormManagerUtil.value_att, value);
 				setval_el.setAttribute(FormManagerUtil.model_att, form_document.getFormDataModelElement().getAttribute(FormManagerUtil.id_att));
