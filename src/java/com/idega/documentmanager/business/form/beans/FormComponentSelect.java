@@ -27,6 +27,7 @@ public class FormComponentSelect extends FormComponent implements ComponentSelec
 		return xforms_manager;
 	}
 	
+	@Override
 	public PropertiesSelect getProperties() {
 		
 		if(properties == null) {
@@ -38,6 +39,7 @@ public class FormComponentSelect extends FormComponent implements ComponentSelec
 		return (PropertiesSelect)properties;
 	}
 	
+	@Override
 	protected void setProperties() {
 		
 		super.setProperties();

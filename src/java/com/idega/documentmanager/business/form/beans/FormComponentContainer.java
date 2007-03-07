@@ -154,6 +154,7 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 	
 	public void componentsOrderChanged() { 	}
 	
+	@Override
 	protected void changeBindNames() { }
 	
 	@Override

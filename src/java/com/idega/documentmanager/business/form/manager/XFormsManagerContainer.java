@@ -7,7 +7,6 @@ import java.util.List;
 import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Element;
 
-import com.idega.documentmanager.business.form.beans.FormComponentFactory;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
 
 /**
@@ -36,26 +35,11 @@ public class XFormsManagerContainer extends XFormsManager {
 			
 			tag_name_and_id[0] = component_element.getTagName();
 			
-			if(tag_name_and_id[0].equals(FormManagerUtil.div_tag)) {
-				
-				String name_val = component_element.getAttribute(FormManagerUtil.name_att);
-				
-				if(name_val != null && name_val.equals(FormComponentFactory.fbcomp_button_area))
-					tag_name_and_id[0] = FormComponentFactory.fbcomp_button_area;
-			} else if(tag_name_and_id[0].equals(FormManagerUtil.case_tag)) {
-				
-				String name_val = component_element.getAttribute(FormManagerUtil.name_att);
-				
-				if(name_val != null) {
-					
-					if(name_val.equals(FormComponentFactory.page_type_thx)) {
-						tag_name_and_id[0] = FormComponentFactory.page_type_thx;
-						
-					} else if(name_val.equals(FormComponentFactory.confirmation_page_type)) {
-						tag_name_and_id[0] = FormComponentFactory.confirmation_page_type;
-					}
-				}
-			}
+			String name_val = component_element.getAttribute(FormManagerUtil.name_att);
+			
+			if(name_val != null && !name_val.equals(""))
+				tag_name_and_id[0] = name_val;
+			
 			components_tag_names_and_ids.add(tag_name_and_id);
 		}
 		return components_tag_names_and_ids;

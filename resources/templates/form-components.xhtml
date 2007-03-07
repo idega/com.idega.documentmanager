@@ -62,10 +62,10 @@
 			lang="is">File upload</lockey_upload_file.title> <lockey_select.empty
 			lang="en">--Empty--</lockey_select.empty> <lockey_select.empty
 			lang="is">--Empty icelandic--</lockey_select.empty> <lockey_page.label
-			lang="en">Page</lockey_page.label>
-			<lockey_confirmation_page.label lang="en">Confirmation Page</lockey_confirmation_page.label>
-			<lockey_button_next.label lang="en">Next page</lockey_button_next.label>
-			<lockey_button_previous.label lang="en">Previous page</lockey_button_previous.label>
+			lang="en">Section</lockey_page.label>
+			<lockey_confirmation_page.label lang="en">Confirmation Section</lockey_confirmation_page.label>
+			<lockey_button_next.label lang="en">Next section</lockey_button_next.label>
+			<lockey_button_previous.label lang="en">Previous section</lockey_button_previous.label>
 			<lockey_button_submit.label lang="en">Submit</lockey_button_submit.label>
 		</localized_strings>
 	</xf:instance>
@@ -146,6 +146,11 @@
 			<component component_id="fbcomp_button_area" />
 			<component component_id="fbcomp_page" />
 			<component component_id="fbcomp_confirmation_page" />
+		</category>
+		<category name="plain">
+			<component component_id="fbcomp_simple_text" />
+			<component component_id="fbcomp_header_text" />
+			<component component_id="fbcomp_separator" />
 		</category>
 	</xf:instance>
 </xf:model>
@@ -235,6 +240,9 @@
 		</xf:upload>
 	
 		<div id="fbcomp_button_area" name="fbcomp_button_area"></div>
+		<div id="fbcomp_simple_text" name="fbcomp_simple_text" class="fbcomp_simple_text"></div>
+		<div id="fbcomp_header_text" name="fbcomp_header_text" class="fbcomp_header_text"></div>
+		<hr id="fbcomp_separator" name="fbcomp_separator" class="fbcomp_separator" />
 		<xf:group id="fbcomp_page" appearance="full">
 			<xf:label 
 				ref="instance('localized_strings')/lockey_page.label[@lang=instance('localized_strings')/current_language]"

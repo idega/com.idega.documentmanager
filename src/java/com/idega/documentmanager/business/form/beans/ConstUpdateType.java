@@ -20,6 +20,7 @@ public final class ConstUpdateType {
 	public static final int external_data_src = 8;
 	public static final int thankyou_text = 9;
 	public static final int autofill_key = 10;
+	public static final int text = 11;
 	
 	private static List<Integer> update_types = new ArrayList<Integer>();
 	
@@ -36,6 +37,7 @@ public final class ConstUpdateType {
 		update_types.add(external_data_src);
 		update_types.add(thankyou_text);
 		update_types.add(autofill_key);
+		update_types.add(text);
 	}
 	
 	public ConstUpdateType(Integer update_type) {

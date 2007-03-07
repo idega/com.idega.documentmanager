@@ -23,6 +23,7 @@ public class FormComponentFactory implements Singleton {
 	private static final String type_simple = "type_simple";
 	private static final String type_select = "type_select";
 	private static final String type_non_display = "type_non_display";
+	private static final String type_plain = "type_plain";
 	public static final String page_type_tag = FormManagerUtil.case_tag;
 	public static final String page_type = "fbcomp_page";
 	public static final String confirmation_page_type = "fbcomp_confirmation_page";
@@ -62,6 +63,13 @@ public class FormComponentFactory implements Singleton {
 		
 		components_tags_classified.put(type_select, types);
 		
+		types = new ArrayList<String>();
+		
+		types.add("fbcomp_simple_text");
+		types.add("fbcomp_header_text");
+		types.add("fbcomp_separator");
+		
+		components_tags_classified.put(type_plain, types);
 	}
 	
 	public static FormComponentFactory getInstance() {
@@ -89,9 +97,7 @@ public class FormComponentFactory implements Singleton {
 	
 	public IFormComponent recognizeFormComponent(String component_type) {
 		
-		List<String> types = components_tags_classified.get(type_select);
-		
-		if(types.contains(component_type))
+		if(components_tags_classified.get(type_select).contains(component_type))
 			return new FormComponentSelect();
 		if(component_type.equals(page_type_thx))
 			return new FormComponentThankYouPage();
@@ -101,6 +107,8 @@ public class FormComponentFactory implements Singleton {
 			return new FormComponentButtonArea();
 		if(component_type.equals(button_type) || ConstButtonType.getButtonTypes().contains(component_type))
 			return new FormComponentButton();
+		if(components_tags_classified.get(type_plain).contains(component_type))
+			return new FormComponentPlain();
 		
 		return new FormComponent();
 	}

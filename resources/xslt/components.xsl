@@ -19,11 +19,6 @@
 			<xsl:copy-of select ="div[starts-with(@id, 'fbcomp_')]" />
 			<xsl:copy-of select ="span[starts-with(@id, 'fbcomp_')]" />
 			<xsl:copy-of select ="fieldset[starts-with(@id, 'fbcomp_')]" />
-			<xsl:apply-templates select="div[starts-with(@id, 'fbcomp_')]" />
-	</xsl:template>
-	<xsl:template match="div">
-			<xsl:copy-of select ="div[starts-with(@id, 'fbcomp_')]" />
-			<xsl:copy-of select ="span[starts-with(@id, 'fbcomp_')]" />
-			<xsl:apply-templates select="div[starts-with(@id, 'fbcomp_')]" />
+			<xsl:copy-of select ="hr[starts-with(@id, 'fbcomp_')]" />
 	</xsl:template>
 </xsl:stylesheet>
