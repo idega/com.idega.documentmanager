@@ -109,20 +109,15 @@ public class FormManagerUtil {
 	
 	private FormManagerUtil() { }
 	
-	private static DocumentBuilder builder;
-	
 	public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
 		
-		if(builder == null) {
-			
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		    factory.setNamespaceAware(true);
-		    factory.setValidating(false);
-			
-			builder = factory.newDocumentBuilder();
-		}
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    factory.setNamespaceAware(true);
+	    factory.setValidating(false);
+	    factory.setAttribute("http://apache.org/xml/properties/dom/document-class-name",
+		"org.apache.xerces.dom.DocumentImpl");
 		
-	    return builder;
+	    return factory.newDocumentBuilder();
 	}
 	
 	/**

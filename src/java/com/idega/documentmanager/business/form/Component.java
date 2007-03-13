@@ -21,4 +21,6 @@ public interface Component {
 	public abstract void remove();
 	
 	public abstract String getType();
+	
+	public Element getDefaultHtmlRepresentationByType(String component_type);
 }

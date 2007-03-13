@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.idega.core.cache.IWCacheManager2;
 import com.idega.documentmanager.business.form.beans.FormComponentFactory;
@@ -30,6 +31,8 @@ public class CacheManager implements Singleton {
 	private List<String> components_types_to_list;
 	private Map<String, XFormsComponentDataBean> cached_xforms_components;
 	private Map<String, List<String>> categorized_types;
+	
+	private Map<String, Element> cached_default_component_localizations;
 	
 	private static CacheManager me;
 	
@@ -143,6 +146,7 @@ public class CacheManager implements Singleton {
 		
 		IWMainApplication iwma = IWMainApplication.getIWMainApplication(ctx);
 		cached_xforms_components = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
+		cached_default_component_localizations = IWCacheManager2.getInstance(iwma).getCache("cached_default_components_localizations");
 	}
 	
 	public void cacheXformsComponent(String key, XFormsComponentDataBean xbean) {
@@ -156,5 +160,23 @@ public class CacheManager implements Singleton {
 	public XFormsComponentDataBean getCachedXformsComponent(String key) {
 		
 		return cached_xforms_components == null ? null : cached_xforms_components.get(key);
+	}
+	
+	public Element getCachedDefaultComponentLocalization(String component_type) {
+		
+		return getCachedDefaultComponentLocalizations().get(component_type);
+	}
+	
+	public void cacheDefaultComponentLocalization(String component_type, Element element) {
+		
+		getCachedDefaultComponentLocalizations().put(component_type, element);
+	}
+	
+	protected Map<String, Element> getCachedDefaultComponentLocalizations() {
+		
+		if(cached_default_component_localizations == null)
+			cached_default_component_localizations = new CacheMap();
+		
+		return cached_default_component_localizations;
 	}
 }

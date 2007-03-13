@@ -14,6 +14,7 @@ import org.chiba.xml.xslt.impl.CachingTransformerService;
 import org.w3c.dom.Document;
 
 import com.idega.documentmanager.IWBundleStarter;
+import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.form.ConstComponentCategory;
 import com.idega.documentmanager.business.form.DocumentManager;
@@ -57,7 +58,7 @@ public class FormManager implements DocumentManager {
 		return form_document.getDocument();
 	}
 	
-	public com.idega.documentmanager.business.form.Document openForm(String form_id) throws NullPointerException, Exception {
+	public com.idega.documentmanager.business.form.Document openForm(String form_id) throws NullPointerException, FormLockException, Exception {
 		
 		FormDocument form_document = FormDocument.loadDocument(form_id, persistence_manager);
 		this.form_document = form_document;

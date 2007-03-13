@@ -12,6 +12,7 @@ public class ComponentProperties implements PropertiesComponent {
 	private boolean required;
 	private LocalizedStringBean label;
 	private LocalizedStringBean error_msg;
+	private LocalizedStringBean help_text;
 	private String p3ptype;
 	private String autofill_key;
 	
@@ -86,5 +87,11 @@ public class ComponentProperties implements PropertiesComponent {
 	}
 	public void setPlainAutofillKey(String autofill_key) {
 		this.autofill_key = autofill_key;
+	}
+	public LocalizedStringBean getHelpText() {
+		return help_text;
+	}
+	public void setHelpText(LocalizedStringBean help_text) {
+		this.help_text = help_text;
 	}
 }

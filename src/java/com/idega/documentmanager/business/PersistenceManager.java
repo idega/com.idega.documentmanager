@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
  */
 public interface PersistenceManager {
 
-	public void saveForm(String formId, Document document) throws Exception;
+	public void saveForm(String form_id, Document document) throws Exception;
 	
-	public abstract Document loadForm(String formId) throws Exception;
+	public abstract Document loadFormAndLock(String form_id) throws FormLockException, Exception;
 }

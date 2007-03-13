@@ -36,6 +36,7 @@ public class FormDocument implements IFormDocument {
 	private int last_component_id = 0;
 	private boolean document_changed = true;
 	private PersistenceManager persistence_manager;
+	private DocumentBuilder builder;
 	
 	public FormDocument() {
 		
@@ -170,7 +171,7 @@ public class FormDocument implements IFormDocument {
 			throw new NullPointerException("Persistence manager not set");
 		}
 		
-		Document xforms_doc = persistence_manager.loadForm(form_id);
+		Document xforms_doc = persistence_manager.loadFormAndLock(form_id);
 		
 		if(xforms_doc == null)
 			throw new NullPointerException("Form document was not found by provided id");
@@ -184,7 +185,9 @@ public class FormDocument implements IFormDocument {
 	}
 	public void setXFormsDocumentSourceCode(String src_code) throws Exception {
 		
-		DocumentBuilder builder = FormManagerUtil.getDocumentBuilder();
+		if(builder == null)
+			builder = FormManagerUtil.getDocumentBuilder();
+		
 		Document new_xforms_document = builder.parse(new StringInputStream(src_code));
 		clear();
 		pages_container.setLoad(true);

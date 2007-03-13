@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 
+import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
 
@@ -44,7 +45,7 @@ public interface DocumentManager {
 	 * 
 	 * @return loaded document
 	 */
-	public abstract com.idega.documentmanager.business.form.Document openForm(String form_id) throws NullPointerException, Exception;
+	public abstract com.idega.documentmanager.business.form.Document openForm(String form_id) throws NullPointerException, FormLockException, Exception;
 	
 	public abstract com.idega.documentmanager.business.form.Document openForm(Document xforms_doc) throws NullPointerException, Exception;
 	

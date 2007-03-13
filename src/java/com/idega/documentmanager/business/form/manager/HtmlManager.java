@@ -56,6 +56,28 @@ public class HtmlManager {
 		return localized_element;
 	}
 	
+	public Element getDefaultHtmlRepresentationByType(String component_type) {
+		
+		CacheManager cm = CacheManager.getInstance();
+		
+		Element html_element = cm.getCachedDefaultComponentLocalization(component_type); 
+		
+		if(html_element != null)
+			return html_element;
+		
+		html_element = FormManagerUtil.getElementByIdFromDocument(cm.getComponentsXml(), null, component_type);
+		
+		if(html_element == null)
+			throw new NullPointerException("Html component was not found by provided type: "+component_type);
+		
+		Document xforms_doc = cm.getComponentsXforms();
+		html_element = getFormHtmlComponentLocalization(FormManagerUtil.getDefaultFormLocale(xforms_doc).getLanguage(), xforms_doc, html_element);
+		
+		cm.cacheDefaultComponentLocalization(component_type, html_element);
+		
+		return html_element;
+	}
+	
 	protected Map<Locale, Element> getLocalizedHtmlComponents() {
 		
 		if(localized_html_components == null)
@@ -70,13 +92,13 @@ public class HtmlManager {
 		unlocalized_html_component = null;
 	}
 	
-	protected Element getFormHtmlComponentLocalization(String loc_str) {
+	protected Element getFormHtmlComponentLocalization(String loc_str, Document xforms_doc, Element unlocalized_element) {
 		
 		Element loc_model = FormManagerUtil.getElementByIdFromDocument(
-				form_document.getXformsDocument(), FormManagerUtil.head_tag, FormManagerUtil.data_mod
+				xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.data_mod
 		);
 		Element loc_strings = (Element)loc_model.getElementsByTagName(FormManagerUtil.loc_tag).item(0);
-		Element localized_component = (Element)unlocalized_html_component.cloneNode(true);
+		Element localized_component = (Element)unlocalized_element.cloneNode(true);
 		
 		NodeList descendants = localized_component.getElementsByTagName("*");
 		
@@ -97,7 +119,7 @@ public class HtmlManager {
 						
 						Element loc_el = (Element)localization_strings_elements.item(j);
 						
-						String lang = loc_el.getAttribute("lang");
+						String lang = loc_el.getAttribute(FormManagerUtil.lang_att);
 						
 						if(lang != null && lang.equals(loc_str)) {
 							
@@ -118,6 +140,11 @@ public class HtmlManager {
 		}
 		
 		return localized_component;
+	}
+	
+	protected Element getFormHtmlComponentLocalization(String loc_str) {
+		
+		return getFormHtmlComponentLocalization(loc_str, form_document.getXformsDocument(), unlocalized_html_component);
 	}
 	
 	public void setFormComponent(IFormComponent component) {
