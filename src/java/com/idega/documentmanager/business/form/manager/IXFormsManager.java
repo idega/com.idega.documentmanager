@@ -51,6 +51,8 @@ public interface IXFormsManager {
 	
 	public abstract LocalizedStringBean getErrorLabelLocalizedStrings();
 	
+	public abstract LocalizedStringBean getHelpText();
+	
 	public abstract Element getComponentElement();
 	
 	public abstract Element getComponentNodeset();

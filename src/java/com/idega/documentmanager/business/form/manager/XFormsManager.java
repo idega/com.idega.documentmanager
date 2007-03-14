@@ -355,6 +355,10 @@ public class XFormsManager implements IXFormsManager {
 			updateErrorMsg();
 			break;
 			
+		case ConstUpdateType.help_text:
+			updateHelpText();
+			break;
+			
 		case ConstUpdateType.constraint_required:
 			updateConstraintRequired();
 			break;
@@ -410,6 +414,7 @@ public class XFormsManager implements IXFormsManager {
 			
 			String new_err_id = new StringBuilder(FormManagerUtil.loc_key_identifier)
 			.append(component.getId())
+			.append('.')
 			.append("error")
 			.toString();
 			
@@ -422,6 +427,41 @@ public class XFormsManager implements IXFormsManager {
 			
 			FormManagerUtil.putLocalizedText(
 					null, null, output, form_document.getXformsDocument(), props.getErrorMsg());
+		}
+	}
+	
+	protected void updateHelpText() {
+		
+		PropertiesComponent props = component.getProperties();
+		
+		Element element = xforms_component.getElement();
+		NodeList helps = element.getElementsByTagName(FormManagerUtil.help_tag);
+		
+		if(helps == null || helps.getLength() == 0) {
+			
+			Element help = FormManagerUtil.getItemElementById(cache_manager.getComponentsXforms(), "help");
+			
+			Document xforms_doc = form_document.getXformsDocument();
+			
+			help = (Element)xforms_doc.importNode(help, true);
+			element.appendChild(help);
+			Element output = (Element)help.getElementsByTagName(FormManagerUtil.output_tag).item(0);
+			
+			String new_help_id = new StringBuilder(FormManagerUtil.loc_key_identifier)
+			.append(component.getId())
+			.append('.')
+			.append("help")
+			.toString();
+			
+			FormManagerUtil.putLocalizedText(
+					new_help_id, FormManagerUtil.localized_entries, output, xforms_doc, props.getHelpText());
+		} else {
+			
+			Element alert = (Element)helps.item(0);
+			Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
+			
+			FormManagerUtil.putLocalizedText(
+					null, null, output, form_document.getXformsDocument(), props.getHelpText());
 		}
 	}
 	
@@ -705,6 +745,9 @@ public class XFormsManager implements IXFormsManager {
 	
 	public LocalizedStringBean getErrorLabelLocalizedStrings() {
 		return FormManagerUtil.getErrorLabelLocalizedStrings(xforms_component.getElement(), form_document.getXformsDocument());
+	}
+	public LocalizedStringBean getHelpText() {
+		return FormManagerUtil.getHelpTextLocalizedStrings(xforms_component.getElement(), form_document.getXformsDocument());
 	}
 	public Element getComponentElement() {
 		return xforms_component.getElement();

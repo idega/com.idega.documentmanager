@@ -29,4 +29,8 @@ public interface PropertiesComponent {
 	public abstract String getAutofillKey();
 		
 	public abstract void setAutofillKey(String autofill_key);
+	
+	public abstract LocalizedStringBean getHelpText();
+	
+	public abstract void setHelpText(LocalizedStringBean help_text);
 }

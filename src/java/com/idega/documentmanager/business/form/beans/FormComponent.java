@@ -107,6 +107,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 		properties.setPlainRequired(false);
 		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings());
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey());
+		properties.setPlainHelpText(getXFormsManager().getHelpText());
 	}
 	
 	protected void changeBindNames() {
@@ -270,6 +271,11 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 			break;
 			
 		case ConstUpdateType.error_msg:
+			getHtmlManager().clearHtmlComponents();
+			form_document.setFormDocumentModified(true);
+			break;
+			
+		case ConstUpdateType.help_text:
 			getHtmlManager().clearHtmlComponents();
 			form_document.setFormDocumentModified(true);
 			break;

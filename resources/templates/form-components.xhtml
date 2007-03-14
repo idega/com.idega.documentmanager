@@ -83,11 +83,22 @@
 			<item id="itemset"> <xf:itemset model="data_model">
 				<xf:label ref="item_label" />
 				<xf:value ref="item_value" />
-			</xf:itemset> </item> <item id="alert"> <xf:alert>
-				<xf:output
-					ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-			</xf:alert> </item> <item id="item_src"> <item> <item_label></item_label>
+			</xf:itemset> </item> 
+			<item id="alert"> 
+				<xf:alert>
+					<xf:output
+						ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
+						model="data_model" />
+				</xf:alert> 
+			</item>
+			<item id="help"> 
+				<xf:help>
+					<xf:output
+						ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
+						model="data_model" />
+				</xf:help> 
+			</item>
+			<item id="item_src"> <item> <item_label></item_label>
 			<item_value></item_value> </item> </item> 
 			<item id="autofill-model">
 				<xf:model id="x-autofill-model">

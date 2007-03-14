@@ -63,6 +63,8 @@ public class ComponentProperties implements PropertiesComponent {
 		.append(p3ptype)
 		.append("\nautofill key: ")
 		.append(autofill_key)
+		.append("\nhelp text: ")
+		.append(help_text)
 		
 		.toString();
 	}
@@ -92,6 +94,10 @@ public class ComponentProperties implements PropertiesComponent {
 		return help_text;
 	}
 	public void setHelpText(LocalizedStringBean help_text) {
+		this.help_text = help_text;
+		parent_component.update(new ConstUpdateType(ConstUpdateType.help_text));
+	}
+	public void setPlainHelpText(LocalizedStringBean help_text) {
 		this.help_text = help_text;
 	}
 }

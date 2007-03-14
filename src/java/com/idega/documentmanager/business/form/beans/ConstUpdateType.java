@@ -21,6 +21,7 @@ public final class ConstUpdateType {
 	public static final int thankyou_text = 9;
 	public static final int autofill_key = 10;
 	public static final int text = 11;
+	public static final int help_text = 12;
 	
 	private static List<Integer> update_types = new ArrayList<Integer>();
 	
@@ -38,6 +39,7 @@ public final class ConstUpdateType {
 		update_types.add(thankyou_text);
 		update_types.add(autofill_key);
 		update_types.add(text);
+		update_types.add(help_text);
 	}
 	
 	public ConstUpdateType(Integer update_type) {

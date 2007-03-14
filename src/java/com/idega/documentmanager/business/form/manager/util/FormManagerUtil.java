@@ -41,6 +41,7 @@ public class FormManagerUtil {
 	public static final String model_tag = "xf:model";
 	public static final String label_tag = "xf:label";
 	public static final String alert_tag = "xf:alert";
+	public static final String help_tag = "xf:help";
 	public static final String head_tag = "head";
 	public static final String id_att = "id";
 	public static final String type_att = "type";
@@ -384,6 +385,25 @@ public class FormManagerUtil {
 			return new LocalizedStringBean();
 		
 		Element output = (Element)((Element)alerts.item(0)).getElementsByTagName(FormManagerUtil.output_tag).item(0);
+		
+		String ref = output.getAttribute(ref_s_att);
+		
+		if(!isRefFormCorrect(ref))
+			return new LocalizedStringBean();
+		
+		String key = getKeyFromRef(ref);
+		
+		return getLocalizedStrings(key, xforms_doc);
+	}
+	
+	public static LocalizedStringBean getHelpTextLocalizedStrings(Element component, Document xforms_doc) {
+		
+		NodeList helps = component.getElementsByTagName(FormManagerUtil.help_tag);
+		
+		if(helps == null || helps.getLength() == 0)
+			return new LocalizedStringBean();
+		
+		Element output = (Element)((Element)helps.item(0)).getElementsByTagName(FormManagerUtil.output_tag).item(0);
 		
 		String ref = output.getAttribute(ref_s_att);
 		
