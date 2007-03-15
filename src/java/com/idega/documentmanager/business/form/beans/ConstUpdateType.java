@@ -16,7 +16,6 @@ public final class ConstUpdateType {
 	public static final int p3p_type = 4;
 	public static final int data_src_used = 5;
 	public static final int itemset = 6;
-	public static final int empty_element_label = 7;
 	public static final int external_data_src = 8;
 	public static final int thankyou_text = 9;
 	public static final int autofill_key = 10;
@@ -34,7 +33,6 @@ public final class ConstUpdateType {
 		update_types.add(p3p_type);
 		update_types.add(data_src_used);
 		update_types.add(itemset);
-		update_types.add(empty_element_label);
 		update_types.add(external_data_src);
 		update_types.add(thankyou_text);
 		update_types.add(autofill_key);

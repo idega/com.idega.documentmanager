@@ -9,7 +9,6 @@ import com.idega.documentmanager.business.form.PropertiesSelect;
  */
 public class ComponentPropertiesSelect extends ComponentProperties implements PropertiesSelect {
 	
-	private LocalizedStringBean empty_element_label;
 	private String external_data_src;
 	private ILocalizedItemset itemset;
 	private Integer data_src_used;
@@ -19,16 +18,6 @@ public class ComponentPropertiesSelect extends ComponentProperties implements Pr
 	}
 	public void setItemsetPlain(ILocalizedItemset itemset) {
 		this.itemset = itemset;
-	}
-	public LocalizedStringBean getEmptyElementLabel() {
-		return empty_element_label;
-	}
-	public void setEmptyElementLabel(LocalizedStringBean empty_element_label) {
-		this.empty_element_label = empty_element_label;
-		parent_component.update(new ConstUpdateType(ConstUpdateType.empty_element_label));
-	}
-	public void setEmptyElementLabelPlain(LocalizedStringBean empty_element_label) {
-		this.empty_element_label = empty_element_label;
 	}
 	public String getExternalDataSrc() {
 		return external_data_src;

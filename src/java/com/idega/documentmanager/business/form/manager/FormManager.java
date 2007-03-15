@@ -13,6 +13,7 @@ import org.chiba.xml.xslt.TransformerService;
 import org.chiba.xml.xslt.impl.CachingTransformerService;
 import org.w3c.dom.Document;
 
+import com.idega.chiba.web.xml.xslt.impl.BundleResourceResolver;
 import com.idega.documentmanager.IWBundleStarter;
 import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
@@ -24,7 +25,6 @@ import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
 import com.idega.documentmanager.business.form.manager.generators.FormComponentsGenerator;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
 import com.idega.documentmanager.business.form.manager.util.InitializationException;
-import com.idega.documentmanager.business.util.BundleResourceResolver;
 import com.idega.idegaweb.DefaultIWBundle;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
@@ -114,7 +114,7 @@ public class FormManager implements DocumentManager {
 			
 			String workspaceDir = System.getProperty(DefaultIWBundle.SYSTEM_BUNDLES_RESOURCE_DIR);
 			if (workspaceDir != null) {
-				bundleInWorkspace = workspaceDir + "/" + IWBundleStarter.IW_BUNDLE_IDENTIFIER + "/";
+				bundleInWorkspace = workspaceDir + FormManagerUtil.slash + IWBundleStarter.IW_BUNDLE_IDENTIFIER + FormManagerUtil.slash;
 			}
 			
 			TransformerService transf_service = null;

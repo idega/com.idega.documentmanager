@@ -48,7 +48,6 @@ public class FormComponentSelect extends FormComponent implements ComponentSelec
 		XFormsManagerSelect xforms_manager = (XFormsManagerSelect)getXFormsManager();
 		
 		properties.setDataSrcUsedPlain(xforms_manager.getDataSrcUsed());
-		properties.setEmptyElementLabelPlain(xforms_manager.getEmptyElementLabel());
 		properties.setExternalDataSrcPlain(xforms_manager.getExternalDataSrc());
 		properties.setItemsetPlain(xforms_manager.getItemset());
 	}
@@ -66,11 +65,6 @@ public class FormComponentSelect extends FormComponent implements ComponentSelec
 			break;
 			
 		case ConstUpdateType.itemset:
-			getHtmlManager().clearHtmlComponents();
-			form_document.setFormDocumentModified(true);
-			break;
-			
-		case ConstUpdateType.empty_element_label:
 			getHtmlManager().clearHtmlComponents();
 			form_document.setFormDocumentModified(true);
 			break;

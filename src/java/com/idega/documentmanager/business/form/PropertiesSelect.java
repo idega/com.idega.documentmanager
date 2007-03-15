@@ -1,7 +1,6 @@
 package com.idega.documentmanager.business.form;
 
 import com.idega.documentmanager.business.form.beans.ILocalizedItemset;
-import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -15,10 +14,6 @@ public interface PropertiesSelect extends PropertiesComponent {
 	public static final int EXTERNAL_DATA_SRC = 2;
 	
 	public abstract ILocalizedItemset getItemset();
-
-	public abstract LocalizedStringBean getEmptyElementLabel();
-
-	public abstract void setEmptyElementLabel(LocalizedStringBean empty_element_label);
 
 	public abstract String getExternalDataSrc();
 

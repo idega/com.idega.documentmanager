@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.chiba.adapter.ui.UIGenerator;
 import org.chiba.adapter.ui.XSLTGenerator;
+import org.chiba.web.flux.FluxAdapter;
 import org.chiba.xml.xforms.exception.XFormsException;
 import org.chiba.xml.xslt.TransformerService;
 import org.w3c.dom.Document;
@@ -65,7 +66,12 @@ public class FormComponentsGenerator implements Singleton, IComponentsGenerator 
 		this.xforms_doc = xforms_doc;
 	}
 	
-	public Document generateBaseComponentsDocument() throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
+	public Document generateHtmlComponentsDocument() throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
+		
+		return generateHtmlComponentsDocument(true);
+	}
+	
+	protected Document generateHtmlComponentsDocument(boolean use_adapter) throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
 		
 		if(!isInitiated()) {
 			
@@ -84,11 +90,19 @@ public class FormComponentsGenerator implements Singleton, IComponentsGenerator 
          */
         UIGenerator gen = getTemporalXmlComponentsGenerator();
         
-    	copyLocalizationKeysToElements(xforms_doc);
+    	if(use_adapter) {
+    		
+    		FluxAdapter adapter = new FluxAdapter();
+        	adapter.setXForms(xforms_doc);
+        	adapter.init();
+    	} else
+    		copyLocalizationKeysToElements(xforms_doc);
+    	
     	gen.setInput(xforms_doc);
     	
     	DocumentBuilder document_builder = FormManagerUtil.getDocumentBuilder();
         Document temp_xml_doc = document_builder.newDocument();
+        
         gen.setOutput(temp_xml_doc);
     	gen.generate();
     	
@@ -104,6 +118,11 @@ public class FormComponentsGenerator implements Singleton, IComponentsGenerator 
     	gen.generate();
     	
     	return temp_xml_doc;
+	}
+	
+	public Document generateBaseComponentsDocument() throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
+		
+		return generateHtmlComponentsDocument(false);
 	}
 	
 	private static void copyLocalizationKeysToElements(Document managed_doc) {
@@ -143,6 +162,13 @@ public class FormComponentsGenerator implements Singleton, IComponentsGenerator 
 					XSLTGenerator gen = new XSLTGenerator();
 					gen.setTransformerService(transf_service);
 					gen.setStylesheetURI(temporal_xml_stylesheet_uri);
+					gen.setParameter("selector-prefix", "s_");
+					//gen.setParameter("remove-upload-prefix", removeUploadPrefix);
+					gen.setParameter("data-prefix", "d_");
+					gen.setParameter("trigger-prefix", "t_");
+					//gen.setParameter("user-agent", "user-agent");
+					//gen.setParameter("scripted", true);
+					//gen.setParameter("scriptPath", "/idegaweb/bundles/" + IWBundleStarter.BUNDLE_IDENTIFIER + ".bundle/resources/javascript/");
 					
 					temporal_xml_components_generator = gen;
 				}

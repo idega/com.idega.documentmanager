@@ -59,10 +59,8 @@
 			lang="en">Simple text input</lockey_input.title> <lockey_input.title
 			lang="is">Simple text input</lockey_input.title> <lockey_upload_file.title
 			lang="en">File upload</lockey_upload_file.title> <lockey_upload_file.title
-			lang="is">File upload</lockey_upload_file.title> <lockey_select.empty
-			lang="en">--Empty--</lockey_select.empty> <lockey_select.empty
-			lang="is">--Empty icelandic--</lockey_select.empty> <lockey_page.label
-			lang="en">Section</lockey_page.label>
+			lang="is">File upload</lockey_upload_file.title> 
+			<lockey_page.label lang="en">Section</lockey_page.label>
 			<lockey_confirmation_page.label lang="en">Confirmation Section</lockey_confirmation_page.label>
 			<lockey_button_next.label lang="en">Next section</lockey_button_next.label>
 			<lockey_button_previous.label lang="en">Previous section</lockey_button_previous.label>
@@ -72,14 +70,6 @@
 
 	<xf:instance id="datasets_examples" xmlns="">
 		<examples> 
-			<item id="empty_item">
-				<xf:item>
-					<xf:label
-						ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
-						model="data_model" />
-					<xf:value />
-				</xf:item> 
-			</item> 
 			<item id="itemset"> <xf:itemset model="data_model">
 				<xf:label ref="item_label" />
 				<xf:value ref="item_value" />
@@ -112,16 +102,44 @@
 	</xf:instance>
 
 	<xf:instance id="fbcomp_multiple_select_minimal_lds" xmlns="">
-		<local_src> </local_src>
+		<local_src>
+ 	       <localizedEntries lang="en">
+    	       <item>
+        	       <item_label>Change me</item_label>
+                   <item_value>Change me</item_value>
+               </item>
+           </localizedEntries>
+        </local_src>
 	</xf:instance>
 	<xf:instance id="fbcomp_single_select_minimal_lds" xmlns="">
-		<local_src> </local_src>
+		<local_src>
+ 	       <localizedEntries lang="en">
+    	       <item>
+        	       <item_label>Change me</item_label>
+                   <item_value>Change me</item_value>
+               </item>
+           </localizedEntries>
+        </local_src>
 	</xf:instance>
 	<xf:instance id="fbcomp_multiple_select_lds" xmlns="">
-		<local_src> </local_src>
+		<local_src>
+ 	       <localizedEntries lang="en">
+    	       <item>
+        	       <item_label>Change me</item_label>
+                   <item_value>Change me</item_value>
+               </item>
+           </localizedEntries>
+        </local_src>
 	</xf:instance>
 	<xf:instance id="fbcomp_single_select_lds" xmlns="">
-		<local_src> </local_src>
+		<local_src>
+ 	       <localizedEntries lang="en">
+    	       <item>
+        	       <item_label>Change me</item_label>
+                   <item_value>Change me</item_value>
+               </item>
+           </localizedEntries>
+        </local_src>
 	</xf:instance>
 	<xf:instance id="fbcomp_multiple_select_minimal_eds" xmlns="">
 		<ext_src> </ext_src>
@@ -189,48 +207,28 @@
 			<xf:label
 				ref="instance('localized_strings')/lockey_select_minimal.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:item>
-				<xf:label
-					ref="instance('localized_strings')/lockey_select.empty[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-				<xf:value />
-			</xf:item>
+			<xf:itemset model="data_model" nodeset="instance('fbcomp_multiple_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+	            <xf:label ref="item_label"/>
+                <xf:value ref="item_value"/>
+            </xf:itemset>
 		</xf:select>
 		<xf:select1 bind="single_select_minimal"
 			id="fbcomp_single_select_minimal" appearance="minimal">
 			<xf:label
 				ref="instance('localized_strings')/lockey_select1_minimal.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:item>
-				<xf:label
-					ref="instance('localized_strings')/lockey_select.empty[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-				<xf:value />
-			</xf:item>
 		</xf:select1>
 		<xf:select bind="multiple_select" id="fbcomp_multiple_select"
 			appearance="full">
 			<xf:label
 				ref="instance('localized_strings')/lockey_select_full.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:item>
-				<xf:label
-					ref="instance('localized_strings')/lockey_select.empty[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-				<xf:value />
-			</xf:item>
 		</xf:select>
 		<xf:select1 bind="single_select" id="fbcomp_single_select"
 			appearance="full">
 			<xf:label
 				ref="instance('localized_strings')/lockey_select1_full.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:item>
-				<xf:label
-					ref="instance('localized_strings')/lockey_select.empty[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-				<xf:value />
-			</xf:item>
 		</xf:select1>
 		<xf:input bind="email" id="fbcomp_email">
 			<xf:label

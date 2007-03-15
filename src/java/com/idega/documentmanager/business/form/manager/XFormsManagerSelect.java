@@ -11,7 +11,6 @@ import com.idega.documentmanager.business.form.beans.ConstUpdateType;
 import com.idega.documentmanager.business.form.beans.IComponentPropertiesParent;
 import com.idega.documentmanager.business.form.beans.ILocalizedItemset;
 import com.idega.documentmanager.business.form.beans.LocalizedItemsetBean;
-import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
 import com.idega.documentmanager.business.form.beans.XFormsComponentDataBean;
 import com.idega.documentmanager.business.form.beans.XFormsComponentSelectDataBean;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
@@ -105,11 +104,18 @@ public class XFormsManagerSelect extends XFormsManager {
 		Element data_model_instance_element = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.data_mod);
 		
 		if(new_xforms_element != null) {
+
+			String local_id = new_xforms_element.getAttribute(FormManagerUtil.id_att);
 			
 			new_xforms_element = (Element)xforms_doc.importNode(new_xforms_element, true);
 			new_xforms_element.setAttribute(FormManagerUtil.id_att, getLocalDataSourceInstanceIdentifier(component.getId()));
-			data_model_instance_element.appendChild(new_xforms_element);
+			new_xforms_element = (Element)data_model_instance_element.appendChild(new_xforms_element);
 			xforms_component.setLocalItemsetInstance(new_xforms_element);
+			
+			Element itemset = DOMUtil.getElementByAttributeValue(xforms_component.getElement(), "*", FormManagerUtil.nodeset_att, constructItemsetInstance(local_id, null));
+			
+			if(itemset != null)
+				itemset.setAttribute(FormManagerUtil.nodeset_att, constructItemsetInstance(PropertiesSelect.LOCAL_DATA_SRC));
 		}
 		
 		new_xforms_element = xforms_component.getExternalItemsetInstance();
@@ -118,7 +124,7 @@ public class XFormsManagerSelect extends XFormsManager {
 			
 			new_xforms_element = (Element)xforms_doc.importNode(new_xforms_element, true);
 			new_xforms_element.setAttribute(FormManagerUtil.id_att, getExternalDataSourceInstanceIdentifier(component.getId()));
-			data_model_instance_element.appendChild(new_xforms_element);
+			new_xforms_element = (Element)data_model_instance_element.appendChild(new_xforms_element);
 			xforms_component.setExternalItemsetInstance(new_xforms_element);
 		}
 	}
@@ -145,24 +151,6 @@ public class XFormsManagerSelect extends XFormsManager {
 			return PropertiesSelect.LOCAL_DATA_SRC;
 		
 		return null;
-	}
-	public LocalizedStringBean getEmptyElementLabel() {
-		
-		Element item = DOMUtil.getChildElement(xforms_component.getElement(), FormManagerUtil.item_tag);
-		
-		if(item == null)
-			return null;
-		
-		Element label = DOMUtil.getChildElement(item, FormManagerUtil.label_tag);
-		
-		String ref = label.getAttribute("ref");
-		
-		if(!FormManagerUtil.isRefFormCorrect(ref))
-			return new LocalizedStringBean();
-		
-		String key = FormManagerUtil.getKeyFromRef(ref);
-		
-		return FormManagerUtil.getLocalizedStrings(key, form_document.getXformsDocument());
 	}
 	public String getExternalDataSrc() {
 		
@@ -197,10 +185,6 @@ public class XFormsManagerSelect extends XFormsManager {
 		switch (update) {
 		case ConstUpdateType.data_src_used:
 			updateDataSrcUsed();
-			break;
-			
-		case ConstUpdateType.empty_element_label:
-			updateEmptyElementLabel();
 			break;
 			
 		case ConstUpdateType.external_data_src:
@@ -256,39 +240,29 @@ public class XFormsManagerSelect extends XFormsManager {
 	
 	private String constructItemsetInstance(Integer data_source) {
 	
+		return constructItemsetInstance(component.getId(), data_source);
+	}
+	
+	private String constructItemsetInstance(String component_id, Integer data_source) {
+		
 		StringBuffer buf = new StringBuffer();
 		
 		buf.append("instance('")
-		.append(component.getId());
+		.append(component_id);
 		
-		if(data_source == PropertiesSelect.LOCAL_DATA_SRC)
-			buf.append("_lds");
-		else
-			buf.append("_eds");
+		if(data_source != null) {
+			
+			if(data_source == PropertiesSelect.LOCAL_DATA_SRC)
+				buf.append("_lds");
+			else
+				buf.append("_eds");
+		}
 		
 		buf.append("')/localizedEntries[@lang=instance('localized_strings')/current_language]/item");
 		
 		return buf.toString();
 	}
 
-	protected void updateEmptyElementLabel() {
-		
-		LocalizedStringBean loc_str = ((PropertiesSelect)component.getProperties()).getEmptyElementLabel();
-		
-		Element item = DOMUtil.getChildElement(xforms_component.getElement(), FormManagerUtil.item_tag);
-		
-		if(item == null)
-			return;
-		
-		Element label = DOMUtil.getChildElement(item, FormManagerUtil.label_tag);
-		
-		FormManagerUtil.putLocalizedText(null, null, 
-				label,
-				form_document.getXformsDocument(),
-				loc_str
-		);
-		
-	}
 	protected void updateExternalDataSrc() {
 		
 		Element external_instance = ((XFormsComponentSelectDataBean)xforms_component).getExternalItemsetInstance();

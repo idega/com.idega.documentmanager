@@ -16,11 +16,6 @@
     
     <!-- This stylesheet contains a collection of templates which map XForms controls to HTML controls. -->
     
-    <!-- revision 1.0 
-			    author: Vytautas Civilis
-					removed output method, so this xsl is left for including
-     -->
-
     <!-- ######################################################################################################## -->
     <!-- This stylesheet serves as a 'library' for HTML form controls. It contains only named templates and may   -->
     <!-- be re-used in different layout-stylesheets to create the naked controls.                                 -->
@@ -873,12 +868,13 @@
 
         <!-- todo: refactor to handle xforms:choice / xforms:itemset by matching -->
         <optgroup id="{xforms:itemset/@id}" label="">
-            <!-- add an empty item, cause otherwise deselection is not possible -->
+            <!-- add an empty item, cause otherwise deselection is not possible 
             <option value="">
                 <xsl:if test="string-length($parent/chiba:data/text()) = 0">
                     <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
             </option>
+            -->
 
             <!-- handle items, items in choices, and items in itemsets, but neither of these in chiba:data  -->
             <xsl:for-each select="$parent/xforms:item|$parent/xforms:choices/xforms:item|$parent/xforms:itemset/xforms:item">

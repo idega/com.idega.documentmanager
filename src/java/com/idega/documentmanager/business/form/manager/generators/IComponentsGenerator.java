@@ -21,6 +21,8 @@ public interface IComponentsGenerator {
 	 */
 	public abstract Document generateBaseComponentsDocument() throws Exception;
 	
+	public abstract Document generateHtmlComponentsDocument() throws Exception;
+	
 	/**
 	 * set input document
 	 * @param doc - document, to generate components from
