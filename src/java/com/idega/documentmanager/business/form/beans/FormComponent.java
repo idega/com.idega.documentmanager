@@ -267,6 +267,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 		switch (update) {
 		case ConstUpdateType.label:
 			getHtmlManager().clearHtmlComponents();
+			form_document.setFormDocumentModified(true);
 			changeBindNames();
 			break;
 			
