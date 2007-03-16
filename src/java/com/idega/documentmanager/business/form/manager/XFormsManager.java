@@ -743,6 +743,12 @@ public class XFormsManager implements IXFormsManager {
 		return FormManagerUtil.getLabelLocalizedStrings(xforms_component.getElement(), form_document.getXformsDocument());
 	}
 	
+	public boolean getIsRequired() {
+		
+		Element bind = xforms_component.getBind();
+		return bind != null && bind.hasAttribute(required_att) && bind.getAttribute(required_att).equals(true_xpath);
+	}
+	
 	public LocalizedStringBean getErrorLabelLocalizedStrings() {
 		return FormManagerUtil.getErrorLabelLocalizedStrings(xforms_component.getElement(), form_document.getXformsDocument());
 	}

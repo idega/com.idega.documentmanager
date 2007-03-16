@@ -104,7 +104,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 			return;
 		
 		properties.setPlainLabel(getXFormsManager().getLocalizedStrings());
-		properties.setPlainRequired(false);
+		properties.setPlainRequired(getXFormsManager().getIsRequired());
 		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings());
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey());
 		properties.setPlainHelpText(getXFormsManager().getHelpText());
