@@ -88,8 +88,12 @@
 						model="data_model" />
 				</xf:help> 
 			</item>
-			<item id="item_src"> <item> <item_label></item_label>
-			<item_value></item_value> </item> </item> 
+			<item id="item_src">
+				<item>
+					<item_label></item_label>
+					<item_value></item_value>
+				</item>
+			</item> 
 			<item id="autofill-model">
 				<xf:model id="x-autofill-model">
 					<xf:action ev:event="xforms-ready" />
@@ -208,8 +212,8 @@
 				ref="instance('localized_strings')/lockey_select_minimal.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 			<xf:itemset model="data_model" nodeset="instance('fbcomp_multiple_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
-	            <xf:label ref="item_label"/>
-                <xf:value ref="item_value"/>
+	            <xf:label ref="item_label" />
+                <xf:value ref="item_value" />
             </xf:itemset>
 		</xf:select>
 		<xf:select1 bind="single_select_minimal"

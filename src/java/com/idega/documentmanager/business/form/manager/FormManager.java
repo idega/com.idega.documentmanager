@@ -13,7 +13,7 @@ import org.chiba.xml.xslt.TransformerService;
 import org.chiba.xml.xslt.impl.CachingTransformerService;
 import org.w3c.dom.Document;
 
-import com.idega.chiba.web.xml.xslt.impl.BundleResourceResolver;
+import com.idega.chiba.web.xml.xslt.impl.ChibaBundleResourceResolver;
 import com.idega.documentmanager.IWBundleStarter;
 import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
@@ -123,7 +123,7 @@ public class FormManager implements DocumentManager {
 				bundle = iw_app.getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER);
 				transf_service = (TransformerService) iw_app.getAttribute(TransformerService.class.getName());
 			} else {
-				transf_service = new CachingTransformerService(new BundleResourceResolver(null));
+				transf_service = new CachingTransformerService(new ChibaBundleResourceResolver(null));
 			}
 
 			// load xml files
