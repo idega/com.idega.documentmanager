@@ -37,7 +37,8 @@ public class XFormsManagerDocument extends XFormsManagerContainer {
 				autofill_model = (Element)head_element.appendChild(autofill_model);
 				autofill_model.setAttribute(FormManagerUtil.id_att, FormManagerUtil.autofill_model_id);
 				this.autofill_action = (Element)autofill_model.getElementsByTagName("*").item(0);
-			}
+			} else
+				autofill_action = autofill_model; 
 		}
 		
 		return autofill_action;
