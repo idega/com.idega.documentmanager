@@ -534,13 +534,21 @@ public class XFormsManager implements IXFormsManager {
 		removeComponentLocalization();
 		removeComponentBindings();
 		
-		Element preview_element = xforms_component.getPreviewElement();
+		Element remove_this = xforms_component.getPreviewElement();
+		if(remove_this != null)
+			remove_this.getParentNode().removeChild(remove_this);
 		
-		if(preview_element != null)
-			preview_element.getParentNode().removeChild(preview_element);
+		remove_this = xforms_component.getKeyExtInstance();
+		if(remove_this != null)
+			remove_this.getParentNode().removeChild(remove_this);
 		
-		Element element_to_remove = xforms_component.getElement();
-		element_to_remove.getParentNode().removeChild(element_to_remove);
+		remove_this = xforms_component.getKeySetvalue();
+		if(remove_this != null)
+			remove_this.getParentNode().removeChild(remove_this);
+		
+		remove_this = xforms_component.getElement();
+		if(remove_this != null)
+			remove_this.getParentNode().removeChild(remove_this);
 	}
 	
 	protected void removeComponentBindings() {
