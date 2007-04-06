@@ -71,6 +71,11 @@ public class FormComponentDocument extends FormComponentContainer implements com
 		return document.getFormId();
 	}
 	
+	@Override
+	public String getId() {
+		return document.getFormId();
+	}
+	
 	public Locale getDefaultLocale() {
 		return document.getDefaultLocale();
 	}
