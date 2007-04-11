@@ -21,7 +21,6 @@
 			<page /> 
 		</data>
 	</xf:instance>
-	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
 	<xf:bind id="multiple_select_minimal" nodeset="multiple_select_minimal"
@@ -62,8 +61,8 @@
 			lang="is">File upload</lockey_upload_file.title> 
 			<lockey_page.label lang="en">Section</lockey_page.label>
 			<lockey_confirmation_page.label lang="en">Confirmation Section</lockey_confirmation_page.label>
-			<lockey_button_next.label lang="en">Next section</lockey_button_next.label>
-			<lockey_button_previous.label lang="en">Previous section</lockey_button_previous.label>
+			<lockey_button_next.label lang="en">Next</lockey_button_next.label>
+			<lockey_button_previous.label lang="en">Previous</lockey_button_previous.label>
 			<lockey_button_submit.label lang="en">Submit</lockey_button_submit.label>
 		</localized_strings>
 	</xf:instance>
@@ -252,7 +251,7 @@
 			<xf:mediatype ref="attachment/@content-type" />
 		</xf:upload>
 	
-		<div id="fbcomp_button_area" name="fbcomp_button_area"></div>
+		<div id="fbcomp_button_area" name="fbcomp_button_area" class="fbcomp_button_area"></div>
 		<div id="fbcomp_simple_text" name="fbcomp_simple_text" class="fbcomp_simple_text">Put your text here</div>
 		<div id="fbcomp_header_text" name="fbcomp_header_text" class="fbcomp_header_text">Put your header here</div>
 		<hr id="fbcomp_separator" name="fbcomp_separator" class="fbcomp_separator" />
