@@ -305,6 +305,7 @@ public class FormComponent implements IFormComponent, IComponentPropertiesParent
 		created = false;
 		load = false;
 		form_document = null;
+		xforms_manager = null;
 	}
 	
 	public Element getDefaultHtmlRepresentationByType(String component_type) {
