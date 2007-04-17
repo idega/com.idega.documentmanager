@@ -68,4 +68,6 @@ public interface IXFormsManager {
 	public abstract String getAutofillKey();
 	
 	public abstract boolean getIsRequired();
+	
+	public abstract IFormComponentContainer getComponentParent();
 }

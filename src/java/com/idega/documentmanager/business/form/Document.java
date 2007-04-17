@@ -46,7 +46,7 @@ public interface Document extends Container {
 	 * and then call this method for changes to take an effect
 	 *
 	 */
-	public abstract void rearrangeDocument() throws Exception;
+	public abstract void rearrangeDocument();
 	
 	public abstract Page getPage(String page_id);
 	
@@ -61,4 +61,6 @@ public interface Document extends Container {
 	public abstract PageThankYou getThxPage();
 	
 	public abstract Page addConfirmationPage(String page_after_this_id);
+	
+	public abstract PropertiesDocument getProperties();
 }

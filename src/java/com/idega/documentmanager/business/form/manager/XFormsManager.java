@@ -16,6 +16,7 @@ import com.idega.documentmanager.business.form.beans.IFormComponentButtonArea;
 import com.idega.documentmanager.business.form.beans.IFormComponentContainer;
 import com.idega.documentmanager.business.form.beans.IFormComponentDocument;
 import com.idega.documentmanager.business.form.beans.IFormComponentPage;
+import com.idega.documentmanager.business.form.beans.IFormComponentParent;
 import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
 import com.idega.documentmanager.business.form.beans.XFormsComponentDataBean;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
@@ -873,5 +874,10 @@ public class XFormsManager implements IXFormsManager {
 		return key.startsWith(FormManagerUtil.autofill_key_prefix) ? 
 			key.substring(FormManagerUtil.autofill_key_prefix.length()) :
 			key;
+	}
+	
+	public IFormComponentContainer getComponentParent() {
+		
+		return component_parent;
 	}
 }

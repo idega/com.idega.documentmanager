@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.form.beans.FormComponentFactory;
 import com.idega.documentmanager.business.form.beans.IFormComponent;
+import com.idega.documentmanager.business.form.beans.IFormComponentPage;
 import com.idega.documentmanager.business.form.manager.util.FormManagerUtil;
 
 /**
@@ -43,6 +44,8 @@ public class XFormsManagerPage extends XFormsManagerContainer {
 		case_element.appendChild(group_element);
 		
 		checkForSpecialTypes();
+		
+		pageContextChanged();
 	}
 	
 	protected void checkForSpecialTypes() {
@@ -58,9 +61,18 @@ public class XFormsManagerPage extends XFormsManagerContainer {
 		
 		removeComponentLocalization();
 		removeComponentBindings();
+		removeSectionVisualization();
 		
 		Element element_to_remove = xforms_component.getElement();
 		element_to_remove.getParentNode().getParentNode().removeChild(element_to_remove.getParentNode());
+	}
+	
+	private void removeSectionVisualization() {
+		
+		Element section = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.head_tag, component.getId()+"_section");
+		
+		if(section != null)
+			section.getParentNode().removeChild(section);
 	}
 	
 	@Override
@@ -92,5 +104,71 @@ public class XFormsManagerPage extends XFormsManagerContainer {
 	@Override
 	protected Element getInsertBeforeComponentElement(IFormComponent component_after_this) {
 		return (Element)component_after_this.getComponentXFormsManager().getComponentElement().getParentNode();
+	}
+	
+	public void pageContextChanged() {
+		
+		if(!form_document.getProperties().isStepsVisualizationUsed() || FormComponentFactory.page_type_thx.equals(component.getType()))
+			return;
+		
+		Element instance = form_document.getSectionsVisualizationInstanceElement();
+		Element section = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.head_tag, component.getId()+"_section");
+		
+		if(section == null) {
+			
+			section = FormManagerUtil.getItemElementById(CacheManager.getInstance().getComponentsXforms(), FormManagerUtil.section_item);
+			section = (Element)form_document.getXformsDocument().importNode(section, true);
+			section.setAttribute(FormManagerUtil.id_att, component.getId()+"_section");
+			Element id_el = (Element)section.getElementsByTagName(FormManagerUtil.id_att).item(0);
+			FormManagerUtil.setElementsTextNodeValue(id_el, component.getId());
+		} else
+			section.getParentNode().removeChild(section);
+
+		int seq_idx = component_parent.getContainedComponentsIdList().indexOf(component.getId())+1;
+		
+		if(seq_idx == 1)
+			section.setAttribute("selected", "true");
+		else
+			section.setAttribute("selected", "false");
+		
+		Element seq_el = (Element)section.getElementsByTagName("seq_index").item(0);
+		FormManagerUtil.setElementsTextNodeValue(seq_el, String.valueOf(seq_idx));
+		
+		IFormComponentPage page = (IFormComponentPage)component;
+		IFormComponentPage next = page.getNextPage();
+		IFormComponentPage prev = page.getPreviousPage();
+		
+		boolean inserted = false;
+		
+		if(next != null)
+			inserted = insertSectionIntoContext(false, next, instance, section);
+		
+		if(prev != null && !inserted)
+			inserted = insertSectionIntoContext(true, prev, instance, section);
+		
+		if(!inserted)
+			insertSectionIntoContext(false, null, instance, section);
+	}
+	
+	private boolean insertSectionIntoContext(boolean prev, IFormComponentPage relevant_page, Element instance, Element section) {
+		
+		if(relevant_page != null) {
+			Element relevant_section = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.head_tag, relevant_page.getId()+"_section");
+			
+			if(relevant_section == null)
+				return false;
+			
+			if(!prev)
+				relevant_section.getParentNode().insertBefore(section, relevant_section);
+			else
+				DOMUtil.insertAfter(section, relevant_section);
+			
+		} else {
+
+			Element class_exp = (Element)instance.getElementsByTagName("class_exp").item(0);
+			class_exp.getParentNode().insertBefore(section, class_exp);
+		}
+		
+		return true;
 	}
 }

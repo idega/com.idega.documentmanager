@@ -26,4 +26,6 @@ public interface IFormComponentContainer extends IFormComponent {
 	public abstract void componentsOrderChanged();
 	
 	public abstract void unregisterComponent(String component_id);
+	
+	public abstract IFormComponentPage getParentPage();
 }

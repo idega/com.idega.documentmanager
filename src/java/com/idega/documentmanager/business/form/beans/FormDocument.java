@@ -136,6 +136,7 @@ public class FormDocument implements IFormDocument {
 		
 		pages_container.setContainerElement(FormManagerUtil.getComponentsContainerElement(xforms_doc));
 		pages_container.loadContainerComponents();
+		pages_container.setProperties();
 	}
 	
 	public static FormDocument loadDocument(String form_id, PersistenceManager persistence_manager) throws InitializationException, Exception {

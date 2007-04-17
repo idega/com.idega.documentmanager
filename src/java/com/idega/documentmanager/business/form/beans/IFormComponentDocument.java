@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.form.Page;
 import com.idega.documentmanager.business.form.PageThankYou;
+import com.idega.documentmanager.business.form.PropertiesDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -40,4 +41,8 @@ public interface IFormComponentDocument extends IFormComponentContainer {
 	public abstract Element getAutofillModelElement();
 	
 	public abstract Element getFormDataModelElement();
+	
+	public abstract Element getSectionsVisualizationInstanceElement();
+	
+	public abstract PropertiesDocument getProperties();
 }

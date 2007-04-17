@@ -21,6 +21,7 @@
 			<page /> 
 		</data>
 	</xf:instance>
+	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
 	<xf:bind id="multiple_select_minimal" nodeset="multiple_select_minimal"
@@ -100,6 +101,34 @@
     	    </item>
     	    <item id="toggle-element">
 				<xf:toggle ev:event="DOMActivate" />
+    	    </item>
+    	    <item id="section_item">
+				<section selected="false">
+	           		<id></id>
+	           		<seq_index></seq_index>
+	           	</section>
+    	    </item>
+    	    <item id="sections_visualization_instance_item">
+				<xf:instance id="sections_visualization_instance" xmlns="">
+	            	<sections>
+		            	<class_exp for="true">current</class_exp>
+		            	<class_exp for="false"></class_exp>
+	            	</sections>
+            	</xf:instance>
+    	    </item>
+    	    <item id="sections_visualization_item">
+				<xf:repeat id="sections_visualization" nodeset="instance('sections')/section" appearance="minimal" model="data_model">
+					<xf:output mediatype="text/html" 
+					value="concat(
+						'&lt;div ',
+						'class=&quot;',
+						instance('sections')/class_exp[@for=current()/@selected],
+						'&quot;',
+						'&gt;', 
+						./seq_index,
+						'&lt;/div&gt;'
+					)" />
+	        	</xf:repeat>
     	    </item>
 		</examples>
 	</xf:instance>

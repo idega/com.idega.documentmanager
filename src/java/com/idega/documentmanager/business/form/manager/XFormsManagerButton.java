@@ -1,9 +1,11 @@
 package com.idega.documentmanager.business.form.manager;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.business.form.ConstButtonType;
+import com.idega.documentmanager.business.form.beans.FormComponentFactory;
 import com.idega.documentmanager.business.form.beans.IFormComponentButtonArea;
 import com.idega.documentmanager.business.form.beans.IFormComponentPage;
 import com.idega.documentmanager.business.form.beans.XFormsComponentButtonDataBean;
@@ -28,7 +30,6 @@ public class XFormsManagerButton extends XFormsManager {
 
 		loadToggleElement();
 	}
-	
 	
 	protected void loadToggleElement() {
 		
@@ -60,19 +61,11 @@ public class XFormsManagerButton extends XFormsManager {
 		
 		if(component.getType().equals(ConstButtonType.previous_page_button)) {
 			
-			if(previous == null) {
-				((XFormsComponentButtonDataBean)this.xforms_component).setToggleElement(null);
-				toggle_element.getParentNode().removeChild(toggle_element);
-			} else 
-				toggle_element.setAttribute(FormManagerUtil.case_att, previous.getId());
+			renewNextPrevButtons(prev_button, previous, toggle_element);
 			
 		} else if(component.getType().equals(ConstButtonType.next_page_button)) {
 			
-			if(next == null) {
-				((XFormsComponentButtonDataBean)this.xforms_component).setToggleElement(null);
-				toggle_element.getParentNode().removeChild(toggle_element);
-			} else 
-				toggle_element.setAttribute(FormManagerUtil.case_att, next.getId());
+			renewNextPrevButtons(next_button, next, toggle_element);
 			
 		} else if(component.getType().equals(ConstButtonType.submit_form_button)) {
 
@@ -84,6 +77,74 @@ public class XFormsManagerButton extends XFormsManager {
 			toggle_element.setAttribute(FormManagerUtil.case_att, form_document.getThxPage().getId());
 		}
 	}
+	
+	private static final int next_button = 1;
+	private static final int prev_button = 2;
+	
+	protected void renewNextPrevButtons(int button_type, IFormComponentPage relevant_page, Element toggle_element) {
+
+		if(relevant_page == null) {
+			
+			((XFormsComponentButtonDataBean)this.xforms_component).setToggleElement(null);
+			toggle_element.getParentNode().removeChild(toggle_element);
+			removeSetValues();
+			
+		} else {
+			toggle_element.setAttribute(FormManagerUtil.case_att, relevant_page.getId());
+			
+			if(form_document.getProperties().isStepsVisualizationUsed()) {
+
+				if(FormComponentFactory.page_type_thx.equals(relevant_page.getType())) {
+					removeSetValues();
+				} else {
+					
+					Element setval = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+					
+					if(setval == null) {
+						
+						setval = createSetValue(true);
+						setval = (Element)toggle_element.getParentNode().insertBefore(setval, toggle_element);
+					}
+					setval.setAttribute(FormManagerUtil.ref_s_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/section[id='"+component_parent.getParentPage().getId()+"']/@selected");
+					
+					setval = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+					
+					if(setval == null) {
+						
+						setval = createSetValue(false);
+						setval = (Element)toggle_element.getParentNode().insertBefore(setval, toggle_element);
+					}
+					
+					setval.setAttribute(FormManagerUtil.ref_s_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/section[id='"+relevant_page.getId()+"']/@selected");
+				}
+			} else
+				removeSetValues();
+		}
+	}
+	
+	private void removeSetValues() {
+		
+		Element setval = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+		
+		if(setval != null)
+			setval.getParentNode().removeChild(setval);
+		
+		setval = FormManagerUtil.getElementByIdFromDocument(form_document.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+		
+		if(setval != null)
+			setval.getParentNode().removeChild(setval);
+	}
+	
+	private Element createSetValue(boolean current) {
+
+		Document xforms_doc = form_document.getXformsDocument();
+		Element set_value = xforms_doc.createElement(FormManagerUtil.setvalue_tag);
+		set_value.setAttribute("ev:event", FormManagerUtil.DOMActivate_att_val);
+		set_value.setAttribute(FormManagerUtil.value_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/class_exp[@for='"+(current ? "false" : "true")+"']/@for");
+		set_value.setAttribute(FormManagerUtil.id_att, component.getId()+(current ? FormManagerUtil.set_section_vis_cur : FormManagerUtil.set_section_vis_rel));
+		return set_value;
+	}
+	
 	@Override
 	public void addComponentToDocument() {
 		super.addComponentToDocument();

@@ -31,9 +31,9 @@ import com.idega.documentmanager.business.form.beans.LocalizedStringBean;
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version 1.0
  *
- * FormManager helper class
+ * <p>FormManager helper class</p>
  *
- * Tightly coupled with FormManager class
+ * <p>TODO: where possible, use XPath from JAXP</p>
  * 
  */
 public class FormManagerUtil {
@@ -102,10 +102,21 @@ public class FormManagerUtil {
 	public static final String value_att = "value";
 	public static final String autofill_key_prefix = "fb-afk-";
 	public static final String refresh_tag = "xf:refresh";
+	public static final String sections_visualization_id = "sections_visualization";
+	public static final String sections_visualization_instance_id = "sections_visualization_instance";
+	public static final String section_item = "section_item";
+	public static final String sections_visualization_instance_item = "sections_visualization_instance_item";
+	public static final String sections_visualization_item = "sections_visualization_item";
+	public static final String set_section_vis_cur = "_set_section_vis_cur";
+	public static final String set_section_vis_rel = "_set_section_vis_rel";
+	public static final String event_att = "ev:event";
+	public static final String DOMActivate_att_val = "DOMActivate";
+	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
 	private static final String utf_8_encoding = "UTF-8";
+	
 	private static OutputFormat output_format;
 	
 	private FormManagerUtil() { }

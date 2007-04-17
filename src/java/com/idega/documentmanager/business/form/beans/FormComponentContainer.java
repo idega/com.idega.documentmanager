@@ -207,4 +207,14 @@ public class FormComponentContainer extends FormComponent implements IFormCompon
 		
 		super.remove();
 	}
+	
+	public IFormComponentPage getParentPage() {
+		
+		IFormComponentContainer parent = getXFormsManager().getComponentParent();
+		
+		if(parent instanceof IFormComponentPage)
+			return (IFormComponentPage)parent;
+		
+		return null;
+	}
 }

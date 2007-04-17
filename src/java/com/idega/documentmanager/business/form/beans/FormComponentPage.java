@@ -5,6 +5,7 @@ import com.idega.documentmanager.business.form.Page;
 import com.idega.documentmanager.business.form.PropertiesPage;
 import com.idega.documentmanager.business.form.manager.CacheManager;
 import com.idega.documentmanager.business.form.manager.IXFormsManager;
+import com.idega.documentmanager.business.form.manager.XFormsManagerDocument;
 import com.idega.documentmanager.business.form.manager.XFormsManagerPage;
 
 /**
@@ -77,6 +78,7 @@ public class FormComponentPage extends FormComponentContainer implements Page, I
 		previous_page = previous;
 	}
 	public void pagesSiblingsChanged() {
+		((XFormsManagerPage)getXFormsManager()).pageContextChanged();
 		IFormComponentButtonArea button_area = (IFormComponentButtonArea)getButtonArea();
 		if(button_area == null)
 			return;

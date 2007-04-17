@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.business.form.Component;
 import com.idega.documentmanager.business.form.Page;
 import com.idega.documentmanager.business.form.PageThankYou;
+import com.idega.documentmanager.business.form.PropertiesDocument;
 import com.idega.documentmanager.business.form.manager.CacheManager;
 import com.idega.documentmanager.business.form.manager.IXFormsManager;
 import com.idega.documentmanager.business.form.manager.XFormsManagerDocument;
@@ -25,6 +26,7 @@ public class FormComponentDocument extends FormComponentContainer implements com
 	protected IFormDocument document;
 	protected String confirmation_page_id;
 	protected String thx_page_id;
+	protected PropertiesDocument properties;
 	
 	protected List<String> registered_for_last_page_id_pages;
 	
@@ -122,7 +124,7 @@ public class FormComponentDocument extends FormComponentContainer implements com
 		document.setFormTitle(form_name);
 	}
 	
-	public void rearrangeDocument() throws Exception {
+	public void rearrangeDocument() {
 		rearrangeComponents();
 	}
 	@Override
@@ -207,6 +209,17 @@ public class FormComponentDocument extends FormComponentContainer implements com
 		componentsOrderChanged();
 	}
 	
+	@Override
+	protected void setProperties() {
+		
+		ComponentPropertiesDocument properties = (ComponentPropertiesDocument)getProperties();
+		
+		if(properties == null)
+			return;
+		
+		properties.setPlainStepsVisualizationUsed(((XFormsManagerDocument)getXFormsManager()).getIsStepsVisualizationUsed());
+	}
+	
 	public void save() throws Exception {
 		document.persist();
 	}
@@ -272,5 +285,32 @@ public class FormComponentDocument extends FormComponentContainer implements com
 		
 		super.unregisterComponent(component_id);
 		getRegisteredForLastPageIdPages().remove(component_id);
+	}
+	
+	@Override
+	public PropertiesDocument getProperties() {
+		
+		if(properties == null) {
+			ComponentPropertiesDocument properties = new ComponentPropertiesDocument();
+			properties.setParentComponent(this);
+			this.properties = properties;
+		}
+		
+		return properties;
+	}
+	
+	public Element getSectionsVisualizationInstanceElement() {
+	
+		return ((XFormsManagerDocument)getXFormsManager()).getSectionsVisualizationInstanceElement();
+	}
+	
+	@Override
+	public void update(ConstUpdateType what) {
+		
+		getXFormsManager().update(what);
+		
+		if(what.getUpdateType() == ConstUpdateType.steps_visualization_used) {
+			rearrangeComponents();
+		}
 	}
 }
