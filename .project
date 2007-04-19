@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>com.idega.documentmanager</name>
-	<comment>idegaWeb Form block is a component for management of XForms-based forms</comment>
+	<comment>idegaWeb Document Manager is responsible for managing xforms document</comment>
 	<projects>
-		<project>com.idega.content</project>
 		<project>com.idega.core</project>
-		<project>com.idega.dwr</project>
+		<project>org.chiba.web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
