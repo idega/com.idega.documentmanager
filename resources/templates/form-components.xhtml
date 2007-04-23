@@ -117,12 +117,12 @@
             	</xf:instance>
     	    </item>
     	    <item id="sections_visualization_item">
-				<xf:repeat id="sections_visualization" nodeset="instance('sections')/section" appearance="minimal" model="data_model">
+				<xf:repeat id="sections_visualization" nodeset="instance('sections_visualization_instance')/section" appearance="minimal" model="data_model">
 					<xf:output mediatype="text/html" 
 					value="concat(
 						'&lt;div ',
 						'class=&quot;',
-						instance('sections')/class_exp[@for=current()/@selected],
+						instance('sections_visualization_instance')/class_exp[@for=current()/@selected],
 						'&quot;',
 						'&gt;', 
 						./seq_index,
