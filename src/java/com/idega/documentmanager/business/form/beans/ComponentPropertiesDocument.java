@@ -15,6 +15,8 @@ public class ComponentPropertiesDocument extends ComponentProperties implements 
 		return steps_visualization_used;
 	}
 	public void setStepsVisualizationUsed(boolean steps_visualization_used) {
+		if(true)
+			return;
 		this.steps_visualization_used = steps_visualization_used;
 		parent_component.update(new ConstUpdateType(ConstUpdateType.steps_visualization_used));
 	}
