@@ -12,6 +12,7 @@
 			<text /> 
 			<email /> 
 			<textarea />
+			<rich_textarea />
 			<secret />
 			<multiple_select_minimal />
 			<single_select_minimal />
@@ -19,10 +20,26 @@
 			<single_select /> 
 			<upload_file><attachment filename="" content-type="" /></upload_file> 
 			<page /> 
+			<multi_upload>
+            	<file filename="" mediatype="" />
+                <file filename="" mediatype="" />
+                <file filename="" mediatype="" />
+            </multi_upload>
 		</data>
 	</xf:instance>
+	<xf:instance id="control-instance">
+    	<control xmlns="">
+        	<simple-upload-trigger/>
+            <add-upload-trigger/>
+            <remove-upload-trigger/>
+        </control>
+    </xf:instance>
+    <xf:instance id="file-template">
+    	<file xmlns="" filename="" mediatype="" />
+    </xf:instance>
 	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
+	<xf:bind id="rich_textarea" nodeset="rich_textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
 	<xf:bind id="multiple_select_minimal" nodeset="multiple_select_minimal"
 		type="string" />
@@ -35,6 +52,9 @@
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
+	<xf:bind id="multi_upload" nodeset="multi_upload">
+		<xf:bind nodeset="file" type="xs:anyURI"/>
+	</xf:bind>
 
 </xf:model>
 <xf:model id="data_model">
@@ -55,11 +75,15 @@
 			lang="en">Password input</lockey_secret.title> <lockey_secret.title
 			lang="is">Password input</lockey_secret.title> <lockey_textarea.title
 			lang="en">Paragraph text input</lockey_textarea.title> <lockey_textarea.title
-			lang="is">Paragraph text input</lockey_textarea.title> <lockey_input.title
+			lang="is">Paragraph text input</lockey_textarea.title> <lockey_rich_textarea.title
+			lang="en">Rich text input</lockey_rich_textarea.title> <lockey_rich_textarea.title
+			lang="is">Rich text input</lockey_rich_textarea.title> <lockey_input.title
 			lang="en">Simple text input</lockey_input.title> <lockey_input.title
 			lang="is">Simple text input</lockey_input.title> <lockey_upload_file.title
 			lang="en">File upload</lockey_upload_file.title> <lockey_upload_file.title
-			lang="is">File upload</lockey_upload_file.title> 
+			lang="is">File upload</lockey_upload_file.title> <lockey_multi_upload_file.title
+			lang="en">Multi upload</lockey_multi_upload_file.title> <lockey_multi_upload_file.title
+			lang="is">Multi upload</lockey_multi_upload_file.title> 
 			<lockey_page.label lang="en">Section</lockey_page.label>
 			<lockey_confirmation_page.label lang="en">Confirmation Section</lockey_confirmation_page.label>
 			<lockey_button_next.label lang="en">Next</lockey_button_next.label>
@@ -190,6 +214,7 @@
 		<category name="basic">
 			<component component_id="fbcomp_text" />
 			<component component_id="fbcomp_textarea" />
+			<component component_id="fbcomp_rich_textarea" />
 			<component component_id="fbcomp_secret" />
 			<component component_id="fbcomp_multiple_select_minimal" />
 			<component component_id="fbcomp_single_select_minimal" />
@@ -197,6 +222,7 @@
 			<component component_id="fbcomp_single_select" />
 			<component component_id="fbcomp_email" />
 			<component component_id="fbcomp_upload_file" />
+			<component component_id="fbcomp_multi_upload_file" />
 		</category>
 		<category name="buttons">
 			<component component_id="fbcomp_button_next" />
@@ -219,6 +245,41 @@
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
+		<xf:group appearance="full" id="fbcomp_multi_upload_file" bind="multi_upload">
+			<tr>
+                <td/>
+                <td>
+                    <xf:group ref="instance('control-instance')/add-upload-trigger">
+                        <xf:trigger appearance="minimal">
+                            <xf:label><img src="../apps/xforms-upload/images/add.gif"/></xf:label>
+                            <xf:insert ev:event="DOMActivate" nodeset="instance('components_instance')/attachment" at="last()" position="after" origin="instance('file-template')"/>
+                        </xf:trigger>
+                    </xf:group>
+                </td>
+                <td>
+                    <xf:group ref="instance('control-instance')/add-upload-trigger">
+                        <xf:trigger appearance="minimal">
+                            <xf:label>Add One</xf:label>
+                            <xf:insert ev:event="DOMActivate" nodeset="instance('files-instance')/attachment" at="last()" position="after" origin="instance('file-template')"/>
+                        </xf:trigger>
+                    </xf:group>
+                </td>
+            </tr>
+			<xf:output ref="instance('localized_strings')/lockey_multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			<xf:repeat nodeset="file" appearance="full">
+	        	<tr>
+	            	<td>    
+	                    <xf:output value="count(preceding-sibling::file) + 1"/>
+	                </td>
+	                <td>
+	                    <xf:upload ref=".">
+							<xf:filename ref="@filename"/>
+	                		<xf:mediatype ref="@mediatype"/>
+						</xf:upload>
+	                </td>
+	            </tr>
+	        </xf:repeat>
+        </xf:group>
 		<xf:input bind="text" id="fbcomp_text">
 			<xf:label
 				ref="instance('localized_strings')/lockey_input.title[@lang=instance('localized_strings')/current_language]"
@@ -227,6 +288,11 @@
 		<xf:textarea bind="textarea" id="fbcomp_textarea">
 			<xf:label
 				ref="instance('localized_strings')/lockey_textarea.title[@lang=instance('localized_strings')/current_language]"
+				model="data_model" />
+		</xf:textarea>
+		<xf:textarea bind="rich_textarea" mediatype="text/html" id="fbcomp_rich_textarea">
+			<xf:label
+				ref="instance('localized_strings')/lockey_rich_textarea.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:textarea>
 		<xf:secret bind="secret" id="fbcomp_secret">
