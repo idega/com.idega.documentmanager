@@ -149,6 +149,11 @@ public class LocalizedItemsetBean implements ILocalizedItemset {
 					String label = item.getLabel();
 					String value = item.getValue();
 					
+					if(value.contains(" ")) {
+						value.replaceAll(" ", "");
+						item.setValue(value);
+					}
+					
 					if(label != null) {
 						Element label_element = DOMUtil.getChildElement(item_element, FormManagerUtil.item_label_tag);
 						DOMUtil.setElementValue(label_element, label);
