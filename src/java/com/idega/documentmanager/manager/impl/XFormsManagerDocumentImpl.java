@@ -6,7 +6,7 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormDocument;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerDocument;
@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:30 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
@@ -28,7 +28,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		FormComponent component = context.getComponent();
 		
-		XFormsComponentDataBean xformsComponentDataBean = newXFormsComponentDataBeanInstance();
+		ComponentDataBean xformsComponentDataBean = newXFormsComponentDataBeanInstance();
 		component.setXformsComponentDataBean(xformsComponentDataBean);
 		
 		xformsComponentDataBean.setElement(element);

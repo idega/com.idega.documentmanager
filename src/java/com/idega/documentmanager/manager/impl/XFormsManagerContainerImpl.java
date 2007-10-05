@@ -7,22 +7,22 @@ import java.util.List;
 import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Element;
 
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerContainer;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class XFormsManagerContainerImpl extends XFormsManagerImpl implements XFormsManagerContainer {
 	
 	public List<String[]> getContainedComponentsTagNamesAndIds(DMContext context) {
 
-		XFormsComponentDataBean xformsComponentDataBean = context.getComponent().getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = context.getComponent().getXformsComponentDataBean();
 		
 		if(xformsComponentDataBean.getElement() == null)
 			throw new NullPointerException("Document container element not set");

@@ -6,7 +6,7 @@ import org.w3c.dom.NodeList;
 import com.idega.documentmanager.business.component.properties.PropertiesThankYouPage;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerThankYouPage;
@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl implements XFormsManagerThankYouPage {
 
@@ -42,7 +42,7 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 	protected void updateThankYouText(DMContext context) {
 		
 		FormComponent component = context.getComponent();
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		PropertiesThankYouPage props = (PropertiesThankYouPage)component.getProperties();
 		LocalizedStringBean loc_str = props.getText();
@@ -64,7 +64,7 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 	public LocalizedStringBean getThankYouText(DMContext context) {
 		
 		FormComponent component = context.getComponent();
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		NodeList outputs = xformsComponentDataBean.getElement().getElementsByTagName(FormManagerUtil.output_tag);
 		

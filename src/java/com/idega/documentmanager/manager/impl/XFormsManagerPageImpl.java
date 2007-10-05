@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.FormDocument;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.impl.FormComponentFactory;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerPage;
@@ -15,9 +15,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements XFormsManagerPage {
 
@@ -29,7 +29,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		super.loadXFormsComponentFromDocument(component.getContext(), component_id);
 		checkForSpecialTypes(component.getContext());
 		
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		Element case_element = xformsComponentDataBean.getElement();
 		xformsComponentDataBean.setElement((Element)case_element.getElementsByTagName(FormManagerUtil.group_tag).item(0));
@@ -42,7 +42,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		
 		super.addComponentToDocument(component.getContext());
 		
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		Element group_element = xformsComponentDataBean.getElement();
 		
@@ -66,7 +66,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 	protected void checkForSpecialTypes(DMContext context) {
 		
 		FormComponent component = context.getComponent();
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		String component_name = xformsComponentDataBean.getElement().getAttribute(FormManagerUtil.name_att);
 		if(component_name != null && 
@@ -84,7 +84,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		removeComponentBindings(component.getContext());
 		removeSectionVisualization(component.getContext());
 		
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		Element element_to_remove = xformsComponentDataBean.getElement();
 		element_to_remove.getParentNode().getParentNode().removeChild(element_to_remove.getParentNode());
@@ -108,7 +108,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		if(component.getParent() == null)
 			throw new NullPointerException("Parent form document not provided");
 		
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		Document xforms_doc = component.getFormDocument().getXformsDocument();
 		

@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
  * @version 1.0
  * 
  */
-public class XFormsComponentButtonDataBean extends XFormsComponentDataBean {
+public class ComponentButtonDataBean extends ComponentDataBean {
 
 	private Element toggle_element;
 
@@ -21,14 +21,14 @@ public class XFormsComponentButtonDataBean extends XFormsComponentDataBean {
 	@Override
 	public Object clone() {
 		
-		XFormsComponentButtonDataBean clone = (XFormsComponentButtonDataBean)super.clone();
+		ComponentButtonDataBean clone = (ComponentButtonDataBean)super.clone();
 		
 		try {
-			clone = (XFormsComponentButtonDataBean)super.clone();
+			clone = (ComponentButtonDataBean)super.clone();
 			
 		} catch (Exception e) {
 			
-			clone = new XFormsComponentButtonDataBean();
+			clone = new ComponentButtonDataBean();
 		}
 		
 		if(toggle_element != null)
@@ -38,8 +38,8 @@ public class XFormsComponentButtonDataBean extends XFormsComponentDataBean {
 	}
 	
 	@Override
-	protected XFormsComponentDataBean getDataBeanInstance() {
+	protected ComponentDataBean getDataBeanInstance() {
 		
-		return new XFormsComponentButtonDataBean();
+		return new ComponentButtonDataBean();
 	}
 }

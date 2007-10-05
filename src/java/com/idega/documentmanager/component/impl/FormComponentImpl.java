@@ -13,20 +13,19 @@ import com.idega.documentmanager.component.FormComponentContainer;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ComponentProperties;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.HtmlManager;
 import com.idega.documentmanager.manager.XFormsManager;
-import com.idega.documentmanager.manager.impl.HtmlManagerImpl;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -44,7 +43,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	protected HtmlManager html_manager;
 	private FormDocument formDocument;
 	
-	private XFormsComponentDataBean xformsComponentDataBean;
+	private ComponentDataBean xformsComponentDataBean;
 	
 	private DMContext context;
 	
@@ -208,7 +207,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public Element getHtmlRepresentation(Locale locale) throws Exception {
 		
-		return getHtmlManager().getHtmlRepresentation(locale);
+		return getHtmlManager().getHtmlRepresentation(getContext(), locale);
 	}
 	
 	public PropertiesComponent getProperties() {
@@ -229,15 +228,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	protected HtmlManager getHtmlManager() {
 		
-		if(html_manager == null) {
-			
-			html_manager = new HtmlManagerImpl();
-			html_manager.setCacheManager(getContext().getCacheManager());
-			html_manager.setFormComponent(this);
-			html_manager.setFormDocument(getFormDocument());
-		}
-		
-		return html_manager;
+		return getContext().getHtmlManagerFactory().getHtmlManager();
 	}
 	
 	public String getType() {
@@ -283,18 +274,18 @@ public class FormComponentImpl implements FormComponent, Component {
 		
 		switch (update) {
 		case ConstUpdateType.label:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			formDocument.setFormDocumentModified(true);
 			changeBindNames();
 			break;
 			
 		case ConstUpdateType.error_msg:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			formDocument.setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.help_text:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			formDocument.setFormDocumentModified(true);
 			break;
 			
@@ -330,12 +321,12 @@ public class FormComponentImpl implements FormComponent, Component {
 		return getHtmlManager().getDefaultHtmlRepresentationByType(component_type);
 	}
 
-	public XFormsComponentDataBean getXformsComponentDataBean() {
+	public ComponentDataBean getXformsComponentDataBean() {
 		return xformsComponentDataBean;
 	}
 
 	public void setXformsComponentDataBean(
-			XFormsComponentDataBean xformsComponentDataBean) {
+			ComponentDataBean xformsComponentDataBean) {
 		this.xformsComponentDataBean = xformsComponentDataBean;
 	}
 }

@@ -9,8 +9,8 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.business.component.properties.PropertiesSelect;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedItemsetBean;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
-import com.idega.documentmanager.component.beans.XFormsComponentSelectDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentSelectDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerSelect;
@@ -18,9 +18,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XFormsManagerSelect {
 
@@ -33,10 +33,10 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		cacheManager.checkForComponentType(componentType);
 		
-		XFormsComponentSelectDataBean xformsComponentDataBean = (XFormsComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
+		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
 
 		if(xformsComponentDataBean != null) {
-			xformsComponentDataBean = (XFormsComponentSelectDataBean)xformsComponentDataBean.clone();
+			xformsComponentDataBean = (ComponentSelectDataBean)xformsComponentDataBean.clone();
 			component.setXformsComponentDataBean(xformsComponentDataBean);
 			return;
 		}
@@ -53,22 +53,22 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		synchronized (XFormsManagerSelectImpl.class) {
 			
-			xformsComponentDataBean = (XFormsComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
+			xformsComponentDataBean = (ComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
 
 			if(xformsComponentDataBean != null) {
-				xformsComponentDataBean = (XFormsComponentSelectDataBean)xformsComponentDataBean.clone();
+				xformsComponentDataBean = (ComponentSelectDataBean)xformsComponentDataBean.clone();
 				component.setXformsComponentDataBean(xformsComponentDataBean);
 				return;
 			}
 			
 			loadXFormsComponent(component.getContext(), componentsXFormsXml, componentXFormsElement);
-			cacheManager.cacheXformsComponent(componentType, (XFormsComponentSelectDataBean)component.getXformsComponentDataBean().clone());
+			cacheManager.cacheXformsComponent(componentType, (ComponentSelectDataBean)component.getXformsComponentDataBean().clone());
 		}
 	}
 	
 	@Override
-	protected XFormsComponentDataBean newXFormsComponentDataBeanInstance() {
-		return new XFormsComponentSelectDataBean();
+	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
+		return new ComponentSelectDataBean();
 	}
 	
 	private static final String local_data_source = "_lds";
@@ -80,7 +80,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		super.loadXFormsComponent(component.getContext(), components_xforms, xforms_element);
 		
-		XFormsComponentSelectDataBean xformsComponentDataBean = (XFormsComponentSelectDataBean)component.getXformsComponentDataBean();
+		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)component.getXformsComponentDataBean();
 		
 		Element component_element = xformsComponentDataBean.getElement();
 		String component_element_id = component_element.getAttribute(FormManagerUtil.id_att);
@@ -109,7 +109,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		Document xforms_doc = component.getFormDocument().getXformsDocument();
 		
-		XFormsComponentSelectDataBean xformsComponentDataBean = (XFormsComponentSelectDataBean)component.getXformsComponentDataBean();
+		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)component.getXformsComponentDataBean();
 		
 		Element new_xforms_element = xformsComponentDataBean.getLocalItemsetInstance();
 		
@@ -143,7 +143,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	
 	public Integer getDataSrcUsed(DMContext context) {
 		
-		XFormsComponentDataBean xformsComponentDataBean = context.getComponent().getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = context.getComponent().getXformsComponentDataBean();
 		
 		Element component_element = xformsComponentDataBean.getElement();
 		
@@ -169,7 +169,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	
 	public String getExternalDataSrc(DMContext context) {
 		
-		Element external_instance = ((XFormsComponentSelectDataBean)context.getComponent().getXformsComponentDataBean()).getExternalItemsetInstance();
+		Element external_instance = ((ComponentSelectDataBean)context.getComponent().getXformsComponentDataBean()).getExternalItemsetInstance();
 		
 		if(external_instance == null)
 			return null;
@@ -181,7 +181,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 
 		FormComponent component = context.getComponent();
 		
-		Element local_instance = ((XFormsComponentSelectDataBean)component.getXformsComponentDataBean()).getLocalItemsetInstance();
+		Element local_instance = ((ComponentSelectDataBean)component.getXformsComponentDataBean()).getLocalItemsetInstance();
 		
 		if(local_instance == null)
 			return null;
@@ -220,7 +220,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	protected void updateDataSrcUsed(DMContext context) {
 		
 		FormComponent component = context.getComponent();
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		PropertiesSelect properties = (PropertiesSelect)component.getProperties();
 		Integer data_src_used = properties.getDataSrcUsed();
@@ -290,9 +290,9 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	protected void updateExternalDataSrc(DMContext context) {
 		
 		FormComponent component = context.getComponent();
-		XFormsComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
-		Element external_instance = ((XFormsComponentSelectDataBean)xformsComponentDataBean).getExternalItemsetInstance();
+		Element external_instance = ((ComponentSelectDataBean)xformsComponentDataBean).getExternalItemsetInstance();
 		
 		if(external_instance == null)
 			return;
@@ -307,7 +307,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	
 	public void removeSelectComponentSourcesFromXFormsDocument(DMContext context) {
 		
-		XFormsComponentSelectDataBean xforms_component = (XFormsComponentSelectDataBean)context.getComponent().getXformsComponentDataBean();
+		ComponentSelectDataBean xforms_component = (ComponentSelectDataBean)context.getComponent().getXformsComponentDataBean();
 		Element data_src_element = xforms_component.getExternalItemsetInstance();
 		
 		if(data_src_element != null)

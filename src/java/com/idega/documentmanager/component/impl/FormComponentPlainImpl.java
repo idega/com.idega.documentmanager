@@ -12,9 +12,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -56,7 +56,7 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 		
 		switch (update) {
 		case ConstUpdateType.text:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			break;
 			
 		case ConstUpdateType.autofill_key:

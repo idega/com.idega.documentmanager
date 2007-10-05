@@ -15,15 +15,16 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.form.impl.Form;
 import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
+import com.idega.documentmanager.manager.HtmlManagerFactory;
 import com.idega.documentmanager.manager.XFormsManagerFactory;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class FormManager implements DocumentManager {
 	
@@ -35,6 +36,7 @@ public class FormManager implements DocumentManager {
 	private TransformerService transformerService;
 	private CacheManager cacheManager;
 	private XFormsManagerFactory xformsManagerFactory;
+	private HtmlManagerFactory htmlManagerFactory;
 	
 	private Document componentsXforms;
 	private Document componentsXsd;
@@ -53,6 +55,7 @@ public class FormManager implements DocumentManager {
 		context.setCacheManager(getCacheManager());
 		context.setPersistenceManager(getPersistenceManager());
 		context.setXformsManagerFactory(getXformsManagerFactory());
+		context.setHtmlManagerFactory(getHtmlManagerFactory());
 		return context;
 	}
 	
@@ -171,5 +174,13 @@ public class FormManager implements DocumentManager {
 
 	public void setXformsManagerFactory(XFormsManagerFactory xformsManagerFactory) {
 		this.xformsManagerFactory = xformsManagerFactory;
+	}
+
+	public HtmlManagerFactory getHtmlManagerFactory() {
+		return htmlManagerFactory;
+	}
+
+	public void setHtmlManagerFactory(HtmlManagerFactory htmlManagerFactory) {
+		this.htmlManagerFactory = htmlManagerFactory;
 	}
 }

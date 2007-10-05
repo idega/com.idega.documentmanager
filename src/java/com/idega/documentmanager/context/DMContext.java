@@ -1,19 +1,18 @@
 package com.idega.documentmanager.context;
 
-import java.util.Stack;
-
 import org.w3c.dom.Document;
 
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.component.FormComponent;
+import com.idega.documentmanager.manager.HtmlManagerFactory;
 import com.idega.documentmanager.manager.XFormsManagerFactory;
 import com.idega.documentmanager.manager.impl.CacheManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class DMContext {
 
@@ -21,8 +20,8 @@ public class DMContext {
 	private PersistenceManager persistenceManager;
 	private Document xformsXmlDoc;
 	private FormComponent component;
-	private Stack<FormComponent> contextRelevantState;
 	private XFormsManagerFactory xformsManagerFactory;
+	private HtmlManagerFactory htmlManagerFactory;
 	
 	public XFormsManagerFactory getXformsManagerFactory() {
 		return xformsManagerFactory;
@@ -32,14 +31,6 @@ public class DMContext {
 		this.xformsManagerFactory = xformsManagerFactory;
 	}
 
-	public DMContext() {
-		contextRelevantState = new Stack<FormComponent>();
-	}
-	
-	protected Stack<FormComponent> getContextRelevantState() {
-		return contextRelevantState;
-	}
-	
 	public FormComponent getComponent() {
 		return component;
 	}
@@ -64,10 +55,11 @@ public class DMContext {
 	public void setXformsXmlDoc(Document xformsXmlDoc) {
 		this.xformsXmlDoc = xformsXmlDoc;
 	}
-	public void saveState() {
-		contextRelevantState.push(getComponent());
+	public HtmlManagerFactory getHtmlManagerFactory() {
+		return htmlManagerFactory;
 	}
-	public void restoreState() {
-		setComponent(contextRelevantState.pop());
+
+	public void setHtmlManagerFactory(HtmlManagerFactory htmlManagerFactory) {
+		this.htmlManagerFactory = htmlManagerFactory;
 	}
 }

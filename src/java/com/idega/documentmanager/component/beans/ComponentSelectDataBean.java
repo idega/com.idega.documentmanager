@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
  * @version 1.0
  * 
  */
-public class XFormsComponentSelectDataBean extends XFormsComponentDataBean {
+public class ComponentSelectDataBean extends ComponentDataBean {
 	
 	private Element local_itemset_instance;
 	private Element external_itemset_instance;
@@ -15,14 +15,14 @@ public class XFormsComponentSelectDataBean extends XFormsComponentDataBean {
 	@Override
 	public Object clone() {
 		
-		XFormsComponentSelectDataBean clone = (XFormsComponentSelectDataBean)super.clone();
+		ComponentSelectDataBean clone = (ComponentSelectDataBean)super.clone();
 		
 		try {
-			clone = (XFormsComponentSelectDataBean)super.clone();
+			clone = (ComponentSelectDataBean)super.clone();
 			
 		} catch (Exception e) {
 			
-			clone = new XFormsComponentSelectDataBean();
+			clone = new ComponentSelectDataBean();
 		}
 		
 		if(local_itemset_instance != null)
@@ -35,9 +35,9 @@ public class XFormsComponentSelectDataBean extends XFormsComponentDataBean {
 	}
 	
 	@Override
-	protected XFormsComponentDataBean getDataBeanInstance() {
+	protected ComponentDataBean getDataBeanInstance() {
 		
-		return new XFormsComponentSelectDataBean();
+		return new ComponentSelectDataBean();
 	}
 
 	public Element getExternalItemsetInstance() {

@@ -1,7 +1,7 @@
 package com.idega.documentmanager.component;
 
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 
@@ -45,9 +45,9 @@ public interface FormComponent {
 	
 	public abstract void update(ConstUpdateType what);
 	
-	public abstract XFormsComponentDataBean getXformsComponentDataBean();
+	public abstract ComponentDataBean getXformsComponentDataBean();
 
-	public abstract void setXformsComponentDataBean(XFormsComponentDataBean xformsComponentDataBean);
+	public abstract void setXformsComponentDataBean(ComponentDataBean xformsComponentDataBean);
 	
 	public abstract FormDocument getFormDocument();
 	

@@ -4,15 +4,14 @@ import com.idega.documentmanager.business.component.Button;
 import com.idega.documentmanager.component.FormComponentButton;
 import com.idega.documentmanager.component.FormComponentButtonArea;
 import com.idega.documentmanager.component.FormComponentPage;
-import com.idega.documentmanager.manager.HtmlManager;
+import com.idega.documentmanager.manager.HtmlManagerButton;
 import com.idega.documentmanager.manager.XFormsManagerButton;
-import com.idega.documentmanager.manager.impl.HtmlManagerButtonImpl;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -40,16 +39,8 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 	}
 	
 	@Override
-	protected HtmlManager getHtmlManager() {
+	protected HtmlManagerButton getHtmlManager() {
 		
-		if(html_manager == null) {
-			
-			html_manager = new HtmlManagerButtonImpl();
-			html_manager.setCacheManager(getContext().getCacheManager());
-			html_manager.setFormComponent(this);
-			html_manager.setFormDocument(getFormDocument());
-		}
-		
-		return html_manager;
+		return getContext().getHtmlManagerFactory().getHtmlManagerButton();
 	}
 }

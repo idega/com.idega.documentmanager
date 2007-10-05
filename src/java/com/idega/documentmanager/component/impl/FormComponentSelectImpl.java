@@ -8,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerSelect;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class FormComponentSelectImpl extends FormComponentImpl implements ComponentSelect {
 	
@@ -53,17 +53,17 @@ public class FormComponentSelectImpl extends FormComponentImpl implements Compon
 		
 		switch (update) {
 		case ConstUpdateType.data_src_used:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			getFormDocument().setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.itemset:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			getFormDocument().setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.external_data_src:
-			getHtmlManager().clearHtmlComponents();
+			getHtmlManager().clearHtmlComponents(getContext());
 			getFormDocument().setFormDocumentModified(true);
 			break;
 

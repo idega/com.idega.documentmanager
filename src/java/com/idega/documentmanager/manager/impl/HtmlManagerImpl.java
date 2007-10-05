@@ -1,6 +1,5 @@
 package com.idega.documentmanager.manager.impl;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -11,6 +10,8 @@ import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormDocument;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
+import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
 import com.idega.documentmanager.manager.HtmlManager;
@@ -18,52 +19,39 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
-	protected Element unlocalized_html_component;
-	protected Map<Locale, Element> localized_html_components;
-	protected FormComponent component;
-	
-	protected CacheManager cache_manager;
-	protected FormDocument form_document;
-	
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#getHtmlRepresentation(java.util.Locale)
-	 */
-	public Element getHtmlRepresentation(Locale locale) throws Exception {
+	public Element getHtmlRepresentation(DMContext context, Locale locale) throws Exception {
 		
-		Map<Locale, Element> localized_html_components = getLocalizedHtmlComponents();
+		FormComponent component = context.getComponent();
+		ComponentDataBean componentDataBean = component.getXformsComponentDataBean();
+		
+		Map<Locale, Element> localized_html_components = componentDataBean.getLocalizedHtmlComponents();
 		Element localized_element = localized_html_components.get(locale);
-		localized_element = null;
-		unlocalized_html_component = null;
 		
 		if(localized_element != null)
 			return localized_element;
 		
-		if(unlocalized_html_component == null) {
+		if(componentDataBean.getUnlocalizedHtmlComponent() == null) {
 			
-			Element html_component = FormManagerUtil.getElementByIdFromDocument(getXFormsDocumentHtmlRepresentation(), null, component.getId());
+			Element html_component = FormManagerUtil.getElementByIdFromDocument(getXFormsDocumentHtmlRepresentation(component.getContext()), null, component.getId());
 			
-			if(html_component == null) {
-
+			if(html_component == null)
 				throw new NullPointerException("Component cannot be found in document.");
-			}
-			unlocalized_html_component = html_component;
+			
+			componentDataBean.setUnlocalizedHtmlComponent(html_component);
 		}
 		
-		localized_element = getFormHtmlComponentLocalization(locale.getLanguage());
+		localized_element = getFormHtmlComponentLocalization(component.getContext(), locale.getLanguage());
 		localized_html_components.put(locale, localized_element);
 		
 		return localized_element;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#getDefaultHtmlRepresentationByType(java.lang.String)
-	 */
 	public Element getDefaultHtmlRepresentationByType(String component_type) {
 		
 		CacheManager cm = CacheManager.getInstance();
@@ -86,21 +74,11 @@ public class HtmlManagerImpl implements HtmlManager {
 		return html_element;
 	}
 	
-	protected Map<Locale, Element> getLocalizedHtmlComponents() {
+	public void clearHtmlComponents(DMContext context) {
 		
-		if(localized_html_components == null)
-			localized_html_components = new HashMap<Locale, Element>();
-		
-		return localized_html_components;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#clearHtmlComponents()
-	 */
-	public void clearHtmlComponents() {
-		
-		getLocalizedHtmlComponents().clear();
-		unlocalized_html_component = null;
+		ComponentDataBean componentDataBean = context.getComponent().getXformsComponentDataBean();
+		componentDataBean.getLocalizedHtmlComponents().clear();
+		componentDataBean.setUnlocalizedHtmlComponent(null);
 	}
 	
 	protected Element getFormHtmlComponentLocalization(String loc_str, Document xforms_doc, Element unlocalized_element) {
@@ -153,48 +131,32 @@ public class HtmlManagerImpl implements HtmlManager {
 		return localized_component;
 	}
 	
-	protected Element getFormHtmlComponentLocalization(String loc_str) {
+	protected Element getFormHtmlComponentLocalization(DMContext context, String loc_str) {
 		
-		return getFormHtmlComponentLocalization(loc_str, form_document.getXformsDocument(), unlocalized_html_component);
+		FormComponent component = context.getComponent();
+		return getFormHtmlComponentLocalization(loc_str, component.getFormDocument().getXformsDocument(), component.getXformsComponentDataBean().getUnlocalizedHtmlComponent());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#setFormComponent(com.idega.documentmanager.component.FormComponent)
-	 */
-	public void setFormComponent(FormComponent component) {
-		this.component = component;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#setCacheManager(com.idega.documentmanager.manager.impl.CacheManager)
-	 */
-	public void setCacheManager(CacheManager cache_manager) {
-		this.cache_manager = cache_manager;
-	}
-	
-	protected Document getXFormsDocumentHtmlRepresentation() throws Exception {
+	protected Document getXFormsDocumentHtmlRepresentation(DMContext context) throws Exception {
 		
-		Document components_xml = form_document.getComponentsXml();
+		FormComponent component = context.getComponent();
+		FormDocument formDocument = component.getFormDocument();
 		
-		if(components_xml == null || form_document.isFormDocumentModified() || true) {
+		Document components_xml = formDocument.getComponentsXml();
+		
+		if(components_xml == null || formDocument.isFormDocumentModified() || true) {
 			
 			ComponentsGenerator components_generator = ComponentsGeneratorImpl.getInstance();
-			Document doc_clone = (Document)form_document.getXformsDocument().cloneNode(true);
+			Document doc_clone = (Document)formDocument.getXformsDocument().cloneNode(true);
 			FormManagerUtil.modifyXFormsDocumentForViewing(doc_clone);
 			
 			components_generator.setDocument(doc_clone);
 			components_xml = components_generator.generateHtmlComponentsDocument();
 			
-			form_document.setComponentsXml(components_xml);
-			form_document.setFormDocumentModified(false);
+			formDocument.setComponentsXml(components_xml);
+			formDocument.setFormDocumentModified(false);
 		}
 		
 		return components_xml;
-	}
-	/* (non-Javadoc)
-	 * @see com.idega.documentmanager.manager.impl.HtmlManager#setFormDocument(com.idega.documentmanager.component.FormDocument)
-	 */
-	public void setFormDocument(FormDocument form_document) {
-		this.form_document = form_document;
 	}
 }

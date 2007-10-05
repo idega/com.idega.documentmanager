@@ -10,16 +10,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.core.cache.IWCacheManager2;
-import com.idega.documentmanager.component.beans.XFormsComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.impl.FormComponentFactory;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
  */
 public class CacheManager implements Singleton {
 	
@@ -29,7 +29,7 @@ public class CacheManager implements Singleton {
 	private Document components_xml;
 	private List<String> all_components_types;
 	private List<String> components_types_to_list;
-	private Map<String, XFormsComponentDataBean> cachedXformsComponents;
+	private Map<String, ComponentDataBean> cachedXformsComponents;
 	private Map<String, List<String>> categorized_types;
 	
 	private Map<String, Element> cachedDefaultComponentLocalizations;
@@ -147,19 +147,19 @@ public class CacheManager implements Singleton {
 		IWMainApplication iwma = IWMainApplication.getIWMainApplication(ctx);
 		
 		@SuppressWarnings("unchecked")
-		Map<String, XFormsComponentDataBean> cachedXformsComponents = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
+		Map<String, ComponentDataBean> cachedXformsComponents = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
 		this.cachedXformsComponents = cachedXformsComponents;
 		@SuppressWarnings("unchecked")
 		Map<String, Element> cachedDefaultComponentLocalizations = IWCacheManager2.getInstance(iwma).getCache("cached_default_components_localizations");
 		this.cachedDefaultComponentLocalizations = cachedDefaultComponentLocalizations;
 	}
 	
-	public void cacheXformsComponent(String key, XFormsComponentDataBean xbean) {
+	public void cacheXformsComponent(String key, ComponentDataBean xbean) {
 		
 		cachedXformsComponents.put(key, xbean);			
 	}
 	
-	public XFormsComponentDataBean getCachedXformsComponent(String key) {
+	public ComponentDataBean getCachedXformsComponent(String key) {
 		
 		return cachedXformsComponents == null ? null : cachedXformsComponents.get(key);
 	}
