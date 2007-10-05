@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<bean id="xformsDocumentManagerFact" class="com.idega.documentmanager.business.DocumentManagerFactory" scope="singleton">
+		<property name="documentManager" ref="xformsDocumentManager" />
+		<property name="cacheManager" ref="dmCacheManager" />
+	</bean>
+	<bean id="xformsDocumentManager" class="com.idega.documentmanager.manager.impl.FormManager" scope="singleton">
+		<property name="persistenceManager" ref="xformsPersistenceManager" />
+		<property name="xformsManagerFactory" ref="xformsManagerFactory" />
+	</bean>
+	
+	<bean id="dmCacheManager" class="com.idega.documentmanager.manager.impl.CacheManager" scope="singleton" />
+	
+	<bean id="xformsManagerFactory" class="com.idega.documentmanager.manager.XFormsManagerFactory" scope="singleton">
+		<property name="xformsManager" ref="xformsManager" />
+		<property name="xformsManagerButton" ref="xformsManagerButton" />
+		<property name="xformsManagerContainer" ref="xformsManagerContainer" />
+		<property name="xformsManagerDocument" ref="xformsManagerDocument" />
+		<property name="xformsManagerPage" ref="xformsManagerPage" />
+		<property name="xformsManagerPlain" ref="xformsManagerPlain" />
+		<property name="xformsManagerSelect" ref="xformsManagerSelect" />
+		<property name="xformsManagerThankYouPage" ref="xformsManagerThankYouPage" />
+	</bean>
+	
+	<bean id="xformsManager" class="com.idega.documentmanager.manager.impl.XFormsManagerImpl" scope="singleton" />
+	<bean id="xformsManagerButton" class="com.idega.documentmanager.manager.impl.XFormsManagerButtonImpl" scope="singleton" />
+	<bean id="xformsManagerContainer" class="com.idega.documentmanager.manager.impl.XFormsManagerContainerImpl" scope="singleton" />
+	<bean id="xformsManagerDocument" class="com.idega.documentmanager.manager.impl.XFormsManagerDocumentImpl" scope="singleton" />
+	<bean id="xformsManagerPage" class="com.idega.documentmanager.manager.impl.XFormsManagerPageImpl" scope="singleton" />
+	<bean id="xformsManagerPlain" class="com.idega.documentmanager.manager.impl.XFormsManagerPlainImpl" scope="singleton" />
+	<bean id="xformsManagerSelect" class="com.idega.documentmanager.manager.impl.XFormsManagerSelectImpl" scope="singleton" />
+	<bean id="xformsManagerThankYouPage" class="com.idega.documentmanager.manager.impl.XFormsManagerThankYouPageImpl" scope="singleton" />
+	
+</beans>

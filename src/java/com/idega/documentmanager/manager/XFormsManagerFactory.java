@@ -1,0 +1,72 @@
+package com.idega.documentmanager.manager;
+
+/**
+ * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
+ * @version $Revision: 1.1 $
+ *
+ * Last modified: $Date: 2007/10/05 11:42:35 $ by $Author: civilis $
+ */
+public class XFormsManagerFactory {
+
+	private XFormsManager 				xformsManager;
+	private XFormsManagerButton 		xformsManagerButton;
+	private XFormsManagerContainer 		xformsManagerContainer;
+	private XFormsManagerDocument		xformsManagerDocument;
+	private XFormsManagerPage			xformsManagerPage;
+	private XFormsManagerPlain 			xformsManagerPlain;
+	private XFormsManagerSelect 		xformsManagerSelect;
+	private XFormsManagerThankYouPage 	xformsManagerThankYouPage;
+	
+	public XFormsManagerFactory() { }
+	
+	public XFormsManager getXformsManager() {
+		return xformsManager;
+	}
+	public void setXformsManager(XFormsManager xformsManager) {
+		this.xformsManager = xformsManager;
+	}
+	public XFormsManagerButton getXformsManagerButton() {
+		return xformsManagerButton;
+	}
+	public void setXformsManagerButton(XFormsManagerButton xformsManagerButton) {
+		this.xformsManagerButton = xformsManagerButton;
+	}
+	public XFormsManagerContainer getXformsManagerContainer() {
+		return xformsManagerContainer;
+	}
+	public void setXformsManagerContainer(
+			XFormsManagerContainer xformsManagerContainer) {
+		this.xformsManagerContainer = xformsManagerContainer;
+	}
+	public XFormsManagerDocument getXformsManagerDocument() {
+		return xformsManagerDocument;
+	}
+	public void setXformsManagerDocument(XFormsManagerDocument xformsManagerDocument) {
+		this.xformsManagerDocument = xformsManagerDocument;
+	}
+	public XFormsManagerPage getXformsManagerPage() {
+		return xformsManagerPage;
+	}
+	public void setXformsManagerPage(XFormsManagerPage xformsManagerPage) {
+		this.xformsManagerPage = xformsManagerPage;
+	}
+	public XFormsManagerPlain getXformsManagerPlain() {
+		return xformsManagerPlain;
+	}
+	public void setXformsManagerPlain(XFormsManagerPlain xformsManagerPlain) {
+		this.xformsManagerPlain = xformsManagerPlain;
+	}
+	public XFormsManagerSelect getXformsManagerSelect() {
+		return xformsManagerSelect;
+	}
+	public void setXformsManagerSelect(XFormsManagerSelect xformsManagerSelect) {
+		this.xformsManagerSelect = xformsManagerSelect;
+	}
+	public XFormsManagerThankYouPage getXformsManagerThankYouPage() {
+		return xformsManagerThankYouPage;
+	}
+	public void setXformsManagerThankYouPage(
+			XFormsManagerThankYouPage xformsManagerThankYouPage) {
+		this.xformsManagerThankYouPage = xformsManagerThankYouPage;
+	}
+}
