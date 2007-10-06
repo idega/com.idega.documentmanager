@@ -9,9 +9,9 @@ import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -31,11 +31,11 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 	}
 	
 	public void setSiblingsAndParentPages(FormComponentPage previous, FormComponentPage next) {
-		getXFormsManager().renewButtonPageContextPages(getContext(), previous, next);
+		getXFormsManager().renewButtonPageContextPages(this, previous, next);
 	}
 	
 	public void setLastPageId(String last_page_id) {
-		getXFormsManager().setLastPageToSubmitButton(getContext(), last_page_id);
+		getXFormsManager().setLastPageToSubmitButton(this, last_page_id);
 	}
 	
 	@Override

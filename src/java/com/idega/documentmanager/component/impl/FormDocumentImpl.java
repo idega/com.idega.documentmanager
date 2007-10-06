@@ -22,9 +22,9 @@ import com.idega.documentmanager.manager.XFormsManagerDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 06:17:49 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -44,7 +44,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 
 	public void setContainerElement(Element container_element) {
-		getXFormsManager().setComponentsContainer(getContext(), container_element);
+		getXFormsManager().setComponentsContainer(this, container_element);
 	}
 	
 	@Override
@@ -219,7 +219,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		if(properties == null)
 			return;
 		
-		properties.setPlainStepsVisualizationUsed(getXFormsManager().getIsStepsVisualizationUsed(getContext()));
+		properties.setPlainStepsVisualizationUsed(getXFormsManager().getIsStepsVisualizationUsed(this));
 	}
 	
 	public void save() throws Exception {
@@ -266,12 +266,12 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public Element getAutofillModelElement() {
 		
-		return getXFormsManager().getAutofillAction(getContext());
+		return getXFormsManager().getAutofillAction(this);
 	}
 	
 	public Element getFormDataModelElement() {
 		
-		return getXFormsManager().getFormDataModelElement(getContext());
+		return getXFormsManager().getFormDataModelElement(this);
 	}
 	
 	public void clear() {
@@ -303,13 +303,13 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public Element getSectionsVisualizationInstanceElement() {
 	
-		return getXFormsManager().getSectionsVisualizationInstanceElement(getContext());
+		return getXFormsManager().getSectionsVisualizationInstanceElement(this);
 	}
 	
 	@Override
 	public void update(ConstUpdateType what) {
 		
-		getXFormsManager().update(getContext(), what);
+		getXFormsManager().update(this, what);
 		
 		if(what.getUpdateType() == ConstUpdateType.steps_visualization_used) {
 			rearrangeComponents();

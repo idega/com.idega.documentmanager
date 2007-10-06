@@ -10,9 +10,9 @@ import com.idega.documentmanager.manager.XFormsManagerPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentPageImpl extends FormComponentContainerImpl implements Page, FormComponentPage {
 	
@@ -70,7 +70,7 @@ public class FormComponentPageImpl extends FormComponentContainerImpl implements
 		previous_page = previous;
 	}
 	public void pagesSiblingsChanged() {
-		getXFormsManager().pageContextChanged(getContext());
+		getXFormsManager().pageContextChanged(this);
 		FormComponentButtonArea button_area = (FormComponentButtonArea)getButtonArea();
 		if(button_area == null)
 			return;

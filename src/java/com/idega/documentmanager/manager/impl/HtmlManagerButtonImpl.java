@@ -4,22 +4,19 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.FormComponent;
-import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.HtmlManagerButton;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class HtmlManagerButtonImpl extends HtmlManagerImpl implements HtmlManagerButton {
 	
 	@Override
-	protected Element getFormHtmlComponentLocalization(DMContext context, String loc_str) {
-		
-		FormComponent component = context.getComponent();
+	protected Element getFormHtmlComponentLocalization(FormComponent component, String loc_str) {
 		
 		Element loc_model = FormManagerUtil.getElementByIdFromDocument(
 				component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, FormManagerUtil.data_mod

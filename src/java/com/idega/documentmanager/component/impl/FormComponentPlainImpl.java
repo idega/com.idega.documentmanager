@@ -12,9 +12,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -26,7 +26,7 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 		if(properties == null)
 			return;
 		
-		properties.setText(getXFormsManager().getText(getContext()));
+		properties.setText(getXFormsManager().getText(this));
 	}
 	
 	@Override
@@ -50,13 +50,13 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 	@Override
 	public void update(ConstUpdateType what) {
 		
-		getXFormsManager().update(getContext(), what);
+		getXFormsManager().update(this, what);
 		
 		int update = what.getUpdateType();
 		
 		switch (update) {
 		case ConstUpdateType.text:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			break;
 			
 		case ConstUpdateType.autofill_key:

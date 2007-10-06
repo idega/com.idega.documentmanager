@@ -8,30 +8,27 @@ import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
-import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerThankYouPage;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl implements XFormsManagerThankYouPage {
 
 	@Override
-	public void update(DMContext context, ConstUpdateType what) {
+	public void update(FormComponent component, ConstUpdateType what) {
 		
-		FormComponent component = context.getComponent();
-		
-		super.update(component.getContext(), what);
+		super.update(component, what);
 		
 		int update = what.getUpdateType();
 		
 		switch (update) {
 		case ConstUpdateType.thankyou_text:
-			updateThankYouText(component.getContext());
+			updateThankYouText(component);
 			break;
 
 		default:
@@ -39,9 +36,8 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 		}
 	}
 
-	protected void updateThankYouText(DMContext context) {
+	protected void updateThankYouText(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		PropertiesThankYouPage props = (PropertiesThankYouPage)component.getProperties();
@@ -61,9 +57,8 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 		);
 	}
 	
-	public LocalizedStringBean getThankYouText(DMContext context) {
+	public LocalizedStringBean getThankYouText(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		NodeList outputs = xformsComponentDataBean.getElement().getElementsByTagName(FormManagerUtil.output_tag);

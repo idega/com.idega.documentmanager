@@ -9,25 +9,22 @@ import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.impl.FormComponentFactory;
-import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerPage;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements XFormsManagerPage {
 
 	@Override
-	public void loadXFormsComponentFromDocument(DMContext context, String component_id) {
+	public void loadXFormsComponentFromDocument(FormComponent component, String component_id) {
 		
-		FormComponent component = context.getComponent();
-		
-		super.loadXFormsComponentFromDocument(component.getContext(), component_id);
-		checkForSpecialTypes(component.getContext());
+		super.loadXFormsComponentFromDocument(component, component_id);
+		checkForSpecialTypes(component);
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
@@ -36,11 +33,9 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 	}
 	
 	@Override
-	public void addComponentToDocument(DMContext context) {
+	public void addComponentToDocument(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
-		
-		super.addComponentToDocument(component.getContext());
+		super.addComponentToDocument(component);
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
@@ -59,13 +54,12 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		case_element.setAttribute(FormManagerUtil.id_att, component_id);
 		case_element.appendChild(group_element);
 		
-		checkForSpecialTypes(component.getContext());
-		pageContextChanged(component.getContext());
+		checkForSpecialTypes(component);
+		pageContextChanged(component);
 	}
 	
-	protected void checkForSpecialTypes(DMContext context) {
+	protected void checkForSpecialTypes(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		String component_name = xformsComponentDataBean.getElement().getAttribute(FormManagerUtil.name_att);
@@ -76,13 +70,11 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 	}
 	
 	@Override
-	public void removeComponentFromXFormsDocument(DMContext context) {
+	public void removeComponentFromXFormsDocument(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
-		
-		removeComponentLocalization(component.getContext());
-		removeComponentBindings(component.getContext());
-		removeSectionVisualization(component.getContext());
+		removeComponentLocalization(component);
+		removeComponentBindings(component);
+		removeSectionVisualization(component);
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
@@ -90,9 +82,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		element_to_remove.getParentNode().getParentNode().removeChild(element_to_remove.getParentNode());
 	}
 	
-	private void removeSectionVisualization(DMContext context) {
-		
-		FormComponent component = context.getComponent();
+	private void removeSectionVisualization(FormComponent component) {
 		
 		Element section = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, component.getId()+"_section");
 		
@@ -101,9 +91,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 	}
 	
 	@Override
-	public void moveComponent(DMContext context, String before_component_id) {
-		
-		FormComponent component = context.getComponent();
+	public void moveComponent(FormComponent component, String before_component_id) {
 		
 		if(component.getParent() == null)
 			throw new NullPointerException("Parent form document not provided");
@@ -135,9 +123,8 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		return (Element)component_after_this.getXformsComponentDataBean().getElement().getParentNode();
 	}
 	
-	public void pageContextChanged(DMContext context) {
+	public void pageContextChanged(FormComponent component) {
 		
-		FormComponent component = context.getComponent();
 		FormDocument formDocument = component.getFormDocument();
 		
 		if(!formDocument.getProperties().isStepsVisualizationUsed() || FormComponentFactory.page_type_thx.equals(component.getType()))
@@ -173,18 +160,17 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		boolean inserted = false;
 		
 		if(next != null)
-			inserted = insertSectionIntoContext(component.getContext(), false, next, instance, section);
+			inserted = insertSectionIntoContext(component, false, next, instance, section);
 		
 		if(prev != null && !inserted)
-			inserted = insertSectionIntoContext(component.getContext(), true, prev, instance, section);
+			inserted = insertSectionIntoContext(component, true, prev, instance, section);
 		
 		if(!inserted)
-			insertSectionIntoContext(component.getContext(), false, null, instance, section);
+			insertSectionIntoContext(component, false, null, instance, section);
 	}
 	
-	private boolean insertSectionIntoContext(DMContext context, boolean prev, FormComponentPage relevant_page, Element instance, Element section) {
+	private boolean insertSectionIntoContext(FormComponent component, boolean prev, FormComponentPage relevant_page, Element instance, Element section) {
 		
-		FormComponent component = context.getComponent();
 		
 		if(relevant_page != null) {
 			Element relevant_section = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, relevant_page.getId()+"_section");

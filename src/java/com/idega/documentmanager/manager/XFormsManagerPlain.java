@@ -1,18 +1,18 @@
 package com.idega.documentmanager.manager;
 
+import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
-import com.idega.documentmanager.context.DMContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:35 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:41 $ by $Author: civilis $
  */
 public interface XFormsManagerPlain extends XFormsManager {
 
-	public abstract void update(DMContext context, ConstUpdateType what);
+	public abstract void update(FormComponent component, ConstUpdateType what);
 
-	public abstract String getText(DMContext context);
+	public abstract String getText(FormComponent component);
 
 }

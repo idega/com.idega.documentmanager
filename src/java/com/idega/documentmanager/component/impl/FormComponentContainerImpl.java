@@ -19,9 +19,9 @@ import com.idega.documentmanager.manager.XFormsManagerContainer;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentContainerImpl extends FormComponentImpl implements FormComponentContainer, Container {
 	
@@ -30,7 +30,7 @@ public class FormComponentContainerImpl extends FormComponentImpl implements For
 
 	public void loadContainerComponents() {
 		
-		List<String[]> components_tag_names_and_ids = getXFormsManager().getContainedComponentsTagNamesAndIds(getContext());
+		List<String[]> components_tag_names_and_ids = getXFormsManager().getContainedComponentsTagNamesAndIds(this);
 		
 		FormComponentFactory components_factory = FormComponentFactory.getInstance();
 		

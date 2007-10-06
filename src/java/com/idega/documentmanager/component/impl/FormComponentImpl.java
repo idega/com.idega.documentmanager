@@ -22,9 +22,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 06:17:49 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -47,7 +47,6 @@ public class FormComponentImpl implements FormComponent, Component {
 	private DMContext context;
 	
 	public DMContext getContext() {
-		context.setComponent(this);
 		return context;
 	}
 
@@ -68,11 +67,11 @@ public class FormComponentImpl implements FormComponent, Component {
 			
 			if(load) {
 				
-				xforms_manager.loadXFormsComponentFromDocument(getContext(), getId());
+				xforms_manager.loadXFormsComponentFromDocument(this, getId());
 				
 			} else {
-				xforms_manager.loadXFormsComponentByType(getContext(), type);
-				xforms_manager.addComponentToDocument(getContext());
+				xforms_manager.loadXFormsComponentByType(this, type);
+				xforms_manager.addComponentToDocument(this);
 			}
 			setProperties();
 			
@@ -86,14 +85,14 @@ public class FormComponentImpl implements FormComponent, Component {
 
 				if(load) {
 					
-					getXFormsManager().loadConfirmationElement(getContext(), null);
+					getXFormsManager().loadConfirmationElement(this, null);
 					
 				} else {
 					
 					FormComponentPage confirmation_page = (FormComponentPage)formDocument.getConfirmationPage();
 					
 					if(confirmation_page != null) {
-						getXFormsManager().loadConfirmationElement(getContext(), confirmation_page);
+						getXFormsManager().loadConfirmationElement(this, confirmation_page);
 					}
 				}
 			}
@@ -110,7 +109,7 @@ public class FormComponentImpl implements FormComponent, Component {
 			FormComponentPage confirmation_page = (FormComponentPage)formDocument.getConfirmationPage();
 			
 			if(confirmation_page != null) {
-				getXFormsManager().loadConfirmationElement(getContext(), confirmation_page);
+				getXFormsManager().loadConfirmationElement(this, confirmation_page);
 			}
 		}
 	}
@@ -122,11 +121,11 @@ public class FormComponentImpl implements FormComponent, Component {
 		if(properties == null)
 			return;
 		
-		properties.setPlainLabel(getXFormsManager().getLocalizedStrings(getContext()));
-		properties.setPlainRequired(getXFormsManager().getIsRequired(getContext()));
-		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings(getContext()));
-		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(getContext()));
-		properties.setPlainHelpText(getXFormsManager().getHelpText(getContext()));
+		properties.setPlainLabel(getXFormsManager().getLocalizedStrings(this));
+		properties.setPlainRequired(getXFormsManager().getIsRequired(this));
+		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings(this));
+		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(this));
+		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
 	}
 	
 	protected void changeBindNames() {
@@ -134,7 +133,7 @@ public class FormComponentImpl implements FormComponent, Component {
 		LocalizedStringBean localized_label = getProperties().getLabel();
 		String default_locale_label = localized_label.getString(formDocument.getDefaultLocale());
 		
-		getXFormsManager().changeBindName(getContext(),
+		getXFormsManager().changeBindName(this,
 				new StringBuffer(default_locale_label)
 				.append('_')
 				.append(getId())
@@ -172,15 +171,15 @@ public class FormComponentImpl implements FormComponent, Component {
 		
 		if(component != null && previous_component_after_me != null && !previous_component_after_me.getId().equals(component.getId())) {
 
-			xforms_manager.moveComponent(getContext(), component.getId());
+			xforms_manager.moveComponent(this, component.getId());
 			
 		} else if(previous_component_after_me == null && component != null) {
 			
-			xforms_manager.moveComponent(getContext(), component.getId());
+			xforms_manager.moveComponent(this, component.getId());
 			
 		} else if(component == null && previous_component_after_me != null) {
 			
-			xforms_manager.moveComponent(getContext(), null);
+			xforms_manager.moveComponent(this, null);
 		}
 	}
 	
@@ -205,7 +204,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public Element getHtmlRepresentation(Locale locale) throws Exception {
 		
-		return getHtmlManager().getHtmlRepresentation(getContext(), locale);
+		return getHtmlManager().getHtmlRepresentation(this, locale);
 	}
 	
 	public PropertiesComponent getProperties() {
@@ -235,7 +234,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public void remove() {
 		
-		getXFormsManager().removeComponentFromXFormsDocument(getContext());
+		getXFormsManager().removeComponentFromXFormsDocument(this);
 		formDocument.setFormDocumentModified(true);
 		parent.unregisterComponent(getId());
 	}
@@ -266,24 +265,24 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public void update(ConstUpdateType what) {
 		
-		getXFormsManager().update(getContext(), what);
+		getXFormsManager().update(this, what);
 		
 		int update = what.getUpdateType();
 		
 		switch (update) {
 		case ConstUpdateType.label:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			changeBindNames();
 			break;
 			
 		case ConstUpdateType.error_msg:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.help_text:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			break;
 			

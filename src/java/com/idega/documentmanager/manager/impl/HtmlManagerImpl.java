@@ -11,7 +11,6 @@ import org.w3c.dom.NodeList;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
-import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
 import com.idega.documentmanager.manager.HtmlManager;
@@ -19,15 +18,14 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
-	public Element getHtmlRepresentation(DMContext context, Locale locale) throws Exception {
+	public Element getHtmlRepresentation(FormComponent component, Locale locale) throws Exception {
 		
-		FormComponent component = context.getComponent();
 		ComponentDataBean componentDataBean = component.getXformsComponentDataBean();
 		
 		Map<Locale, Element> localized_html_components = componentDataBean.getLocalizedHtmlComponents();
@@ -38,7 +36,7 @@ public class HtmlManagerImpl implements HtmlManager {
 		
 		if(componentDataBean.getUnlocalizedHtmlComponent() == null) {
 			
-			Element html_component = FormManagerUtil.getElementByIdFromDocument(getXFormsDocumentHtmlRepresentation(component.getContext()), null, component.getId());
+			Element html_component = FormManagerUtil.getElementByIdFromDocument(getXFormsDocumentHtmlRepresentation(component), null, component.getId());
 			
 			if(html_component == null)
 				throw new NullPointerException("Component cannot be found in document.");
@@ -46,7 +44,7 @@ public class HtmlManagerImpl implements HtmlManager {
 			componentDataBean.setUnlocalizedHtmlComponent(html_component);
 		}
 		
-		localized_element = getFormHtmlComponentLocalization(component.getContext(), locale.getLanguage());
+		localized_element = getFormHtmlComponentLocalization(component, locale.getLanguage());
 		localized_html_components.put(locale, localized_element);
 		
 		return localized_element;
@@ -74,9 +72,9 @@ public class HtmlManagerImpl implements HtmlManager {
 		return html_element;
 	}
 	
-	public void clearHtmlComponents(DMContext context) {
+	public void clearHtmlComponents(FormComponent component) {
 		
-		ComponentDataBean componentDataBean = context.getComponent().getXformsComponentDataBean();
+		ComponentDataBean componentDataBean = component.getXformsComponentDataBean();
 		componentDataBean.getLocalizedHtmlComponents().clear();
 		componentDataBean.setUnlocalizedHtmlComponent(null);
 	}
@@ -131,15 +129,13 @@ public class HtmlManagerImpl implements HtmlManager {
 		return localized_component;
 	}
 	
-	protected Element getFormHtmlComponentLocalization(DMContext context, String loc_str) {
+	protected Element getFormHtmlComponentLocalization(FormComponent component, String loc_str) {
 		
-		FormComponent component = context.getComponent();
 		return getFormHtmlComponentLocalization(loc_str, component.getFormDocument().getXformsDocument(), component.getXformsComponentDataBean().getUnlocalizedHtmlComponent());
 	}
 	
-	protected Document getXFormsDocumentHtmlRepresentation(DMContext context) throws Exception {
+	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component) throws Exception {
 		
-		FormComponent component = context.getComponent();
 		FormDocument formDocument = component.getFormDocument();
 		
 		Document components_xml = formDocument.getComponentsXml();

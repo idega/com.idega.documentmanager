@@ -8,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerSelect;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
  */
 public class FormComponentSelectImpl extends FormComponentImpl implements ComponentSelect {
 	
@@ -40,9 +40,9 @@ public class FormComponentSelectImpl extends FormComponentImpl implements Compon
 		ComponentPropertiesSelect properties = (ComponentPropertiesSelect)getProperties();
 		XFormsManagerSelect xforms_manager = getXFormsManager();
 		
-		properties.setDataSrcUsedPlain(xforms_manager.getDataSrcUsed(getContext()));
-		properties.setExternalDataSrcPlain(xforms_manager.getExternalDataSrc(getContext()));
-		properties.setItemsetPlain(xforms_manager.getItemset(getContext()));
+		properties.setDataSrcUsedPlain(xforms_manager.getDataSrcUsed(this));
+		properties.setExternalDataSrcPlain(xforms_manager.getExternalDataSrc(this));
+		properties.setItemsetPlain(xforms_manager.getItemset(this));
 	}
 	
 	@Override
@@ -53,17 +53,17 @@ public class FormComponentSelectImpl extends FormComponentImpl implements Compon
 		
 		switch (update) {
 		case ConstUpdateType.data_src_used:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			getFormDocument().setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.itemset:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			getFormDocument().setFormDocumentModified(true);
 			break;
 			
 		case ConstUpdateType.external_data_src:
-			getHtmlManager().clearHtmlComponents(getContext());
+			getHtmlManager().clearHtmlComponents(this);
 			getFormDocument().setFormDocumentModified(true);
 			break;
 
@@ -74,7 +74,7 @@ public class FormComponentSelectImpl extends FormComponentImpl implements Compon
 	
 	public void remove() {
 		
-		getXFormsManager().removeSelectComponentSourcesFromXFormsDocument(getContext());
+		getXFormsManager().removeSelectComponentSourcesFromXFormsDocument(this);
 		super.remove();
 	}
 }
