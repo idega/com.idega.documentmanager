@@ -7,6 +7,7 @@ import com.idega.documentmanager.business.component.properties.PropertiesDocumen
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
+import com.idega.documentmanager.component.beans.ComponentDocumentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.XFormsManagerDocument;
@@ -14,16 +15,12 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 06:17:50 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
-	protected Element autofill_action;
-	protected Element form_data_model;
-	protected Element sections_visualization_instance;
-	
 	public void setComponentsContainer(DMContext context, Element element) {
 		
 		FormComponent component = context.getComponent();
@@ -36,7 +33,10 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	
 	public Element getAutofillAction(DMContext context) {
 		
-		if(autofill_action == null) {
+		FormComponent component = context.getComponent();
+		ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
+		
+		if(componentDocumentDataBean.getAutofillAction() == null) {
 			
 			Document xforms_doc = context.getComponent().getFormDocument().getXformsDocument();
 			
@@ -49,32 +49,38 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 				Element head_element = (Element)xforms_doc.getElementsByTagName(FormManagerUtil.head_tag).item(0);
 				autofill_model = (Element)head_element.appendChild(autofill_model);
 				autofill_model.setAttribute(FormManagerUtil.id_att, FormManagerUtil.autofill_model_id);
-				this.autofill_action = (Element)autofill_model.getElementsByTagName("*").item(0);
+				componentDocumentDataBean.setAutofillAction((Element)autofill_model.getElementsByTagName("*").item(0));
 			} else
-				autofill_action = autofill_model; 
+				componentDocumentDataBean.setAutofillAction(autofill_model); 
 		}
 		
-		return autofill_action;
+		return componentDocumentDataBean.getAutofillAction();
 	}
 	
 	public Element getFormDataModelElement(DMContext context) {
 		
-		if(form_data_model == null) {
+		FormComponent component = context.getComponent();
+		ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
+		
+		if(componentDocumentDataBean.getFormDataModel() == null) {
 			
 			FormDocument formDocument = context.getComponent().getFormDocument();
 			
-			form_data_model = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.head_tag, formDocument.getFormId());
+			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.head_tag, formDocument.getFormId()));
 
-			if(form_data_model == null)
+			if(componentDocumentDataBean.getFormDataModel() == null)
 				throw new NullPointerException("Form model element not found. Incorrect xforms document.");
 		}
 		
-		return form_data_model;
+		return componentDocumentDataBean.getFormDataModel();
 	}
 	
 	public Element getSectionsVisualizationInstanceElement(DMContext context) {
 
-		if(sections_visualization_instance == null) {
+		FormComponent component = context.getComponent();
+		ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
+		
+		if(componentDocumentDataBean.getSectionsVisualizationInstance() == null) {
 			
 			FormDocument formDocument = context.getComponent().getFormDocument();
 		
@@ -89,10 +95,10 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 				instance = (Element)data_model.appendChild(instance);
 			}
 			
-			sections_visualization_instance = instance;
+			componentDocumentDataBean.setSectionsVisualizationInstance(instance);
 		}
 		
-		return sections_visualization_instance;
+		return componentDocumentDataBean.getSectionsVisualizationInstance();
 	}
 	
 	
@@ -141,19 +147,26 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 			
 		} else {
 			
+			ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
+			
 			Element rem = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.body_tag, FormManagerUtil.sections_visualization_id);
 			
 			if(rem != null)
 				rem.getParentNode().removeChild(rem);
 			
-			if(sections_visualization_instance != null) {
-				rem = sections_visualization_instance;
-				sections_visualization_instance = null;
+			if(componentDocumentDataBean.getSectionsVisualizationInstance() != null) {
+				rem = componentDocumentDataBean.getSectionsVisualizationInstance();
+				componentDocumentDataBean.setSectionsVisualizationInstance(null);
 			} else
 				rem = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.body_tag, FormManagerUtil.sections_visualization_id);
 			
 			if(rem != null)
 				rem.getParentNode().removeChild(rem);
 		}
+	}
+	
+	@Override
+	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
+		return new ComponentDocumentDataBean();
 	}
 }

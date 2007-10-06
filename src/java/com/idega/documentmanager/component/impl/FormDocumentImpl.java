@@ -22,17 +22,16 @@ import com.idega.documentmanager.manager.XFormsManagerDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 06:17:49 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
-	protected String confirmation_page_id;
-	protected String thx_page_id;
-	protected PropertiesDocument properties;
-	
-	protected List<String> registered_for_last_page_id_pages;
+	private String confirmationPageId;
+	private String thxPageId;
+	private PropertiesDocument properties;
+	private List<String> registeredForLastPageIdPages;
 	
 	private Form form;
 	
@@ -140,8 +139,8 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		Map<String, FormComponent> contained_components = getContainedComponents();
 		int components_amount = getContainedComponents().size();
 		int i = 0;
-		confirmation_page_id = null;
-		thx_page_id = null;
+		setConfirmationPageId(null);
+		setThxPageId(null);
 		
 		for (String comp_id : getContainedComponentsIdList()) {
 			
@@ -157,9 +156,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 			page.pagesSiblingsChanged();
 			
 			if(page.getType().equals(FormComponentFactory.confirmation_page_type))
-				confirmation_page_id = page.getId();
+				setConfirmationPageId(page.getId());
 			else if(page.getType().equals(FormComponentFactory.page_type_thx))
-				thx_page_id = page.getId();
+				setThxPageId(page.getId());
 				
 			i++;
 		}
@@ -168,7 +167,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	protected void announceRegisteredForLastPage() {
 		
 		for (String registered_id : getRegisteredForLastPageIdPages())
-			((FormComponentPage)getComponent(registered_id)).announceLastPage(thx_page_id);
+			((FormComponentPage)getComponent(registered_id)).announceLastPage(getThxPageId());
 	}
 	
 	@Override
@@ -228,19 +227,19 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	public Page getConfirmationPage() {
 	
-		return confirmation_page_id == null ? null : (Page)getContainedComponent(confirmation_page_id);
+		return getConfirmationPageId() == null ? null : (Page)getContainedComponent(getConfirmationPageId());
 	}
 	public PageThankYou getThxPage() {
 		
-		return thx_page_id == null ? null : (PageThankYou)getContainedComponent(thx_page_id);
+		return getThxPageId() == null ? null : (PageThankYou)getContainedComponent(getThxPageId());
 	}
 	
 	protected List<String> getRegisteredForLastPageIdPages() {
 		
-		if(registered_for_last_page_id_pages == null)
-			registered_for_last_page_id_pages = new ArrayList<String>();
+		if(registeredForLastPageIdPages == null)
+			registeredForLastPageIdPages = new ArrayList<String>();
 		
-		return registered_for_last_page_id_pages;
+		return registeredForLastPageIdPages;
 	}
 	
 	public void registerForLastPage(String register_page_id) {
@@ -277,9 +276,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public void clear() {
 		
-		confirmation_page_id = null;
-		thx_page_id = null;
-		registered_for_last_page_id_pages = null;
+		setConfirmationPageId(null);
+		setThxPageId(null);
+		setRegisteredForLastPageIdPages(null);
 		super.clear();
 	}
 	
@@ -315,5 +314,26 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		if(what.getUpdateType() == ConstUpdateType.steps_visualization_used) {
 			rearrangeComponents();
 		}
+	}
+
+	public String getConfirmationPageId() {
+		return confirmationPageId;
+	}
+
+	public void setConfirmationPageId(String confirmationPageId) {
+		this.confirmationPageId = confirmationPageId;
+	}
+
+	public String getThxPageId() {
+		return thxPageId;
+	}
+
+	public void setThxPageId(String thxPageId) {
+		this.thxPageId = thxPageId;
+	}
+
+	public void setRegisteredForLastPageIdPages(
+			List<String> registeredForLastPageIdPages) {
+		this.registeredForLastPageIdPages = registeredForLastPageIdPages;
 	}
 }

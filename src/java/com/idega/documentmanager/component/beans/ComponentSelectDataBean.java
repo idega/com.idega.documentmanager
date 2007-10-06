@@ -4,8 +4,9 @@ import org.w3c.dom.Element;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/06 06:17:50 $ by $Author: civilis $
  */
 public class ComponentSelectDataBean extends ComponentDataBean {
 	

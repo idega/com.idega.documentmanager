@@ -19,13 +19,12 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.HtmlManager;
 import com.idega.documentmanager.manager.XFormsManager;
-import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 06:17:49 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -136,10 +135,9 @@ public class FormComponentImpl implements FormComponent, Component {
 		String default_locale_label = localized_label.getString(formDocument.getDefaultLocale());
 		
 		getXFormsManager().changeBindName(getContext(),
-				new StringBuffer(getId())
-				.append(FormManagerUtil.bind_att)
+				new StringBuffer(default_locale_label)
 				.append('_')
-				.append(default_locale_label)
+				.append(getId())
 				.toString()
 		);
 	}

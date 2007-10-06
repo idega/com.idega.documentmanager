@@ -23,9 +23,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 06:17:50 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -675,14 +675,14 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			Document xforms_doc = component.getFormDocument().getXformsDocument();
 //			insert nodeset element
-			Element nodeset_element = (Element)xforms_doc.importNode(xformsComponentDataBean.getNodeset(), true);
-			nodeset_element = (Element)xforms_doc.renameNode(nodeset_element, nodeset_element.getNamespaceURI(), bind_id);
+			Element newNodesetElement = (Element)xforms_doc.importNode(xformsComponentDataBean.getNodeset(), true);
+			newNodesetElement = (Element)xforms_doc.renameNode(newNodesetElement, newNodesetElement.getNamespaceURI(), bind_id);
 			
 			FormManagerUtil.insertNodesetElement(
-					xforms_doc, xformsComponentDataBean.getNodeset(), nodeset_element
+					xforms_doc, xformsComponentDataBean.getNodeset(), newNodesetElement
 			);
 			
-			xformsComponentDataBean.setNodeset(nodeset_element);
+			xformsComponentDataBean.setNodeset(newNodesetElement);
 		}
 	}
 	
@@ -694,6 +694,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		if(bind_element == null)
 			return;
+		
 		new_bind_name = FormManagerUtil.escapeNonXmlTagSymbols(new_bind_name.replace(' ', '_'));
 		Element nodeset_element = xformsComponentDataBean.getNodeset();
 		String prev_nodeset = bind_element.getAttribute(FormManagerUtil.nodeset_att);
