@@ -3,10 +3,12 @@ package com.idega.documentmanager.business.component.properties;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
- * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
+ * 
+ * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
@@ -33,4 +35,8 @@ public interface PropertiesComponent {
 	public abstract LocalizedStringBean getHelpText();
 	
 	public abstract void setHelpText(LocalizedStringBean help_text);
+	
+	public abstract String getVariableName();
+		
+	public abstract void setVariableName(String variableName);
 }

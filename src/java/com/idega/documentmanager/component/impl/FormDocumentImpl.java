@@ -22,9 +22,9 @@ import com.idega.documentmanager.manager.XFormsManagerDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -220,6 +220,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 			return;
 		
 		properties.setPlainStepsVisualizationUsed(getXFormsManager().getIsStepsVisualizationUsed(this));
+		properties.setPlainSubmissionAction(getXFormsManager().getSubmissionAction(this));
 	}
 	
 	public void save() throws Exception {
@@ -311,8 +312,19 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		
 		getXFormsManager().update(this, what);
 		
-		if(what.getUpdateType() == ConstUpdateType.steps_visualization_used) {
+		switch (what) {
+		
+		case STEPS_VISUALIZATION_USED:
+			
 			rearrangeComponents();
+			break;
+			
+		case SUBMISSION_ACTION:
+			
+			break;
+			
+		default:
+			break;
 		}
 	}
 

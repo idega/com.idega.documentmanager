@@ -16,6 +16,11 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathException;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -26,15 +31,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.util.xml.NamespaceContextImpl;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.2 $
  *
- * <p>FormManager helper class</p>
- *
- * <p>TODO: where possible, use XPath from JAXP</p>
- * 
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -112,6 +115,8 @@ public class FormManagerUtil {
 	public static final String event_att = "ev:event";
 	public static final String DOMActivate_att_val = "DOMActivate";
 	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
+	public static final String mapping_att = "mapping";
+	public static final String action_att = "action";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -718,5 +723,42 @@ public class FormManagerUtil {
 		
 		Element model = (Element)xforms_doc.getElementsByTagName(model_tag).item(0);
 		return model.getAttribute(id_att);
+	}
+	
+	public static Element getSubmissionElement(Document xformsDoc) {
+		
+		try {
+			XPathExpression exp = getSubmissionElementExp();
+			
+			synchronized (exp) {
+				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
+			}
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	private static XPathExpression submissionElementExp;
+	
+	private static synchronized XPathExpression getSubmissionElementExp() {
+		
+		if(submissionElementExp != null)
+			return submissionElementExp;
+		
+		try {
+			XPathFactory factory = XPathFactory.newInstance();
+			XPath xpath = factory.newXPath();
+
+			NamespaceContextImpl nmspCtx = new NamespaceContextImpl();
+			nmspCtx.addPrefix("xf", "http://www.w3.org/2002/xforms");
+			xpath.setNamespaceContext(nmspCtx);
+			
+			submissionElementExp = xpath.compile("//xf:submission[@id='submit_data_submission']");
+			return submissionElementExp;
+			
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not compile XPath expression: " + e.getMessage(), e);
+		}
 	}
 }

@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
@@ -105,16 +105,25 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	@Override
 	public void update(FormComponent component, ConstUpdateType what) {
 		
-		int update = what.getUpdateType();
-		
-		switch (update) {
-			case ConstUpdateType.steps_visualization_used:
+		switch (what) {
+			case STEPS_VISUALIZATION_USED:
 				updateStepsVisualizationUsed(component);
+				break;
+			
+			case SUBMISSION_ACTION:
+				updateSubmissionAction(component);
 				break;
 				
 			default: 
 				break;
 		}
+	}
+	
+	protected void updateSubmissionAction(FormComponent component) {
+		
+		PropertiesDocument props = (PropertiesDocument)component.getProperties();
+		Element submissionElement = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
+		submissionElement.setAttribute(FormManagerUtil.action_att, props.getSubmissionAction());
 	}
 	
 	protected void updateStepsVisualizationUsed(FormComponent component) {
@@ -159,5 +168,11 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	@Override
 	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
 		return new ComponentDocumentDataBean();
+	}
+	
+	public String getSubmissionAction(FormComponent component) {
+		
+		Element submission = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
+		return submission.getAttribute(FormManagerUtil.action_att);
 	}
 }

@@ -13,9 +13,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl implements XFormsManagerThankYouPage {
 
@@ -24,10 +24,8 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 		
 		super.update(component, what);
 		
-		int update = what.getUpdateType();
-		
-		switch (update) {
-		case ConstUpdateType.thankyou_text:
+		switch (what) {
+		case THANKYOU_TEXT:
 			updateThankYouText(component);
 			break;
 

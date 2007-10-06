@@ -5,24 +5,41 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class ComponentPropertiesDocument extends ComponentProperties implements PropertiesDocument {
 	
-	private boolean steps_visualization_used = false; 
+	private boolean stepsVisualizationUsed = false;
+	private String submissionAction;
 	
+	public String getSubmissionAction() {
+		return submissionAction;
+	}
+	public void setSubmissionAction(String submissionAction) {
+
+		setPlainSubmissionAction(submissionAction);
+		component.update(ConstUpdateType.SUBMISSION_ACTION);
+	}
 	public boolean isStepsVisualizationUsed() {
-		return steps_visualization_used;
+		return stepsVisualizationUsed;
+	}
+	public void setPlainSubmissionAction(String submissionAction) {
+		
+		if(submissionAction == null || submissionAction.equals(""))
+			throw new NullPointerException("Submission action was empty: "+submissionAction);
+		
+		this.submissionAction = submissionAction;
 	}
 	public void setStepsVisualizationUsed(boolean steps_visualization_used) {
 		if(true)
 			return;
-		this.steps_visualization_used = steps_visualization_used;
-		component.update(new ConstUpdateType(ConstUpdateType.steps_visualization_used));
+		this.stepsVisualizationUsed = steps_visualization_used;
+		component.update(ConstUpdateType.STEPS_VISUALIZATION_USED);
 	}
 	public void setPlainStepsVisualizationUsed(boolean steps_visualization_used) {
-		this.steps_visualization_used = steps_visualization_used;
+		this.stepsVisualizationUsed = steps_visualization_used;
 	}
 	
 //	methods not used ---------

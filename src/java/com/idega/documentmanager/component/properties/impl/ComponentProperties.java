@@ -6,40 +6,42 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
 	private boolean required;
 	private LocalizedStringBean label;
-	private LocalizedStringBean error_msg;
-	private LocalizedStringBean help_text;
+	private LocalizedStringBean errorMsg;
+	private LocalizedStringBean helpText;
 	private String p3ptype;
-	private String autofill_key;
+	private String autofillKey;
+	private String variableName;
 	
 	protected FormComponent component;
 	
 	public LocalizedStringBean getErrorMsg() {
-		return error_msg;
+		return errorMsg;
 	}
 	public void setErrorMsg(LocalizedStringBean error_msg) {
-		this.error_msg = error_msg;
-		component.update(new ConstUpdateType(ConstUpdateType.error_msg));
+		this.errorMsg = error_msg;
+		component.update(ConstUpdateType.ERROR_MSG);
 	}
 	public LocalizedStringBean getLabel() {
 		return label;
 	}
 	public void setLabel(LocalizedStringBean label) {
 		this.label = label;
-		component.update(new ConstUpdateType(ConstUpdateType.label));
+		component.update(ConstUpdateType.LABEL);
 	}
 	public boolean isRequired() {
 		return required;
 	}
 	public void setRequired(boolean required) {
 		this.required = required;
-		component.update(new ConstUpdateType(ConstUpdateType.constraint_required));
+		component.update(ConstUpdateType.CONSTRAINT_REQUIRED);
 	}
 	public void setPlainLabel(LocalizedStringBean label) {
 		this.label = label;
@@ -48,7 +50,7 @@ public class ComponentProperties implements PropertiesComponent {
 		this.required = required;
 	}
 	public void setPlainErrorMsg(LocalizedStringBean error_msg) {
-		this.error_msg = error_msg;
+		this.errorMsg = error_msg;
 	}
 	public void setComponent(FormComponent component) {
 		this.component = component;
@@ -60,13 +62,13 @@ public class ComponentProperties implements PropertiesComponent {
 		.append("\nlabel: ")
 		.append(label)
 		.append("\nerror_msg: ")
-		.append(error_msg)
+		.append(errorMsg)
 		.append("\np3ptype: ")
 		.append(p3ptype)
 		.append("\nautofill key: ")
-		.append(autofill_key)
+		.append(autofillKey)
 		.append("\nhelp text: ")
-		.append(help_text)
+		.append(helpText)
 		
 		.toString();
 	}
@@ -76,30 +78,40 @@ public class ComponentProperties implements PropertiesComponent {
 	}
 	public void setP3ptype(String p3ptype) {
 		this.p3ptype = p3ptype;
-		component.update(new ConstUpdateType(ConstUpdateType.p3p_type));
+		component.update(ConstUpdateType.P3P_TYPE);
 	}
 	public void setPlainP3ptype(String p3ptype) {
 		this.p3ptype = p3ptype;
 	}
 	public String getAutofillKey() {
-		return autofill_key;
+		return autofillKey;
 	}
 	public void setAutofillKey(String autofill_key) {
 		
-		this.autofill_key = autofill_key;
-		component.update(new ConstUpdateType(ConstUpdateType.autofill_key));
+		this.autofillKey = autofill_key;
+		component.update(ConstUpdateType.AUTOFILL_KEY);
 	}
 	public void setPlainAutofillKey(String autofill_key) {
-		this.autofill_key = autofill_key;
+		this.autofillKey = autofill_key;
 	}
 	public LocalizedStringBean getHelpText() {
-		return help_text;
+		return helpText;
 	}
 	public void setHelpText(LocalizedStringBean help_text) {
-		this.help_text = help_text;
-		component.update(new ConstUpdateType(ConstUpdateType.help_text));
+		this.helpText = help_text;
+		component.update(ConstUpdateType.HELP_TEXT);
 	}
 	public void setPlainHelpText(LocalizedStringBean help_text) {
-		this.help_text = help_text;
+		this.helpText = help_text;
+	}
+	public String getVariableName() {
+		return variableName;
+	}
+	public void setVariableName(String variableName) {
+		this.variableName = "".equals(variableName) ? null : variableName;
+		component.update(ConstUpdateType.VARIABLE_NAME);
+	}
+	public void setPlainVariableName(String variableName) {
+		this.variableName = "".equals(variableName) ? null : variableName;
 	}
 }

@@ -7,9 +7,9 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public interface XFormsManagerDocument extends XFormsManagerContainer {
 
@@ -27,4 +27,5 @@ public interface XFormsManagerDocument extends XFormsManagerContainer {
 
 	public abstract void update(FormComponent component, ConstUpdateType what);
 
+	public abstract String getSubmissionAction(FormComponent component);
 }

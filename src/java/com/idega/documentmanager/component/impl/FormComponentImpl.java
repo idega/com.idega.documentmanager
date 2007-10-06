@@ -22,9 +22,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -126,6 +126,7 @@ public class FormComponentImpl implements FormComponent, Component {
 		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings(this));
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(this));
 		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
+		properties.setPlainVariableName(getXFormsManager().getVariableName(this));
 	}
 	
 	protected void changeBindNames() {
@@ -267,33 +268,34 @@ public class FormComponentImpl implements FormComponent, Component {
 		
 		getXFormsManager().update(this, what);
 		
-		int update = what.getUpdateType();
-		
-		switch (update) {
-		case ConstUpdateType.label:
+		switch (what) {
+		case LABEL:
 			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			changeBindNames();
 			break;
 			
-		case ConstUpdateType.error_msg:
+		case ERROR_MSG:
 			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			break;
 			
-		case ConstUpdateType.help_text:
+		case HELP_TEXT:
 			getHtmlManager().clearHtmlComponents(this);
 			formDocument.setFormDocumentModified(true);
 			break;
 			
-		case ConstUpdateType.constraint_required:
+		case CONSTRAINT_REQUIRED:
 			formDocument.setFormDocumentModified(true);
 			break;
 			
-		case ConstUpdateType.p3p_type:
+		case P3P_TYPE:
 			break;
 			
-		case ConstUpdateType.autofill_key:
+		case AUTOFILL_KEY:
+			break;
+			
+		case VARIABLE_NAME:
 			break;
 
 		default:

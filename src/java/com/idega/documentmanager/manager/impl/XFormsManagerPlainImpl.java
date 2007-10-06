@@ -11,9 +11,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsManagerPlain {
 
@@ -22,11 +22,9 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 		
 		super.update(component, what);
 		
-		int update = what.getUpdateType();
-		
-		switch (update) {
+		switch (what) {
 			
-		case ConstUpdateType.text:
+		case TEXT:
 			updateText(component);
 			break;
 

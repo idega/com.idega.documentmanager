@@ -5,8 +5,9 @@ import com.idega.documentmanager.component.beans.LocalizedItemsetBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class ComponentPropertiesSelect extends ComponentProperties implements PropertiesSelect {
 	
@@ -32,7 +33,7 @@ public class ComponentPropertiesSelect extends ComponentProperties implements Pr
 	 */
 	public void setExternalDataSrc(String external_data_src) {
 		this.external_data_src = external_data_src;
-		component.update(new ConstUpdateType(ConstUpdateType.external_data_src));
+		component.update(ConstUpdateType.EXTERNAL_DATA_SRC);
 	}
 	public void setExternalDataSrcPlain(String external_data_src) {
 		this.external_data_src = external_data_src;
@@ -46,7 +47,7 @@ public class ComponentPropertiesSelect extends ComponentProperties implements Pr
 			throw new IllegalArgumentException("Neither LOCAL_DATA_SRC, nor EXTERNAL_DATA_SRC provided.");
 		
 		this.data_src_used = data_src_used;
-		component.update(new ConstUpdateType(ConstUpdateType.data_src_used));
+		component.update(ConstUpdateType.DATA_SRC_USED);
 	}
 	public void setDataSrcUsedPlain(Integer data_src_used) {
 		

@@ -22,9 +22,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -348,31 +348,33 @@ public class XFormsManagerImpl implements XFormsManager {
 	
 	public void update(FormComponent component, ConstUpdateType what) {
 		
-		int update = what.getUpdateType();
-		
-		switch (update) {
-		case ConstUpdateType.label:
+		switch (what) {
+		case LABEL:
 			updateLabel(component);
 			break;
 			
-		case ConstUpdateType.error_msg:
+		case ERROR_MSG:
 			updateErrorMsg(component);
 			break;
 			
-		case ConstUpdateType.help_text:
+		case HELP_TEXT:
 			updateHelpText(component);
 			break;
 			
-		case ConstUpdateType.constraint_required:
+		case CONSTRAINT_REQUIRED:
 			updateConstraintRequired(component);
 			break;
 			
-		case ConstUpdateType.p3p_type:
+		case P3P_TYPE:
 			updateP3pType(component);
 			break;
 			
-		case ConstUpdateType.autofill_key:
+		case AUTOFILL_KEY:
 			updateAutofillKey(component);
+			break;
+			
+		case VARIABLE_NAME:
+			updateVariableName(component);
 			break;
 
 		default:
@@ -702,6 +704,21 @@ public class XFormsManagerImpl implements XFormsManager {
 			xformsComponentDataBean.getBind().setAttribute(FormManagerUtil.p3ptype_att, p3ptype);
 	}
 	
+	protected void updateVariableName(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		
+		if(xformsComponentDataBean.getNodeset() == null)
+			return;
+		
+		PropertiesComponent props = component.getProperties();
+		
+		if(props.getVariableName() == null)
+			xformsComponentDataBean.getNodeset().removeAttribute(FormManagerUtil.mapping_att);
+		else
+			xformsComponentDataBean.getNodeset().setAttribute(FormManagerUtil.mapping_att, props.getVariableName());
+	}
+	
 	protected void updateAutofillKey(FormComponent component) {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
@@ -790,6 +807,16 @@ public class XFormsManagerImpl implements XFormsManager {
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		return FormManagerUtil.getHelpTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getFormDocument().getXformsDocument());
+	}
+	
+	public String getVariableName(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		
+		if(xformsComponentDataBean.getNodeset() != null)
+			return xformsComponentDataBean.getNodeset().getAttribute(FormManagerUtil.mapping_att);
+		
+		return null;
 	}
 	
 	public void loadConfirmationElement(FormComponent component, FormComponentPage confirmation_page) {

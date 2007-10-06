@@ -17,9 +17,11 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
- * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
  * 
+ *  Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * 
+ * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
+ * @version $Revision: 1.2 $
  */
 public class LocalizedItemsetBean {
 	
@@ -175,7 +177,7 @@ public class LocalizedItemsetBean {
 			itemsets.put(locale, items);
 		}
 		
-		component.update(new ConstUpdateType(ConstUpdateType.itemset));
+		component.update(ConstUpdateType.ITEMSET);
 	}
 	
 	public void setComponentsXFormsDocument(Document components_xforms) {

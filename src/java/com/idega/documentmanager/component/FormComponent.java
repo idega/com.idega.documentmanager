@@ -6,10 +6,10 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.context.DMContext;
 
 /**
- * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.3 $
  *
+ * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
  */
 public interface FormComponent {
 
