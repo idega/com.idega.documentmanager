@@ -10,9 +10,9 @@
   </parent>
   <packaging>jar</packaging>
   <groupId>com.idega.block.platform</groupId>
-  <name>idegaWeb Document Manager</name>
   <artifactId>com.idega.documentmanager</artifactId>
-  <version>4.0-SNAPSHOT</version>
+  <name>idegaWeb Document Manager</name>
+  <version>${com.idega.block.platform-com.idega.documentmanager-version}</version>
   <inceptionYear>2006</inceptionYear>
   <description>idegaWeb Document Manager is responsible for managing xforms document</description>
   <scm>
