@@ -35,9 +35,9 @@ import com.idega.util.xml.NamespaceContextImpl;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 10:52:00 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -128,18 +128,29 @@ public class FormManagerUtil {
 	private static XPathExpression formIdElementExp;
 	private static XPathExpression submissionElementExp;
 	private static XPathExpression formTitleOutputElementExp;
+	private static DocumentBuilderFactory factory;
 	
 	private FormManagerUtil() { }
 	
 	public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
 		
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	    factory.setNamespaceAware(true);
-	    factory.setValidating(false);
-	    factory.setAttribute("http://apache.org/xml/properties/dom/document-class-name",
-		"org.apache.xerces.dom.DocumentImpl");
+		DocumentBuilderFactory factory = getDocumentBuilderFactory();
 		
-	    return factory.newDocumentBuilder();
+		synchronized (factory) {
+			return factory.newDocumentBuilder();
+		}
+	}
+	
+	private static synchronized DocumentBuilderFactory getDocumentBuilderFactory() {
+	
+		if(factory == null) {
+			factory = DocumentBuilderFactory.newInstance();
+		    factory.setNamespaceAware(true);
+		    factory.setValidating(false);
+		    factory.setAttribute("http://apache.org/xml/properties/dom/document-class-name",
+			"org.apache.xerces.dom.DocumentImpl");
+		}
+		return factory;
 	}
 	
 	/**
@@ -863,9 +874,7 @@ public class FormManagerUtil {
 	public static void main(String[] args) {
 		
 		try {
-			DocumentBuilderFactory docBuilder = DocumentBuilderFactory.newInstance();
-			docBuilder.setNamespaceAware(true);
-			DocumentBuilder db = docBuilder.newDocumentBuilder();
+			DocumentBuilder db = getDocumentBuilder();
 			Document doc = db.parse("/Users/civilis/dev/workspace/eplatform-4/com.idega.documentmanager/resources/templates/form-template.xhtml");
 			
 			System.out.println("document: ");

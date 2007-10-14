@@ -51,6 +51,8 @@ public interface DocumentManager {
 	
 	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc) throws NullPointerException, Exception;
 	
+	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception;
+	
 	public abstract void setPersistenceManager(PersistenceManager persistence_manager);
 	
 	public abstract void init() throws InitializationException;

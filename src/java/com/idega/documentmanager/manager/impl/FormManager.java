@@ -22,9 +22,9 @@ import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 10:52:00 $ by $Author: civilis $
  */
 public class FormManager implements DocumentManager {
 	
@@ -68,6 +68,12 @@ public class FormManager implements DocumentManager {
 	public com.idega.documentmanager.business.Document openForm(Document xforms_doc) throws NullPointerException, Exception {
 		
 		Form form = Form.loadDocument(xforms_doc, getNewDMContext());
+		return form.getDocument();
+	}
+	
+	public com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception {
+		
+		Form form = Form.loadDocument(formId, xforms_doc, getNewDMContext());
 		return form.getDocument();
 	}
 	
