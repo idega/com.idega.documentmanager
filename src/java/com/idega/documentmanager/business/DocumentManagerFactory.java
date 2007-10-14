@@ -1,6 +1,7 @@
 package com.idega.documentmanager.business;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.faces.context.FacesContext;
@@ -18,9 +19,9 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:32 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -56,19 +57,12 @@ public class DocumentManagerFactory {
 			CacheManager cacheManager = getCacheManager();
 			cacheManager.initAppContext(ctx);
 			
-			String workspaceDir = System.getProperty(DefaultIWBundle.SYSTEM_BUNDLES_RESOURCE_DIR);
-			
-			if(workspaceDir == null)
-				throw new NullPointerException("Workspace directory couldn't be resolved from system property: "+DefaultIWBundle.SYSTEM_BUNDLES_RESOURCE_DIR);
-			
-			String bundleInWorkspace = new StringBuilder(workspaceDir).append(FormManagerUtil.slash).append(IWBundleStarter.IW_BUNDLE_IDENTIFIER).append(FormManagerUtil.slash).toString();
-			
 			IWBundle bundle = iwma.getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER);
 			
 			try {
-				Document componentsXforms = getDocumentFromBundle(bundleInWorkspace, bundle, COMPONENTS_XFORMS_CONTEXT_PATH);
-				Document componentsXsd = getDocumentFromBundle(bundleInWorkspace, bundle, COMPONENTS_XSD_CONTEXT_PATH);
-				Document formXformsTemplate = getDocumentFromBundle(bundleInWorkspace, bundle, FORM_XFORMS_TEMPLATE_RESOURCES_PATH);
+				Document componentsXforms = getDocumentFromBundle(iwma, bundle, COMPONENTS_XFORMS_CONTEXT_PATH);
+				Document componentsXsd = getDocumentFromBundle(iwma, bundle, COMPONENTS_XSD_CONTEXT_PATH);
+				Document formXformsTemplate = getDocumentFromBundle(iwma, bundle, FORM_XFORMS_TEMPLATE_RESOURCES_PATH);
 				
 				documentManager.setComponentsXforms(componentsXforms);
 				documentManager.setComponentsXsd(componentsXsd);
@@ -92,20 +86,27 @@ public class DocumentManagerFactory {
 		this.documentManager = documentManager;
 	}
 	
-	private static Document getDocumentFromBundle(String bundleInWorkspace, IWBundle bundle, String pathWithinBundle) throws Exception {
+	private Document getDocumentFromBundle(IWMainApplication iwma, IWBundle bundle, String pathWithinBundle) throws Exception {
 		Document doc = null;
-		InputStream stream = null;
-		if (bundleInWorkspace != null) {
-			stream = new FileInputStream(bundleInWorkspace + pathWithinBundle);
-		}
-		else {
-			stream = bundle.getResourceInputStream(pathWithinBundle);
-		}
+		InputStream stream = getResourceInputStream(iwma, bundle, pathWithinBundle);
 
-		DocumentBuilder doc_builder = FormManagerUtil.getDocumentBuilder();
-		doc = doc_builder.parse(stream);
+		DocumentBuilder docBuilder = FormManagerUtil.getDocumentBuilder();
+		doc = docBuilder.parse(stream);
 		stream.close();
 
 		return doc;
+	}
+	
+	private InputStream getResourceInputStream(IWMainApplication iwma, IWBundle bundle, String pathWithinBundle) throws IOException {
+
+		String workspaceDir = System.getProperty(DefaultIWBundle.SYSTEM_BUNDLES_RESOURCE_DIR);
+		
+		if(workspaceDir != null) {
+			
+			String bundleInWorkspace = new StringBuilder(workspaceDir).append("/").append(IWBundleStarter.IW_BUNDLE_IDENTIFIER).append("/").toString();
+			return new FileInputStream(bundleInWorkspace + pathWithinBundle);
+		}
+						
+		return bundle.getResourceInputStream(pathWithinBundle);
 	}
 }

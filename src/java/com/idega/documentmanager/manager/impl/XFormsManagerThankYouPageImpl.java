@@ -13,9 +13,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:12 $ by $Author: civilis $
  */
 public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl implements XFormsManagerThankYouPage {
 
@@ -50,7 +50,7 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 		
 		FormManagerUtil.putLocalizedText(null, null, 
 				output,
-				component.getFormDocument().getXformsDocument(),
+				component.getContext().getXformsXmlDoc(),
 				loc_str
 		);
 	}
@@ -66,6 +66,6 @@ public class XFormsManagerThankYouPageImpl extends XFormsManagerPageImpl impleme
 		
 		Element output = (Element)outputs.item(0);
 		
-		return FormManagerUtil.getElementLocalizedStrings(output, component.getFormDocument().getXformsDocument());
+		return FormManagerUtil.getElementLocalizedStrings(output, component.getContext().getXformsXmlDoc());
 	}
 }

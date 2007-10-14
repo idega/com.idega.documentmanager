@@ -9,9 +9,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:12 $ by $Author: civilis $
  */
 public class HtmlManagerButtonImpl extends HtmlManagerImpl implements HtmlManagerButton {
 	
@@ -19,7 +19,7 @@ public class HtmlManagerButtonImpl extends HtmlManagerImpl implements HtmlManage
 	protected Element getFormHtmlComponentLocalization(FormComponent component, String loc_str) {
 		
 		Element loc_model = FormManagerUtil.getElementByIdFromDocument(
-				component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, FormManagerUtil.data_mod
+				component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, FormManagerUtil.data_mod
 		);
 		Element loc_strings = (Element)loc_model.getElementsByTagName(FormManagerUtil.loc_tag).item(0);
 		Element localized_component = (Element)component.getXformsComponentDataBean().getUnlocalizedHtmlComponent().cloneNode(true);

@@ -22,9 +22,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -56,7 +56,7 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public void render() {
 		
-		Document xforms_doc = formDocument.getXformsDocument();
+		Document xforms_doc = getContext().getXformsXmlDoc();
 		
 		if(xforms_doc == null)
 			throw new NullPointerException("Form Xforms document was not provided");

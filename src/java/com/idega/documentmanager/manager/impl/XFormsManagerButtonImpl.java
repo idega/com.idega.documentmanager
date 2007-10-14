@@ -17,9 +17,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -116,7 +116,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 					removeSetValues(component);
 				} else {
 					
-					Element setval = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+					Element setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
 					
 					if(setval == null) {
 						
@@ -125,7 +125,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 					}
 					setval.setAttribute(FormManagerUtil.ref_s_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/section[id='"+component.getParent().getParentPage().getId()+"']/@selected");
 					
-					setval = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+					setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
 					
 					if(setval == null) {
 						
@@ -142,14 +142,12 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 	
 	private void removeSetValues(FormComponent component) {
 		
-		FormDocument formDocument = component.getFormDocument();
-		
-		Element setval = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+		Element setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
 		
 		if(setval != null)
 			setval.getParentNode().removeChild(setval);
 		
-		setval = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+		setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
 		
 		if(setval != null)
 			setval.getParentNode().removeChild(setval);
@@ -157,7 +155,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 	
 	private Element createSetValue(FormComponent component, boolean current) {
 
-		Document xforms_doc = component.getFormDocument().getXformsDocument();
+		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		Element set_value = xforms_doc.createElement(FormManagerUtil.setvalue_tag);
 		set_value.setAttribute("ev:event", FormManagerUtil.DOMActivate_att_val);
 		set_value.setAttribute(FormManagerUtil.value_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/class_exp[@for='"+(current ? "false" : "true")+"']/@for");

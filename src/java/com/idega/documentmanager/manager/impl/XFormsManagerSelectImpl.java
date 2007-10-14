@@ -17,9 +17,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XFormsManagerSelect {
 
@@ -101,7 +101,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		super.addComponentToDocument(component);
 		
-		Document xforms_doc = component.getFormDocument().getXformsDocument();
+		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		
 		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)component.getXformsComponentDataBean();
 		

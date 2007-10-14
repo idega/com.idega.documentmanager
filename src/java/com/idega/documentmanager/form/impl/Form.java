@@ -3,13 +3,11 @@ package com.idega.documentmanager.form.impl;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.idega.data.StringInputStream;
 import com.idega.documentmanager.business.PersistenceManager;
@@ -22,15 +20,14 @@ import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class Form {
 	
 	protected static Logger logger = Logger.getLogger(Form.class.getName());
 	
-	protected String formId;
 	protected FormDocumentImpl formDocument;
 	
 	private Locale defaultDocumentLocale;
@@ -49,24 +46,24 @@ public class Form {
 		formDocument.setFormDocument(formDocument);
 	}
 	
-	public static Form createDocument(String formId, LocalizedStringBean formName, DMContext context) throws NullPointerException, Exception {
+	public static Form createDocument(String formId, LocalizedStringBean formTitle, DMContext context) throws NullPointerException, Exception {
 
 		if(formId == null)
 			throw new NullPointerException("Form id is not provided");
 		
-		Form formDoc = new Form(context);
-		formDoc.setContext(context);
-		formDoc.formDocument.setLoad(true);
+		Form form = new Form(context);
+		form.setContext(context);
+		form.formDocument.setLoad(true);
 		
 		context.setXformsXmlDoc(context.getCacheManager().getFormXformsTemplateCopy());
+		form.loadDocumentInternal(formId);
 		
-		if(formName != null)
-			formDoc.setFormTitle(formName);
+		if(formTitle != null)
+			form.formDocument.setFormTitle(formTitle);
 		
-		formDoc.loadDocumentInternal(formId);
-		formDoc.putIdValues();
+		form.formDocument.setFormId(formId);
 
-		return formDoc;
+		return form;
 	}
 	
 	public com.idega.documentmanager.business.Document getDocument() {
@@ -74,21 +71,9 @@ public class Form {
 		return formDocument;
 	}
 	
-	protected void putIdValues() {
-		Element model = FormManagerUtil.getElementByIdFromDocument(getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, FormManagerUtil.form_id);
-		model.setAttribute(FormManagerUtil.id_att, formId);
-		
-		Element form_id_element = (Element)model.getElementsByTagName(FormManagerUtil.form_id_tag).item(0);
-		FormManagerUtil.setElementsTextNodeValue(form_id_element, formId);
-	
-	}
 	public String generateNewComponentId() {
 		
 		return FormManagerUtil.CTID+(++lastComponentId);
-	}
-	
-	public Document getXformsDocument() {
-		return getContext().getXformsXmlDoc();
 	}
 	
 	protected Map<String, FormComponent> getFormComponents() {
@@ -97,16 +82,6 @@ public class Form {
 			formComponents = new HashMap<String, FormComponent>();
 		
 		return formComponents;
-	}
-	
-	public void persist() throws Exception {
-		
-		PersistenceManager persistenceManager = getContext().getPersistenceManager();
-		
-		if(persistenceManager == null)
-			throw new NullPointerException("Persistence manager not set");
-		
-		persistenceManager.saveForm(getFormId(), getXformsDocument());
 	}
 	
 	public void setFormDocumentModified(boolean changed) {
@@ -123,9 +98,6 @@ public class Form {
 	public void setComponentsXml(Document xml) {
 		componentsXml = xml;
 	}
-	public String getFormId() {
-		return formId;
-	}
 	public Document getFormXFormsDocumentClone() {
 		return (Document)getContext().getXformsXmlDoc().cloneNode(true);
 	}
@@ -134,8 +106,7 @@ public class Form {
 		
 		Document xformsXmlDoc = getContext().getXformsXmlDoc();
 		
-		this.formId = formId != null ? formId : FormManagerUtil.getFormId(xformsXmlDoc);
-		
+		formDocument.setFormId(formId != null ? formId : FormManagerUtil.getFormId(xformsXmlDoc));
 		formDocument.setContainerElement(FormManagerUtil.getComponentsContainerElement(xformsXmlDoc));
 		formDocument.loadContainerComponents();
 		formDocument.setProperties();
@@ -146,28 +117,36 @@ public class Form {
 		if(formId == null)
 			throw new NullPointerException("Form id was not provided");
 		
-		Form formDoc = new Form(context);
-		formDoc.setContext(context);
-		formDoc.formDocument.setLoad(true);
+		Form form = new Form(context);
+		form.setContext(context);
+		form.formDocument.setLoad(true);
 		
-		Document xformsDoc = formDoc.loadXFormsDocument(formId);
+		Document xformsDoc = form.loadXFormsDocument(formId);
 		context.setXformsXmlDoc(xformsDoc);
 		
-		formDoc.loadDocumentInternal(formId);
+		form.loadDocumentInternal(formId);
 		
-		return formDoc;
+		return form;
 	}
 	
 	public static Form loadDocument(Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
 		
-		Form form_doc = new Form(context);
-		form_doc.formDocument.setLoad(true);
-		form_doc.setContext(context);
+		Form form = new Form(context);
+		form.formDocument.setLoad(true);
+		form.setContext(context);
 		context.setXformsXmlDoc(xformsXmlDoc);
 		
-		form_doc.loadDocumentInternal(null);
+		form.loadDocumentInternal(null);
 		
-		return form_doc;
+		return form;
+	}
+	
+	public static Form loadDocument(String formId, Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
+		
+		Form form = loadDocument(xformsXmlDoc, context);
+		form.formDocument.setFormId(formId);
+		
+		return form;
 	}
 	
 	protected Document loadXFormsDocument(String form_id) throws Exception {
@@ -202,30 +181,6 @@ public class Form {
 		loadDocumentInternal(null);
 	}
 	
-	public void setFormTitle(LocalizedStringBean form_name) {
-		
-		if(form_name == null)
-			throw new NullPointerException("Form name is not provided.");
-		
-		Document xformsXmlDoc = getContext().getXformsXmlDoc();
-		
-		Element title = (Element)xformsXmlDoc.getElementsByTagName(FormManagerUtil.title_tag).item(0);
-		Element output = (Element)title.getElementsByTagName(FormManagerUtil.output_tag).item(0);
-		
-		try {
-			
-			FormManagerUtil.putLocalizedText(null, null, output, xformsXmlDoc, form_name);
-			
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Could not set localized text for title element", e);
-		}
-	}
-	
-	public LocalizedStringBean getFormTitle() {
-		
-		return FormManagerUtil.getTitleLocalizedStrings(getContext().getXformsXmlDoc());
-	}
-	
 	public Locale getDefaultLocale() {
 		
 		if(defaultDocumentLocale == null)
@@ -245,7 +200,6 @@ public class Form {
 	public void clear() {
 		
 		getContext().setXformsXmlDoc(null);
-		formId = null;
 		defaultDocumentLocale = null;
 		formComponents = null;
 		componentsXml = null;

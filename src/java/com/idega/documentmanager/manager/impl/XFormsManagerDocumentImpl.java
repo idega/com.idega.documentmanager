@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
@@ -34,7 +34,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getAutofillAction() == null) {
 			
-			Document xforms_doc = component.getFormDocument().getXformsDocument();
+			Document xforms_doc = component.getContext().getXformsXmlDoc();
 			
 			Element autofill_model = 
 				FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.autofill_model_id);
@@ -61,7 +61,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 			
 			FormDocument formDocument = component.getFormDocument();
 			
-			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.head_tag, formDocument.getFormId()));
+			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, formDocument.getFormId()));
 
 			if(componentDocumentDataBean.getFormDataModel() == null)
 				throw new NullPointerException("Form model element not found. Incorrect xforms document.");
@@ -76,14 +76,13 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getSectionsVisualizationInstance() == null) {
 			
-			FormDocument formDocument = component.getFormDocument();
-		
-			Element instance = FormManagerUtil.getElementByIdFromDocument(formDocument.getXformsDocument(), FormManagerUtil.head_tag, FormManagerUtil.sections_visualization_instance_id);
+			Document xforms_doc = component.getContext().getXformsXmlDoc();
+			
+			Element instance = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.sections_visualization_instance_id);
 			
 			if(instance == null) {
 				
 				instance = FormManagerUtil.getItemElementById(CacheManager.getInstance().getComponentsXforms(), FormManagerUtil.sections_visualization_instance_item);
-				Document xforms_doc = formDocument.getXformsDocument(); 
 				instance = (Element)xforms_doc.importNode(instance, true);
 				Element data_model = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.data_mod);
 				instance = (Element)data_model.appendChild(instance);
@@ -98,7 +97,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	
 	public boolean getIsStepsVisualizationUsed(FormComponent component) {
 		
-		Document xforms_doc = component.getFormDocument().getXformsDocument();
+		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		return null != FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.body_tag, FormManagerUtil.sections_visualization_id);
 	}
 	
@@ -122,14 +121,14 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	protected void updateSubmissionAction(FormComponent component) {
 		
 		PropertiesDocument props = (PropertiesDocument)component.getProperties();
-		Element submissionElement = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
+		Element submissionElement = FormManagerUtil.getSubmissionElement(component.getContext().getXformsXmlDoc());
 		submissionElement.setAttribute(FormManagerUtil.action_att, props.getSubmissionAction());
 	}
 	
 	protected void updateStepsVisualizationUsed(FormComponent component) {
 		
 		PropertiesDocument props = (PropertiesDocument)component.getProperties();
-		Document xforms_doc = component.getFormDocument().getXformsDocument();
+		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		
 		if(props.isStepsVisualizationUsed()) {
 
@@ -172,7 +171,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	
 	public String getSubmissionAction(FormComponent component) {
 		
-		Element submission = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
+		Element submission = FormManagerUtil.getSubmissionElement(component.getContext().getXformsXmlDoc());
 		return submission.getAttribute(FormManagerUtil.action_att);
 	}
 }

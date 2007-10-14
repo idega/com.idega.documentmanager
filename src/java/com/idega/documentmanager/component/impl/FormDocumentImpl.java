@@ -8,6 +8,7 @@ import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.component.Component;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
@@ -19,17 +20,20 @@ import com.idega.documentmanager.component.properties.impl.ComponentPropertiesDo
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.form.impl.Form;
 import com.idega.documentmanager.manager.XFormsManagerDocument;
+import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
 	private String confirmationPageId;
 	private String thxPageId;
+	private LocalizedStringBean formTitle;
+	private String formId;
 	private PropertiesDocument properties;
 	private List<String> registeredForLastPageIdPages;
 	
@@ -54,7 +58,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	
 	public Document getXformsDocument() {
-		return getForm().getXformsDocument();
+		return getContext().getXformsXmlDoc();
 	}
 	
 	public void setFormDocumentModified(boolean changed) {
@@ -74,12 +78,22 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	
 	public String getFormId() {
-		return getForm().getFormId();
+		
+		if(formId == null)
+			formId = FormManagerUtil.getFormId(getContext().getXformsXmlDoc());
+		
+		return formId;
+	}
+	
+	public void setFormId(String formId) {
+		
+		FormManagerUtil.setFormId(getContext().getXformsXmlDoc(), formId);
+		this.formId = formId;
 	}
 	
 	@Override
 	public String getId() {
-		return getForm().getFormId();
+		return getFormId();
 	}
 	
 	public Locale getDefaultLocale() {
@@ -119,11 +133,28 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	
 	public LocalizedStringBean getFormTitle() {
-		return getForm().getFormTitle();
+		
+		if(formTitle == null)
+			formTitle = FormManagerUtil.getFormTitle(getContext().getXformsXmlDoc());
+		
+		return formTitle;
 	}
 	
-	public void setFormTitle(LocalizedStringBean form_name) throws Exception {
-		getForm().setFormTitle(form_name);
+	protected void clearFormTitle() {
+		formTitle = null;
+	}
+	
+	protected void clearFormId() {
+		formId = null;
+	}
+	
+	public void setFormTitle(LocalizedStringBean formTitle) throws Exception {
+		
+		if(formTitle == null)
+			throw new NullPointerException("Form title is not provided.");
+		
+		FormManagerUtil.setFormTitle(getContext().getXformsXmlDoc(), formTitle);
+		this.formTitle = formTitle;
 	}
 	
 	public void rearrangeDocument() {
@@ -224,7 +255,13 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	
 	public void save() throws Exception {
-		getForm().persist();
+		
+		PersistenceManager persistenceManager = getContext().getPersistenceManager();
+		
+		if(persistenceManager == null)
+			throw new NullPointerException("Persistence manager not set");
+		
+		persistenceManager.saveForm(getFormId(), getContext().getXformsXmlDoc());
 	}
 	public Page getConfirmationPage() {
 	
@@ -280,6 +317,8 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		setConfirmationPageId(null);
 		setThxPageId(null);
 		setRegisteredForLastPageIdPages(null);
+		clearFormTitle();
+		clearFormId();
 		super.clear();
 	}
 	

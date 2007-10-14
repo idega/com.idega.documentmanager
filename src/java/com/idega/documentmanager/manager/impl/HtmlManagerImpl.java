@@ -18,9 +18,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:11 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
@@ -131,7 +131,7 @@ public class HtmlManagerImpl implements HtmlManager {
 	
 	protected Element getFormHtmlComponentLocalization(FormComponent component, String loc_str) {
 		
-		return getFormHtmlComponentLocalization(loc_str, component.getFormDocument().getXformsDocument(), component.getXformsComponentDataBean().getUnlocalizedHtmlComponent());
+		return getFormHtmlComponentLocalization(loc_str, component.getContext().getXformsXmlDoc(), component.getXformsComponentDataBean().getUnlocalizedHtmlComponent());
 	}
 	
 	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component) throws Exception {
@@ -143,7 +143,7 @@ public class HtmlManagerImpl implements HtmlManager {
 		if(components_xml == null || formDocument.isFormDocumentModified() || true) {
 			
 			ComponentsGenerator components_generator = ComponentsGeneratorImpl.getInstance();
-			Document doc_clone = (Document)formDocument.getXformsDocument().cloneNode(true);
+			Document doc_clone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
 			FormManagerUtil.modifyXFormsDocumentForViewing(doc_clone);
 			
 			components_generator.setDocument(doc_clone);

@@ -35,9 +35,9 @@ import com.idega.util.xml.NamespaceContextImpl;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -123,6 +123,11 @@ public class FormManagerUtil {
 	private static final String utf_8_encoding = "UTF-8";
 	
 	private static OutputFormat output_format;
+	
+	private static XPathExpression formInstanceModelElementExp;
+	private static XPathExpression formIdElementExp;
+	private static XPathExpression submissionElementExp;
+	private static XPathExpression formTitleOutputElementExp;
 	
 	private FormManagerUtil() { }
 	
@@ -333,14 +338,6 @@ public class FormManagerUtil {
 		}
 		
 		return loc_str_bean;
-	}
-	
-	public static LocalizedStringBean getTitleLocalizedStrings(Document xforms_doc) {
-		
-		Element title = (Element)xforms_doc.getElementsByTagName(title_tag).item(0);
-		Element output = (Element)title.getElementsByTagName(output_tag).item(0);
-		
-		return getElementLocalizedStrings(output, xforms_doc);
 	}
 	
 	public static LocalizedStringBean getLabelLocalizedStrings(Element component, Document xforms_doc) {
@@ -719,17 +716,11 @@ public class FormManagerUtil {
 		return inst_el;
 	}
 	
-	public static String getFormId(Document xforms_doc) {
-		
-		Element model = (Element)xforms_doc.getElementsByTagName(model_tag).item(0);
-		return model.getAttribute(id_att);
-	}
-	
 	public static Element getSubmissionElement(Document xformsDoc) {
 		
 		try {
 			XPathExpression exp = getSubmissionElementExp();
-			
+
 			synchronized (exp) {
 				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
 			}
@@ -739,12 +730,25 @@ public class FormManagerUtil {
 		}
 	}
 	
-	private static XPathExpression submissionElementExp;
-	
 	private static synchronized XPathExpression getSubmissionElementExp() {
 		
 		if(submissionElementExp != null)
 			return submissionElementExp;
+		
+		submissionElementExp = compileXPathForXForms("//xf:submission[@id='submit_data_submission']");
+		return submissionElementExp;
+	}
+	
+	private static synchronized XPathExpression getFormTitleOutputElementExp() {
+		
+		if(formTitleOutputElementExp != null)
+			return formTitleOutputElementExp;
+		
+		formTitleOutputElementExp = compileXPathForXForms("//h:title/xf:output");
+		return formTitleOutputElementExp;
+	}
+	
+	private static XPathExpression compileXPathForXForms(String xpathExpression) {
 		
 		try {
 			XPathFactory factory = XPathFactory.newInstance();
@@ -752,13 +756,130 @@ public class FormManagerUtil {
 
 			NamespaceContextImpl nmspCtx = new NamespaceContextImpl();
 			nmspCtx.addPrefix("xf", "http://www.w3.org/2002/xforms");
+			nmspCtx.addPrefix("h", "http://www.w3.org/1999/xhtml");
+			
 			xpath.setNamespaceContext(nmspCtx);
 			
-			submissionElementExp = xpath.compile("//xf:submission[@id='submit_data_submission']");
-			return submissionElementExp;
+			return xpath.compile(xpathExpression);
 			
 		} catch (XPathException e) {
 			throw new RuntimeException("Could not compile XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	public static void setFormTitle(Document xformsXmlDoc, LocalizedStringBean formTitle) {
+		
+		try {
+			XPathExpression exp = getFormTitleOutputElementExp();
+			Element output;
+			
+			synchronized (exp) {
+				output = (Element)exp.evaluate(xformsXmlDoc, XPathConstants.NODE);
+			}
+			
+			putLocalizedText(null, null, output, xformsXmlDoc, formTitle);
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	public static LocalizedStringBean getFormTitle(Document xformsDoc) {
+		
+		try {
+			XPathExpression exp = getFormTitleOutputElementExp();
+			Element output;
+			
+			synchronized (exp) {
+				output = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
+			}
+			
+			return getElementLocalizedStrings(output, xformsDoc);
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	private static synchronized XPathExpression getFormInstanceModelElementExp() {
+		
+		if(formInstanceModelElementExp != null)
+			return formInstanceModelElementExp;
+		
+		
+		formInstanceModelElementExp = compileXPathForXForms("//xf:model[xf:instance/@id='data-instance']");
+		return formInstanceModelElementExp;
+	}
+	
+	private static synchronized XPathExpression getFormIdElementExpForModelCtx() {
+		
+		if(formIdElementExp != null)
+			return formIdElementExp;
+		
+		
+		formIdElementExp = compileXPathForXForms("//xf:instance/data/form_id");
+		return formIdElementExp;
+	}
+	
+	public static String getFormId(Document xformsDoc) {
+		
+		try {
+			XPathExpression exp = getFormInstanceModelElementExp();
+			Element model;
+			
+			synchronized (exp) {
+				model = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
+			}
+			
+			return model.getAttribute(id_att);
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	public static void setFormId(Document xformsDoc, String formId) {
+		
+		try {
+			XPathExpression exp = getFormInstanceModelElementExp();
+			XPathExpression exp2 = getFormIdElementExpForModelCtx();
+			
+			Element model;
+			Element formIdEl;
+			
+			synchronized (exp) {
+				model = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
+				formIdEl = (Element)exp2.evaluate(xformsDoc, XPathConstants.NODE);
+			}
+			
+			model.setAttribute(FormManagerUtil.id_att, formId);
+			FormManagerUtil.setElementsTextNodeValue(formIdEl, formId);
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		try {
+			DocumentBuilderFactory docBuilder = DocumentBuilderFactory.newInstance();
+			docBuilder.setNamespaceAware(true);
+			DocumentBuilder db = docBuilder.newDocumentBuilder();
+			Document doc = db.parse("/Users/civilis/dev/workspace/eplatform-4/com.idega.documentmanager/resources/templates/form-template.xhtml");
+			
+			System.out.println("document: ");
+			
+			setFormId(doc, "XXXasdasdas");
+			
+			DOMUtil.prettyPrintDOM(doc);
+			
+			System.out.println("title: "+getFormTitle(doc));
+			
+			//DOMUtil.prettyPrintDOM(doc);
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
