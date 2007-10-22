@@ -12,6 +12,7 @@ import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.component.Component;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
+import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
@@ -24,9 +25,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -36,6 +37,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private String formId;
 	private PropertiesDocument properties;
 	private List<String> registeredForLastPageIdPages;
+	private DocumentMetaInformationManager metaInformationManager;
 	
 	private Form form;
 	
@@ -319,6 +321,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		setRegisteredForLastPageIdPages(null);
 		clearFormTitle();
 		clearFormId();
+		setMetaInformationManager(null);
 		super.clear();
 	}
 	
@@ -386,5 +389,18 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	public void setRegisteredForLastPageIdPages(
 			List<String> registeredForLastPageIdPages) {
 		this.registeredForLastPageIdPages = registeredForLastPageIdPages;
+	}
+	
+	public DocumentMetaInformationManager getMetaInformationManager() {
+		return metaInformationManager;
+	}
+
+	public void setMetaInformationManager(DocumentMetaInformationManager manager) {
+		manager.setDocumentComponent(this);
+		metaInformationManager = manager;
+	}
+
+	public Element getFormSubmissionInstanceModelElement() {
+		return FormManagerUtil.getFormInstanceModelElement(getXformsDocument());
 	}
 }

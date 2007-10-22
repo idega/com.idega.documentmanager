@@ -35,9 +35,9 @@ import com.idega.util.xml.NamespaceContextImpl;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/14 10:52:00 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -759,7 +759,7 @@ public class FormManagerUtil {
 		return formTitleOutputElementExp;
 	}
 	
-	private static XPathExpression compileXPathForXForms(String xpathExpression) {
+	public static synchronized XPathExpression compileXPathForXForms(String xpathExpression) {
 		
 		try {
 			XPathFactory factory = XPathFactory.newInstance();
@@ -843,6 +843,20 @@ public class FormManagerUtil {
 			}
 			
 			return model.getAttribute(id_att);
+				
+		} catch (XPathException e) {
+			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
+		}
+	}
+	
+	public static Element getFormInstanceModelElement(Document xformsDoc) {
+		
+		try {
+			XPathExpression exp = getFormInstanceModelElementExp();
+			
+			synchronized (exp) {
+				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
+			}
 				
 		} catch (XPathException e) {
 			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);

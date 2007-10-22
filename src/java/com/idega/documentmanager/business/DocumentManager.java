@@ -11,10 +11,10 @@ import com.idega.documentmanager.manager.impl.CacheManager;
 import com.idega.documentmanager.util.InitializationException;
 
 /**
- * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.3 $
  *
+ * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
  */
 public interface DocumentManager {
 

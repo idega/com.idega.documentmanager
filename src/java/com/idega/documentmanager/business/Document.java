@@ -5,6 +5,7 @@ import java.util.List;
 import com.idega.documentmanager.business.component.Container;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
+import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
@@ -67,4 +68,8 @@ public interface Document extends Container {
 	public abstract Page addConfirmationPage(String page_after_this_id);
 	
 	public abstract PropertiesDocument getProperties();
+	
+	public abstract void setMetaInformationManager(DocumentMetaInformationManager manager);
+	
+	public abstract DocumentMetaInformationManager getMetaInformationManager();
 }

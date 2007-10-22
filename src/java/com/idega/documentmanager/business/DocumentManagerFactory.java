@@ -19,9 +19,9 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -42,9 +42,7 @@ public class DocumentManagerFactory {
 		this.cacheManager = cacheManager;
 	}
 	public DocumentManagerFactory() { }
-	/**
-	 * @see DocumentManagerService
-	 */
+	
 	public synchronized DocumentManager newDocumentManager(FacesContext ctx) {
 		
 		DocumentManager documentManager = getDocumentManager();
