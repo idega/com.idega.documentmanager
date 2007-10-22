@@ -1,31 +1,30 @@
 package com.idega.documentmanager.business.ext;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathException;
-import javax.xml.xpath.XPathExpression;
+import java.util.Map;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.URIUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/22 20:34:37 $ by $Author: civilis $
  */
 public class SimpleCaseFormCreateDMIManager implements DocumentMetaInformationManager {
 
 	private FormDocument document;
 	private SimpleCaseFormCreateMetaInf metaInf;
 	
-	private static final String pdIdElName = "pd_id";
-	private static final String userIdElName = "user_id";
-	private static final String caseCategoryIdElName = "case_category_id";
-	private static final String caseTypeElName = "case_type_id";
+	private static final String pdIdParam = "pdId";
+	private static final String type = "simpleCaseFormCreateMetaInf";
+	private static final String userIdParam = "userId";
+	private static final String caseCategoryIdParam = "caseCatId";
+	private static final String caseTypeParam = "caseTypeId";
 	
 	public Object resolve() {
 
@@ -34,25 +33,25 @@ public class SimpleCaseFormCreateDMIManager implements DocumentMetaInformationMa
 
 		if(metaInf == null) {
 			
-			Element modelEl = document.getFormSubmissionInstanceModelElement();
-			Element el = getSimpleCasesProcessDefinitionMetaInfElement(modelEl);
+			Element submissionEl = document.getSubmissionElement();
+			String action = submissionEl.getAttribute(FormManagerUtil.action_att);
 			
-			if(el == null)
+			if(action == null || "".equals(action))
+				return null;
+			
+			URIUtil uriUtil = new URIUtil(action);
+			
+			Map<String, String> params = uriUtil.getParameters();
+			
+			if(!params.containsKey(type))
 				return null;
 			
 			SimpleCaseFormCreateMetaInf scmetaInf = new SimpleCaseFormCreateMetaInf();
-			
-			Element idEl = (Element)el.getElementsByTagName(pdIdElName).item(0);
-			scmetaInf.setProcessDefinitionId(idEl == null ? null : idEl.getTextContent());
-			
-			idEl = (Element)el.getElementsByTagName(userIdElName).item(0);
-			scmetaInf.setInitiatorId(idEl == null ? null : idEl.getTextContent());
-			
-			idEl = (Element)el.getElementsByTagName(caseCategoryIdElName).item(0);
-			scmetaInf.setCaseCategoryId(idEl == null ? null : idEl.getTextContent());
-			
-			idEl = (Element)el.getElementsByTagName(caseTypeElName).item(0);
-			scmetaInf.setCaseTypeId(idEl == null ? null : idEl.getTextContent());
+
+			scmetaInf.setProcessDefinitionId(!params.containsKey(pdIdParam) ? null : params.get(pdIdParam));
+			scmetaInf.setProcessDefinitionId(!params.containsKey(userIdParam) ? null : params.get(userIdParam));
+			scmetaInf.setProcessDefinitionId(!params.containsKey(caseCategoryIdParam) ? null : params.get(caseCategoryIdParam));
+			scmetaInf.setProcessDefinitionId(!params.containsKey(caseTypeParam) ? null : params.get(caseTypeParam));
 			
 			metaInf = scmetaInf;
 		}
@@ -73,87 +72,26 @@ public class SimpleCaseFormCreateDMIManager implements DocumentMetaInformationMa
 		if(metaInf != null && !(metaInf instanceof SimpleCaseFormCreateMetaInf))
 			throw new IllegalArgumentException("Wrong meta inf argument provided. Should be of class: "+SimpleCaseFormCreateMetaInf.class.getName()+", but got: "+metaInf.getClass().getName());
 		
-		Element modelEl = document.getFormSubmissionInstanceModelElement();
-		Element el = getSimpleCasesProcessDefinitionMetaInfElement(modelEl);
+		Element submissionEl = document.getSubmissionElement();
+		String action = submissionEl.getAttribute(FormManagerUtil.action_att);
 		
-		if(el != null)
-			el.getParentNode().removeChild(el);
+		if(action == null || "".equals(action))
+			return;
 		
 		SimpleCaseFormCreateMetaInf scmetaInf = (SimpleCaseFormCreateMetaInf)metaInf;
 		
+		URIUtil uriUtil = new URIUtil(action);
+		uriUtil.setParameter(type, "1");
+		
 		if(scmetaInf != null) {
 			
-			Document xformsDoc = document.getContext().getXformsXmlDoc();
-			
-			Element metaInfEl = xformsDoc.createElement(simpleCasesProcessDefinitionMetaInfElementName);
-			
-			Element miel = xformsDoc.createElement(userIdElName);
-			miel.setTextContent(scmetaInf.getInitiatorId() == null ? "" : scmetaInf.getInitiatorId());
-			metaInfEl.appendChild(miel);
-			miel = xformsDoc.createElement(pdIdElName);
-			miel.setTextContent(scmetaInf.getProcessDefinitionId() == null ? "" : scmetaInf.getProcessDefinitionId());
-			metaInfEl.appendChild(miel);
-			miel = xformsDoc.createElement(caseCategoryIdElName);
-			miel.setTextContent(scmetaInf.getCaseCategoryId() == null ? "" : scmetaInf.getCaseCategoryId());
-			metaInfEl.appendChild(miel);
-			miel = xformsDoc.createElement(caseTypeElName);
-			miel.setTextContent(scmetaInf.getCaseTypeId() == null ? "" : scmetaInf.getCaseTypeId());
-			metaInfEl.appendChild(miel);
-			
-			Element instance = getFormSubmissionInstanceElement(modelEl);
-			instance.appendChild(metaInfEl);
+			uriUtil.setParameter(pdIdParam, scmetaInf.getProcessDefinitionId() == null ? "" : scmetaInf.getProcessDefinitionId());
+			uriUtil.setParameter(userIdParam, scmetaInf.getInitiatorId() == null ? "" : scmetaInf.getInitiatorId());
+			uriUtil.setParameter(caseCategoryIdParam, scmetaInf.getCaseCategoryId() == null ? "" : scmetaInf.getCaseCategoryId());
+			uriUtil.setParameter(caseTypeParam, scmetaInf.getCaseTypeId() == null ? "" : scmetaInf.getCaseTypeId());
 		}
 		
+		submissionEl.setAttribute(FormManagerUtil.action_att, uriUtil.getUri());
 		this.metaInf = scmetaInf;
-	}
-	
-	private static XPathExpression simpleCasesProcessDefinitionMetaInfElementExp;
-	private static XPathExpression instanceElementExp;
-	private static final String simpleCasesProcessDefinitionMetaInfElementName = "simpleCasesProcessDefinitionMetaInf";
-	
-	private static synchronized XPathExpression getFormSubmissionInstanceElementExp() {
-		
-		if(instanceElementExp != null)
-			return instanceElementExp;
-		
-		instanceElementExp = FormManagerUtil.compileXPathForXForms("//xf:instance/data");
-		return instanceElementExp;
-	}
-	
-	private static synchronized XPathExpression getSimpleCasesProcessDefinitionMetaInfElementExp() {
-		
-		if(simpleCasesProcessDefinitionMetaInfElementExp != null)
-			return simpleCasesProcessDefinitionMetaInfElementExp;
-		
-		simpleCasesProcessDefinitionMetaInfElementExp = FormManagerUtil.compileXPathForXForms("//"+simpleCasesProcessDefinitionMetaInfElementName);
-		return simpleCasesProcessDefinitionMetaInfElementExp;
-	}
-	
-	public static Element getSimpleCasesProcessDefinitionMetaInfElement(Element submissionModelEl) {
-		
-		try {
-			XPathExpression exp = getSimpleCasesProcessDefinitionMetaInfElementExp();
-			
-			synchronized (exp) {
-				return (Element)exp.evaluate(submissionModelEl, XPathConstants.NODE);
-			}
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
-	}
-	
-	public static Element getFormSubmissionInstanceElement(Element submissionModelEl) {
-		
-		try {
-			XPathExpression exp = getFormSubmissionInstanceElementExp();
-			
-			synchronized (exp) {
-				return (Element)exp.evaluate(submissionModelEl, XPathConstants.NODE);
-			}
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
 	}
 }

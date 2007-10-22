@@ -11,9 +11,9 @@ import com.idega.documentmanager.business.component.properties.PropertiesDocumen
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/22 20:34:37 $ by $Author: civilis $
  */
 public interface FormDocument extends FormComponentContainer {
 
@@ -41,7 +41,7 @@ public interface FormDocument extends FormComponentContainer {
 	
 	public abstract Element getFormDataModelElement();
 	
-	public abstract Element getFormSubmissionInstanceModelElement();
+	public abstract Element getSubmissionElement();
 	
 	public abstract Element getSectionsVisualizationInstanceElement();
 	
