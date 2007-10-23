@@ -11,20 +11,20 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/22 20:34:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/23 21:48:32 $ by $Author: civilis $
  */
 public class SimpleCaseFormCreateDMIManager implements DocumentMetaInformationManager {
 
 	private FormDocument document;
 	private SimpleCaseFormCreateMetaInf metaInf;
 	
-	private static final String pdIdParam = "pdId";
-	private static final String type = "simpleCaseFormCreateMetaInf";
-	private static final String userIdParam = "userId";
-	private static final String caseCategoryIdParam = "caseCatId";
-	private static final String caseTypeParam = "caseTypeId";
+	public static final String pdIdParam = "pdId";
+	public static final String type = "simpleCaseFormCreateMetaInf";
+	public static final String userIdParam = "userId";
+	public static final String caseCategoryIdParam = "caseCatId";
+	public static final String caseTypeParam = "caseTypeId";
 	
 	public Object resolve() {
 
