@@ -25,9 +25,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/10/22 20:34:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/24 15:27:37 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -402,5 +402,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 
 	public Element getSubmissionElement() {
 		return FormManagerUtil.getSubmissionElement(getXformsDocument());
+	}
+	
+	public Element getSubmissionInstanceElement() {
+		return FormManagerUtil.getFormSubmissionInstanceElement(getXformsDocument());
 	}
 }

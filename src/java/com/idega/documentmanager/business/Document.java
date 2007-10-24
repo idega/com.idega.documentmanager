@@ -2,6 +2,8 @@ package com.idega.documentmanager.business;
 
 import java.util.List;
 
+import org.w3c.dom.Element;
+
 import com.idega.documentmanager.business.component.Container;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
@@ -72,4 +74,6 @@ public interface Document extends Container {
 	public abstract void setMetaInformationManager(DocumentMetaInformationManager manager);
 	
 	public abstract DocumentMetaInformationManager getMetaInformationManager();
+	
+	public abstract Element getSubmissionInstanceElement();
 }
