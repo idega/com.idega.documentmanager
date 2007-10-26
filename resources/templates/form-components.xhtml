@@ -12,7 +12,6 @@
 			<text /> 
 			<email /> 
 			<textarea />
-			<rich_textarea />
 			<secret />
 			<multiple_select_minimal />
 			<single_select_minimal />
@@ -20,11 +19,6 @@
 			<single_select /> 
 			<upload_file><attachment filename="" content-type="" /></upload_file> 
 			<page /> 
-			<multi_upload>
-            	<file filename="" mediatype="" />
-                <file filename="" mediatype="" />
-                <file filename="" mediatype="" />
-            </multi_upload>
 		</data>
 	</xf:instance>
 	<xf:instance id="control-instance">
@@ -39,7 +33,6 @@
     </xf:instance>
 	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
-	<xf:bind id="rich_textarea" nodeset="rich_textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
 	<xf:bind id="multiple_select_minimal" nodeset="multiple_select_minimal"
 		type="string" />
@@ -52,9 +45,6 @@
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
-	<xf:bind id="multi_upload" nodeset="multi_upload">
-		<xf:bind nodeset="file" type="xs:anyURI"/>
-	</xf:bind>
 
 </xf:model>
 <xf:model id="data_model">

@@ -25,9 +25,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/10/24 15:27:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/26 12:42:00 $ by $Author: alexis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -396,7 +396,8 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 
 	public void setMetaInformationManager(DocumentMetaInformationManager manager) {
-		manager.setDocumentComponent(this);
+		if(manager != null)
+			manager.setDocumentComponent(this);
 		metaInformationManager = manager;
 	}
 
