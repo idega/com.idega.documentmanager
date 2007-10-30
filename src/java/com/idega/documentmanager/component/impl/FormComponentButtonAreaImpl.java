@@ -13,32 +13,32 @@ import com.idega.documentmanager.component.FormComponentPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:31 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public class FormComponentButtonAreaImpl extends FormComponentContainerImpl implements ButtonArea, FormComponentButtonArea {
 
 	protected Map<String, String> buttons_type_id_mapping;
 
-	public Button getButton(ConstButtonType button_type) {
+	public Button getButton(ConstButtonType buttonType) {
 
-		if(button_type == null)
+		if(buttonType == null)
 			throw new NullPointerException("Button type provided null");
 		
-		return !getButtonsTypeIdMapping().containsKey(button_type.getButtonType()) ? null : 
-			(Button)getContainedComponent(getButtonsTypeIdMapping().get(button_type.getButtonType()));
+		return !getButtonsTypeIdMapping().containsKey(buttonType) ? null : 
+			(Button)getContainedComponent(getButtonsTypeIdMapping().get(buttonType));
 	}
 	
-	public Button addButton(ConstButtonType button_type, String component_after_this_id) throws NullPointerException {
+	public Button addButton(ConstButtonType buttonType, String componentAfterThisId) throws NullPointerException {
 		
-		if(button_type == null)
+		if(buttonType == null)
 			throw new NullPointerException("Button type provided null");
 		
-		if(getButtonsTypeIdMapping().containsKey(button_type))
-			throw new IllegalArgumentException("Button by type provided: "+button_type+" already exists in the button area, remove first");
+		if(getButtonsTypeIdMapping().containsKey(buttonType))
+			throw new IllegalArgumentException("Button by type provided: "+buttonType+" already exists in the button area, remove first");
 		
-		return (Button)addComponent(button_type.getButtonType(), component_after_this_id);
+		return (Button)addComponent(buttonType.toString(), componentAfterThisId);
 	}
 	
 	protected Map<String, String> getButtonsTypeIdMapping() {
@@ -65,12 +65,12 @@ public class FormComponentButtonAreaImpl extends FormComponentContainerImpl impl
 	}
 	public void setPageSiblings(FormComponentPage previous, FormComponentPage next) {
 		
-		FormComponentButton button = (FormComponentButton)getButton(new ConstButtonType(ConstButtonType.previous_page_button));
+		FormComponentButton button = (FormComponentButton)getButton(ConstButtonType.PREVIOUS_PAGE_BUTTON);
 		
 		if(button != null)
 			button.setSiblingsAndParentPages(previous, next);
 		
-		button = (FormComponentButton)getButton(new ConstButtonType(ConstButtonType.next_page_button));
+		button = (FormComponentButton)getButton(ConstButtonType.NEXT_PAGE_BUTTON);
 		
 		if(button != null)
 			button.setSiblingsAndParentPages(previous, next);
@@ -87,7 +87,7 @@ public class FormComponentButtonAreaImpl extends FormComponentContainerImpl impl
 	
 	public void announceLastPage(String last_page_id) {
 		
-		FormComponentButton submit_button = (FormComponentButton)getButton(new ConstButtonType(ConstButtonType.submit_form_button));
+		FormComponentButton submit_button = (FormComponentButton)getButton(ConstButtonType.SUBMIT_FORM_BUTTON);
 		
 		if(submit_button == null)
 			return;

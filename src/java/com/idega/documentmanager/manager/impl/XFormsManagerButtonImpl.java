@@ -1,7 +1,9 @@
 package com.idega.documentmanager.manager.impl;
 
+import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.business.component.ConstButtonType;
@@ -14,14 +16,17 @@ import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.impl.FormComponentFactory;
 import com.idega.documentmanager.manager.XFormsManagerButton;
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
+	
+	private static final String actionTaken = "actionTaken";
 	
 	@Override
 	public void loadXFormsComponentFromDocument(FormComponent component, String component_id) {
@@ -68,18 +73,18 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		if(toggle_element == null)
 			toggle_element = createToggleElement(component);
 		
-		if(!component.getType().equals(ConstButtonType.reset_form_button) && toggle_element == null)
+		if(!component.getType().equals(ConstButtonType.RESET_FORM_BUTTON.toString()) && toggle_element == null)
 			throw new NullPointerException("Incorrect button: toggle element missing. Must be provided for button type: "+component.getType());
 		
-		if(component.getType().equals(ConstButtonType.previous_page_button)) {
+		if(component.getType().equals(ConstButtonType.PREVIOUS_PAGE_BUTTON.toString())) {
 			
 			renewNextPrevButtons(component, prev_button, previous, toggle_element);
 			
-		} else if(component.getType().equals(ConstButtonType.next_page_button)) {
+		} else if(component.getType().equals(ConstButtonType.NEXT_PAGE_BUTTON.toString())) {
 			
 			renewNextPrevButtons(component, next_button, next, toggle_element);
 			
-		} else if(component.getType().equals(ConstButtonType.submit_form_button)) {
+		} else if(component.getType().equals(ConstButtonType.SUBMIT_FORM_BUTTON.toString())) {
 
 			FormDocument formDocument = component.getFormDocument();
 			
@@ -189,5 +194,93 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		
 		((ComponentButtonDataBean)xformsComponentDataBean).setToggleElement(toggle_element);
 		return toggle_element;
+	}
+	
+	/**
+	 * Creates xf:setvalue element for button element (if doesn't exist already), fills it's text content with referAction parameter value.
+	 * Creates action bind and action nodeset if doesn't exist.
+	 * 
+	 * @param component - current button component
+	 * @param referAction - action information to insert to setvalue text content. If referAction == null, 
+	 * xf:setvalue element is removed and the check for any additional action references is performed. 
+	 * If no found, the action bind and action nodeset are removed as well.
+	 */
+	public void setReferAction(FormComponent component, String referAction) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Element buttonElement = xformsComponentDataBean.getElement();
+		
+		if(referAction == null)
+			removeReferAction(buttonElement);
+		else
+			createReferAction(buttonElement, referAction);
+	}
+	
+	private void removeReferAction(Element buttonElement) {
+		
+		Element setValueEl = getReferActionSetValueElement(buttonElement);
+		
+		if(setValueEl == null)
+			return;
+	}
+	
+	private void createReferAction(Element buttonElement, String referAction) {
+		
+		Element setValueEl = getReferActionSetValueElement(buttonElement);
+		
+		if(setValueEl == null) {
+			
+			setValueEl = buttonElement.getOwnerDocument().createElement(FormManagerUtil.setvalue_tag);
+			setValueEl.setAttribute(FormManagerUtil.bind_att, actionTaken);
+			setValueEl.setAttribute(FormManagerUtil.event_att, FormManagerUtil.DOMActivate_att_val);
+			
+			if(!DOMUtil.hasElementChildren(buttonElement)) {
+				buttonElement.appendChild(setValueEl);
+				
+			} else {
+				
+				Element elToAppendAfter = getLabelElement(buttonElement);
+				
+				if(elToAppendAfter == null)
+					elToAppendAfter = DOMUtil.getFirstChildElement(buttonElement);
+				
+				Element next = DOMUtil.getNextSiblingElement(elToAppendAfter);
+				
+				if(next != null)
+					buttonElement.insertBefore(setValueEl, next);
+				else
+					buttonElement.appendChild(setValueEl);
+			}
+		}
+		
+		setValueEl.setTextContent(referAction);
+	}
+	
+	public String getReferAction(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Element buttonElement = xformsComponentDataBean.getElement();
+		Element setValueEl = getReferActionSetValueElement(buttonElement);
+		
+		return setValueEl == null ? null : setValueEl.getTextContent();
+	}
+	
+	private XPathUtil referActionSetValueElementXPath;
+	private XPathUtil labelElementXPath;
+	
+	private synchronized Element getReferActionSetValueElement(Node context) {
+		
+		if(referActionSetValueElementXPath == null)
+			referActionSetValueElementXPath = new XPathUtil(new StringBuilder("//xf:setvalue[@bind='").append(actionTaken).append("']").toString());
+		
+		return (Element)referActionSetValueElementXPath.getNode(context);
+	}
+	
+	private synchronized Element getLabelElement(Node context) {
+		
+		if(labelElementXPath == null)
+			labelElementXPath = new XPathUtil("//xf:label");
+		
+		return (Element)labelElementXPath.getNode(context);
 	}
 }

@@ -16,11 +16,6 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathException;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -31,13 +26,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
-import com.idega.util.xml.NamespaceContextImpl;
+import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/10/24 15:27:37 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -124,11 +119,11 @@ public class FormManagerUtil {
 	
 	private static OutputFormat output_format;
 	
-	private static XPathExpression formInstanceModelElementExp;
-	private static XPathExpression formSubmissionInstanceElementExp;
-	private static XPathExpression formIdElementExp;
-	private static XPathExpression submissionElementExp;
-	private static XPathExpression formTitleOutputElementExp;
+	private static XPathUtil formInstanceModelElementXPath;
+	private static XPathUtil formIdElementXPath;
+	private static XPathUtil formSubmissionInstanceElementXPath;
+	private static XPathUtil submissionElementXPath;
+	private static XPathUtil formTitleOutputElementXPath;
 	private static DocumentBuilderFactory factory;
 	
 	private FormManagerUtil() { }
@@ -728,186 +723,71 @@ public class FormManagerUtil {
 		return inst_el;
 	}
 	
-	public static Element getSubmissionElement(Document xformsDoc) {
-		
-		try {
-			XPathExpression exp = getSubmissionElementExp();
-
-			synchronized (exp) {
-				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
-	}
-	
-	private static synchronized XPathExpression getSubmissionElementExp() {
-		
-		if(submissionElementExp != null)
-			return submissionElementExp;
-		
-		submissionElementExp = compileXPathForXForms("//xf:submission[@id='submit_data_submission']");
-		return submissionElementExp;
-	}
-	
-	private static synchronized XPathExpression getFormTitleOutputElementExp() {
-		
-		if(formTitleOutputElementExp != null)
-			return formTitleOutputElementExp;
-		
-		formTitleOutputElementExp = compileXPathForXForms("//h:title/xf:output");
-		return formTitleOutputElementExp;
-	}
-	
-	public static synchronized XPathExpression compileXPathForXForms(String xpathExpression) {
-		
-		try {
-			XPathFactory factory = XPathFactory.newInstance();
-			XPath xpath = factory.newXPath();
-
-			NamespaceContextImpl nmspCtx = new NamespaceContextImpl();
-			nmspCtx.addPrefix("xf", "http://www.w3.org/2002/xforms");
-			nmspCtx.addPrefix("h", "http://www.w3.org/1999/xhtml");
-			
-			xpath.setNamespaceContext(nmspCtx);
-			
-			return xpath.compile(xpathExpression);
-			
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not compile XPath expression: " + e.getMessage(), e);
-		}
-	}
-	
 	public static void setFormTitle(Document xformsXmlDoc, LocalizedStringBean formTitle) {
 		
-		try {
-			XPathExpression exp = getFormTitleOutputElementExp();
-			Element output;
-			
-			synchronized (exp) {
-				output = (Element)exp.evaluate(xformsXmlDoc, XPathConstants.NODE);
-			}
-			
-			putLocalizedText(null, null, output, xformsXmlDoc, formTitle);
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
+		Element output = getFormTitleOutputElement(xformsXmlDoc);
+		putLocalizedText(null, null, output, xformsXmlDoc, formTitle);
 	}
 	
 	public static LocalizedStringBean getFormTitle(Document xformsDoc) {
 		
-		try {
-			XPathExpression exp = getFormTitleOutputElementExp();
-			Element output;
-			
-			synchronized (exp) {
-				output = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-			
-			return getElementLocalizedStrings(output, xformsDoc);
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
+		Element output = getFormTitleOutputElement(xformsDoc);
+		return getElementLocalizedStrings(output, xformsDoc);
 	}
 	
-	private static synchronized XPathExpression getFormInstanceModelElementExp() {
+	public static synchronized Element getFormInstanceModelElement(Document context) {
 		
-		if(formInstanceModelElementExp != null)
-			return formInstanceModelElementExp;
+		if(formInstanceModelElementXPath == null)
+			formInstanceModelElementXPath = new XPathUtil("//xf:model[xf:instance/@id='data-instance']");
 		
-		
-		formInstanceModelElementExp = compileXPathForXForms("//xf:model[xf:instance/@id='data-instance']");
-		return formInstanceModelElementExp;
+		return (Element)formInstanceModelElementXPath.getNode(context);
 	}
 	
-	private static synchronized XPathExpression getFormIdElementExpForModelCtx() {
+	private static synchronized Element getFormIdElement(Node context) {
 		
-		if(formIdElementExp != null)
-			return formIdElementExp;
+		if(formIdElementXPath == null)
+			formIdElementXPath = new XPathUtil("//xf:instance/data/form_id");
 		
-		
-		formIdElementExp = compileXPathForXForms("//xf:instance/data/form_id");
-		return formIdElementExp;
+		return (Element)formIdElementXPath.getNode(context);
 	}
 	
-	private static synchronized XPathExpression getFormSubmissionInstanceElementExp() {
+	public static synchronized Element getSubmissionElement(Document context) {
 		
-		if(formSubmissionInstanceElementExp != null)
-			return formSubmissionInstanceElementExp;
+		if(submissionElementXPath == null)
+			submissionElementXPath = new XPathUtil("//xf:submission[@id='submit_data_submission']");
 		
+		return (Element)submissionElementXPath.getNode(context);
+	}
+	
+	public static synchronized Element getFormSubmissionInstanceElement(Document context) {
 		
-		formSubmissionInstanceElementExp = compileXPathForXForms("//xf:instance[@id='data-instance']");
-		return formSubmissionInstanceElementExp;
+		if(formSubmissionInstanceElementXPath == null)
+			formSubmissionInstanceElementXPath = new XPathUtil("//xf:instance[@id='data-instance']");
+		
+		return (Element)formSubmissionInstanceElementXPath.getNode(context);
+	}
+	
+	private static synchronized Element getFormTitleOutputElement(Node context) {
+		
+		if(formTitleOutputElementXPath == null)
+			formTitleOutputElementXPath = new XPathUtil("//h:title/xf:output");
+		
+		return (Element)formTitleOutputElementXPath.getNode(context);
 	}
 	
 	public static String getFormId(Document xformsDoc) {
 		
-		try {
-			XPathExpression exp = getFormInstanceModelElementExp();
-			Element model;
-			
-			synchronized (exp) {
-				model = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-			
-			return model.getAttribute(id_att);
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
-	}
-	
-	public static Element getFormSubmissionInstanceElement(Document xformsDoc) {
-		
-		try {
-			XPathExpression exp = getFormSubmissionInstanceElementExp();
-			
-			synchronized (exp) {
-				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
-	}
-	
-	public static Element getFormInstanceModelElement(Document xformsDoc) {
-		
-		try {
-			XPathExpression exp = getFormInstanceModelElementExp();
-			
-			synchronized (exp) {
-				return (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
+		Element model = getFormInstanceModelElement(xformsDoc);
+		return model.getAttribute(id_att);
 	}
 	
 	public static void setFormId(Document xformsDoc, String formId) {
 		
-		try {
-			XPathExpression exp = getFormInstanceModelElementExp();
-			XPathExpression exp2 = getFormIdElementExpForModelCtx();
-			
-			Element model;
-			Element formIdEl;
-			
-			synchronized (exp) {
-				model = (Element)exp.evaluate(xformsDoc, XPathConstants.NODE);
-				formIdEl = (Element)exp2.evaluate(xformsDoc, XPathConstants.NODE);
-			}
-			
-			model.setAttribute(FormManagerUtil.id_att, formId);
-			FormManagerUtil.setElementsTextNodeValue(formIdEl, formId);
-				
-		} catch (XPathException e) {
-			throw new RuntimeException("Could not evaluate XPath expression: " + e.getMessage(), e);
-		}
+		Element model = getFormInstanceModelElement(xformsDoc);
+		Element formIdEl = getFormIdElement(xformsDoc);
+		
+		model.setAttribute(FormManagerUtil.id_att, formId);
+		FormManagerUtil.setElementsTextNodeValue(formIdEl, formId);
 	}
 	
 	public static void main(String[] args) {
@@ -920,11 +800,25 @@ public class FormManagerUtil {
 			
 			setFormId(doc, "XXXasdasdas");
 			
-			DOMUtil.prettyPrintDOM(doc);
-			
-			System.out.println("title: "+getFormTitle(doc));
-			
 			//DOMUtil.prettyPrintDOM(doc);
+			
+//			System.out.println("title: "+getFormTitle(doc));
+//			
+//			XPathUtil util = new XPathUtil("//h:title/xf:output");
+//			DOMUtil.prettyPrintDOM(util.getNode(doc));
+
+//			xxxx
+			
+			XPathUtil util = new XPathUtil("//xf:submission[@id=$xxxx]");
+			
+			//System.out.println("1: "+util.getNode(doc));			
+			
+			util.setVariable("xxxx", "tata");
+			System.out.println("2: "+util.getNode(doc));
+			
+			util.setVariable("xxxx", "submit_data_submission");
+			System.out.println("3: "+util.getNode(doc));
+			DOMUtil.prettyPrintDOM(util.getNode(doc));
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

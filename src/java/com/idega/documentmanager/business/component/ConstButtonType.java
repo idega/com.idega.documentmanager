@@ -1,48 +1,46 @@
 package com.idega.documentmanager.business.component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
-public final class ConstButtonType {
-
-	public static final String previous_page_button = "fbcomp_button_previous";
-	public static final String next_page_button = "fbcomp_button_next";
-	public static final String reset_form_button = "fbcomp_button_reset";
-	public static final String submit_form_button = "fbcomp_button_submit";
-	private static List<String> button_types = new ArrayList<String>();
+public enum ConstButtonType {
 	
-	private String button_type;
+	PREVIOUS_PAGE_BUTTON {public String toString() { return "fbcomp_button_previous"; }},
+	NEXT_PAGE_BUTTON {public String toString() { return "fbcomp_button_next"; }},
+	SUBMIT_FORM_BUTTON {public String toString() { return "fbcomp_button_submit"; }},
+	RESET_FORM_BUTTON {public String toString() { return "fbcomp_button_reset"; }};
 	
-	static {
-		button_types.add(previous_page_button);
-		button_types.add(next_page_button);
-//		button_types.add(reset_form_button);
-		button_types.add(submit_form_button);
-	}
-	
-	public ConstButtonType(String button_type) {
+	public static Set<String> getAllTypesInStrings() {
 		
-		if(!button_types.contains(button_type))
-			throw new NullPointerException("Provided button type not supported: "+button_type);
+		return getAllStringTypesEnumsMappings().keySet();
+	}
+	
+	private static Map<String, ConstButtonType> allStringTypesEnumsMappings;
+	
+	private synchronized static Map<String, ConstButtonType> getAllStringTypesEnumsMappings() {
 		
-		this.button_type = button_type;
+		if(allStringTypesEnumsMappings == null) {
+			
+			allStringTypesEnumsMappings = new HashMap<String, ConstButtonType>();
+			
+			for (ConstButtonType type : values())
+				allStringTypesEnumsMappings.put(type.toString(), type);
+		}
+		
+		return allStringTypesEnumsMappings;
 	}
 	
-	public String getButtonType() {
-		return button_type;
+	public static ConstButtonType getByStringType(String type) {
+		
+		return getAllStringTypesEnumsMappings().get(type);
 	}
 	
-	public static List<String> getButtonTypes() {
-		return button_types;
-	}
-	
-	@Override
-	public String toString() {
-		return "button type set: "+getButtonType();
-	}
+	public abstract String toString();
 }

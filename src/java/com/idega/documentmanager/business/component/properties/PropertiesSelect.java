@@ -4,9 +4,9 @@ import com.idega.documentmanager.component.beans.LocalizedItemsetBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
- * <i><b>WARNING: </b></i>for changes to take effect, u need to use setter methods for every property change
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public interface PropertiesSelect extends PropertiesComponent {
 	

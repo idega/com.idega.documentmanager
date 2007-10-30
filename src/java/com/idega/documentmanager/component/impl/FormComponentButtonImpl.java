@@ -1,17 +1,19 @@
 package com.idega.documentmanager.component.impl;
 
 import com.idega.documentmanager.business.component.Button;
+import com.idega.documentmanager.business.component.properties.PropertiesButton;
 import com.idega.documentmanager.component.FormComponentButton;
 import com.idega.documentmanager.component.FormComponentButtonArea;
 import com.idega.documentmanager.component.FormComponentPage;
+import com.idega.documentmanager.component.properties.impl.ComponentPropertiesButton;
 import com.idega.documentmanager.manager.HtmlManagerButton;
 import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -42,5 +44,28 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 	protected HtmlManagerButton getHtmlManager() {
 		
 		return getContext().getHtmlManagerFactory().getHtmlManagerButton();
+	}
+	
+	@Override
+	public PropertiesButton getProperties() {
+		
+		if(properties == null) {
+			ComponentPropertiesButton properties = new ComponentPropertiesButton();
+			properties.setComponent(this);
+			this.properties = properties;
+		}
+		
+		return (PropertiesButton)properties;
+	}
+	
+	@Override
+	protected void setProperties() {
+		
+		super.setProperties();
+		
+		ComponentPropertiesButton properties = (ComponentPropertiesButton)getProperties();
+		XFormsManagerButton xformsManager = getXFormsManager();
+		
+		properties.setReferAction("");
 	}
 }

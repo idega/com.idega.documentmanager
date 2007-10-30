@@ -25,9 +25,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2007/10/26 12:42:00 $ by $Author: alexis $
+ * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -130,8 +130,8 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		return getForm().getXFormsDocumentSourceCode();
 	}
 	
-	public void setFormSourceCode(String new_source_code) throws Exception {
-		getForm().setXFormsDocumentSourceCode(new_source_code);
+	public void setFormSourceCode(String newSourceCode) throws Exception {
+		getForm().setXFormsDocumentSourceCode(newSourceCode);
 	}
 	
 	public LocalizedStringBean getFormTitle() {
