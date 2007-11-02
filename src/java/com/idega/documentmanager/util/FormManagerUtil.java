@@ -30,9 +30,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -59,6 +59,7 @@ public class FormManagerUtil {
 	public static final String localized_entries = "localizedEntries";
 	public static final String body_tag = "body";
 	public static final String bind_att = "bind";
+	public static final String bind_tag = "xf:bind";
 	public static final String name_att = "name";
 	public static final String schema_tag = "xs:schema";
 	public static final String form_id = "form_id";
@@ -109,6 +110,7 @@ public class FormManagerUtil {
 	public static final String set_section_vis_rel = "_set_section_vis_rel";
 	public static final String event_att = "ev:event";
 	public static final String DOMActivate_att_val = "DOMActivate";
+	public static final String xforms_namespace_uri = "http://www.w3.org/2002/xforms";
 	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
 	public static final String mapping_att = "mapping";
 	public static final String action_att = "action";
@@ -738,7 +740,7 @@ public class FormManagerUtil {
 	public static synchronized Element getFormInstanceModelElement(Document context) {
 		
 		if(formInstanceModelElementXPath == null)
-			formInstanceModelElementXPath = new XPathUtil("//xf:model[xf:instance/@id='data-instance']");
+			formInstanceModelElementXPath = new XPathUtil(".//xf:model[xf:instance/@id='data-instance']");
 		
 		return (Element)formInstanceModelElementXPath.getNode(context);
 	}
@@ -746,7 +748,7 @@ public class FormManagerUtil {
 	private static synchronized Element getFormIdElement(Node context) {
 		
 		if(formIdElementXPath == null)
-			formIdElementXPath = new XPathUtil("//xf:instance/data/form_id");
+			formIdElementXPath = new XPathUtil(".//xf:instance/data/form_id");
 		
 		return (Element)formIdElementXPath.getNode(context);
 	}
@@ -754,7 +756,7 @@ public class FormManagerUtil {
 	public static synchronized Element getSubmissionElement(Document context) {
 		
 		if(submissionElementXPath == null)
-			submissionElementXPath = new XPathUtil("//xf:submission[@id='submit_data_submission']");
+			submissionElementXPath = new XPathUtil(".//xf:submission[@id='submit_data_submission']");
 		
 		return (Element)submissionElementXPath.getNode(context);
 	}
@@ -762,7 +764,7 @@ public class FormManagerUtil {
 	public static synchronized Element getFormSubmissionInstanceElement(Document context) {
 		
 		if(formSubmissionInstanceElementXPath == null)
-			formSubmissionInstanceElementXPath = new XPathUtil("//xf:instance[@id='data-instance']");
+			formSubmissionInstanceElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']");
 		
 		return (Element)formSubmissionInstanceElementXPath.getNode(context);
 	}
@@ -770,7 +772,7 @@ public class FormManagerUtil {
 	private static synchronized Element getFormTitleOutputElement(Node context) {
 		
 		if(formTitleOutputElementXPath == null)
-			formTitleOutputElementXPath = new XPathUtil("//h:title/xf:output");
+			formTitleOutputElementXPath = new XPathUtil(".//h:title/xf:output");
 		
 		return (Element)formTitleOutputElementXPath.getNode(context);
 	}
@@ -809,16 +811,14 @@ public class FormManagerUtil {
 
 //			xxxx
 			
-			XPathUtil util = new XPathUtil("//xf:submission[@id=$xxxx]");
+//			nodesetElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data/$nodesetPath");
 			
-			//System.out.println("1: "+util.getNode(doc));			
+			XPathUtil util = new XPathUtil(".//xf:instance[@id='data-instance']/data/child::node()[name(.) = $nodesetPath]");
+			util.setVariable("nodesetPath", "form_id");
+			Element trigger = (Element)util.getNode(doc);
 			
-			util.setVariable("xxxx", "tata");
-			System.out.println("2: "+util.getNode(doc));
+			DOMUtil.prettyPrintDOM(trigger);
 			
-			util.setVariable("xxxx", "submit_data_submission");
-			System.out.println("3: "+util.getNode(doc));
-			DOMUtil.prettyPrintDOM(util.getNode(doc));
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

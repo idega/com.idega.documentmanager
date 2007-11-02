@@ -4,9 +4,9 @@ import com.idega.documentmanager.business.component.properties.PropertiesButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
  */
 public class ComponentPropertiesButton extends ComponentProperties implements PropertiesButton {
 	
@@ -17,9 +17,9 @@ public class ComponentPropertiesButton extends ComponentProperties implements Pr
 	}
 	public void setReferAction(String referAction) {
 		this.referAction = referAction;
+		component.update(ConstUpdateType.BUTTON_REFER_TO_ACTION);
 	}
 	public void setReferActionPlain(String referAction) {
-		
-		component.update(ConstUpdateType.BUTTON_REFER_TO_ACTION);
+		this.referAction = referAction;
 	}
 }

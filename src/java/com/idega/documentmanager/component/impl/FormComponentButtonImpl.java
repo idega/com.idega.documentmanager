@@ -11,9 +11,9 @@ import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -66,6 +66,6 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 		ComponentPropertiesButton properties = (ComponentPropertiesButton)getProperties();
 		XFormsManagerButton xformsManager = getXFormsManager();
 		
-		properties.setReferAction("");
+		properties.setReferAction(xformsManager.getReferAction(this));
 	}
 }
