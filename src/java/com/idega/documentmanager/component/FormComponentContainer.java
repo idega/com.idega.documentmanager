@@ -6,8 +6,9 @@ import com.idega.documentmanager.business.component.Component;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/11/03 10:49:15 $ by $Author: civilis $
  */
 public interface FormComponentContainer extends FormComponent {
 
