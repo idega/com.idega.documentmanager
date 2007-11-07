@@ -14,6 +14,7 @@ import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
 import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
+import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
@@ -25,13 +26,14 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
 	private String confirmationPageId;
+	private FormVariablesHandler formVariablesHandler;
 	private String thxPageId;
 	private LocalizedStringBean formTitle;
 	private String formId;
@@ -407,5 +409,13 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public Element getSubmissionInstanceElement() {
 		return FormManagerUtil.getFormSubmissionInstanceElement(getXformsDocument());
+	}
+	
+	public FormVariablesHandler getFormVariablesHandler() {
+		
+		if(formVariablesHandler == null)
+			formVariablesHandler = new FormVariablesHandler(getXformsDocument());
+		
+		return formVariablesHandler;
 	}
 }

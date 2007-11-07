@@ -6,13 +6,13 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public interface XFormsManagerSelect extends XFormsManager {
 
-	public abstract void loadXFormsComponentByType(FormComponent component,
+	public abstract void loadXFormsComponentByTypeFromComponentsXForm(FormComponent component,
 			String componentType) throws NullPointerException;
 
 	public abstract void addComponentToDocument(FormComponent component);

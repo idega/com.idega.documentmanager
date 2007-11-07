@@ -26,13 +26,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -95,7 +96,6 @@ public class FormManagerUtil {
 	public static final String autofill_model_id = "x-autofill-model";
 	public static final String xmlns_att = "xmlns";
 	public static final String relevant_att = "relevant";
-	public static final String xpath_false = "false()";
 	public static final String autofill_instance_ending = "_autofill-instance";
 	public static final String autofill_setvalue_ending = "-autofill-setvalue";
 	public static final String value_att = "value";
@@ -114,6 +114,9 @@ public class FormManagerUtil {
 	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
 	public static final String mapping_att = "mapping";
 	public static final String action_att = "action";
+	public static final String required_att = "required";
+	public static final String xpath_true = "true()";
+	public static final String xpath_false = "false()";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -122,10 +125,16 @@ public class FormManagerUtil {
 	private static OutputFormat output_format;
 	
 	private static XPathUtil formInstanceModelElementXPath;
+	private static XPathUtil defaultFormModelElementXPath;
+	private static XPathUtil formModelElementXPath;
 	private static XPathUtil formIdElementXPath;
 	private static XPathUtil formSubmissionInstanceElementXPath;
+	private static XPathUtil parentElementXPath;
+	private static XPathUtil instanceElementXPath;
 	private static XPathUtil submissionElementXPath;
 	private static XPathUtil formTitleOutputElementXPath;
+	private static XPathUtil instanceElementByIdXPath;
+	
 	private static DocumentBuilderFactory factory;
 	
 	private FormManagerUtil() { }
@@ -183,7 +192,7 @@ public class FormManagerUtil {
 		return DOMUtil.getElementByAttributeValue(start_element, "*", attribute_name, attribute_value);
 	}
 	
-	public static void insertNodesetElement(Document form_xforms, Element nodeset, Element new_nodeset_element) {
+	public static void insertNodesetElement(Document form_xforms, Element new_nodeset_element) {
 		
 		Element container = 
 			(Element)((Element)form_xforms
@@ -662,14 +671,14 @@ public class FormManagerUtil {
 		return Integer.parseInt(id.substring(CTID.length()));
 	}
 	
-	public static Element getComponentsContainerElement(Document xforms_doc) {
+	public static Element getComponentsContainerElement(Document xform) {
 
-		Element body_element = (Element)xforms_doc.getElementsByTagName(body_tag).item(0);
-		return (Element)body_element.getElementsByTagName(switch_tag).item(0);
+		Element bodyElement = (Element)xform.getElementsByTagName(body_tag).item(0);
+		return (Element)bodyElement.getElementsByTagName(switch_tag).item(0);
 	}
 	
 	public static boolean isEmpty(String str) {
-		return str == null || str.equals("");
+		return str == null || CoreConstants.EMPTY.equals(str);
 	}
 	
 	
@@ -745,6 +754,22 @@ public class FormManagerUtil {
 		return (Element)formInstanceModelElementXPath.getNode(context);
 	}
 	
+	public static synchronized Element getDefaultFormModelElement(Document context) {
+		
+		if(defaultFormModelElementXPath == null)
+			defaultFormModelElementXPath = new XPathUtil(".//xf:model");
+		
+		return (Element)defaultFormModelElementXPath.getNode(context);
+	}
+	
+	public static synchronized XPathUtil getFormModelElementByIdXPath() {
+		
+		if(formModelElementXPath == null)
+			formModelElementXPath = new XPathUtil(".//xf:model[@id=$modelId]");
+		
+		return formModelElementXPath;
+	}
+	
 	private static synchronized Element getFormIdElement(Node context) {
 		
 		if(formIdElementXPath == null)
@@ -767,6 +792,30 @@ public class FormManagerUtil {
 			formSubmissionInstanceElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']");
 		
 		return (Element)formSubmissionInstanceElementXPath.getNode(context);
+	}
+	
+	public static synchronized Element getParentElement(Element context) {
+		
+		if(parentElementXPath == null)
+			parentElementXPath = new XPathUtil("..");
+		
+		return (Element)parentElementXPath.getNode(context);
+	}
+	
+	public static synchronized Element getInstanceElement(Element context) {
+		
+		if(instanceElementXPath == null)
+			instanceElementXPath = new XPathUtil(".//xf:instance");
+		
+		return (Element)instanceElementXPath.getNode(context);
+	}
+	
+	public static synchronized XPathUtil getInstanceElementByIdXPath() {
+		
+		if(instanceElementByIdXPath == null)
+			instanceElementByIdXPath = new XPathUtil(".//xf:instance[@id=$instanceId]");
+		
+		return instanceElementByIdXPath;
 	}
 	
 	private static synchronized Element getFormTitleOutputElement(Node context) {
@@ -796,28 +845,16 @@ public class FormManagerUtil {
 		
 		try {
 			DocumentBuilder db = getDocumentBuilder();
-			Document doc = db.parse("/Users/civilis/dev/workspace/eplatform-4/com.idega.documentmanager/resources/templates/form-template.xhtml");
+			Document doc = db.parse("/Users/civilis/dev/workspace/eplatform-4/com.idega.documentmanager/resources/templates/form-components.xhtml");
 			
-			System.out.println("document: ");
+//			<xf:instance id="components_instance" xmlns="">
+			Element instance = (Element)(new XPathUtil(".//xf:instance[@id='components_instance']").getNode(doc));
 			
-			setFormId(doc, "XXXasdasdas");
 			
-			//DOMUtil.prettyPrintDOM(doc);
-			
-//			System.out.println("title: "+getFormTitle(doc));
-//			
-//			XPathUtil util = new XPathUtil("//h:title/xf:output");
-//			DOMUtil.prettyPrintDOM(util.getNode(doc));
-
-//			xxxx
-			
-//			nodesetElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data/$nodesetPath");
-			
-			XPathUtil util = new XPathUtil(".//xf:instance[@id='data-instance']/data/child::node()[name(.) = $nodesetPath]");
-			util.setVariable("nodesetPath", "form_id");
-			Element trigger = (Element)util.getNode(doc);
-			
-			DOMUtil.prettyPrintDOM(trigger);
+			XPathUtil nodesetElementXPath = new XPathUtil(".//node()[name(.) = $nodesetPath]");
+			nodesetElementXPath.clearVariables();
+			nodesetElementXPath.setVariable("nodesetPath", "text");
+			DOMUtil.prettyPrintDOM(nodesetElementXPath.getNode(instance));
 			
 			
 		} catch (Exception e) {

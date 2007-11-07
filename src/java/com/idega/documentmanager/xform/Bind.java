@@ -11,11 +11,11 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
-public class Bind {
+public class Bind implements Cloneable {
 
 	private static final Logger logger = Logger.getLogger(Bind.class.getName());
 	
@@ -25,15 +25,20 @@ public class Bind {
 	private Element bindElement;
 	private Nodeset nodeset;
 	private String type;
+	private String p3pType;
+	private Boolean isRequired;
 	
 	public Element getBindElement() {
 		return bindElement;
-		
 	}
 	protected void setBindElement(Element bindElement) {
 		this.bindElement = bindElement;
 	}
 	public String getId() {
+		
+		if(id == null)
+			id = getBindElement().getAttribute(FormManagerUtil.id_att);
+		
 		return id;
 	}
 	protected void setId(String id) {
@@ -44,13 +49,14 @@ public class Bind {
 		if(nodeset == null) {
 			
 			String nodesetPath = getBindElement().getAttribute(FormManagerUtil.nodeset_att);
-			if(nodesetPath == null || "".equals(nodesetPath)) {
+			
+			if(FormManagerUtil.isEmpty(nodesetPath)) {
 				
 				logger.log(Level.WARNING, "No nodeset attribute for bind element");
 				return null;
 			}
 
-			Element model = FormManagerUtil.getFormInstanceModelElement(getBindElement().getOwnerDocument());
+			Element model = FormManagerUtil.getParentElement(getBindElement());
 			nodeset = Nodeset.locate(model, nodesetPath);
 			
 			if(nodeset == null)
@@ -88,15 +94,15 @@ public class Bind {
 	 * locates bind element in the xforms document using xpath //xf:bind[@id=$bindId]
 	 * creates new Bind object, which contains bind relevant data
 	 * 
-	 * @param xform - xforms document
+	 * @param modelId - model to locate in
 	 * @param bindId - bind id
 	 * @return - Bind object, which contains bind relevant data
 	 */
-	public static Bind locate(Document xform, String bindId) {
+	public static Bind locate(Document xform, String bindId, String modelId) {
 		
-		Element model = FormManagerUtil.getFormInstanceModelElement(xform);
 		XPathUtil bindElementXPath = getBindElementXPath();
 		
+		Element model = getModel(xform, modelId);
 		Element bindElement;
 		
 		synchronized (bindElementXPath) {
@@ -116,17 +122,54 @@ public class Bind {
 		return bind;
 	}
 	
-	public static Bind create(Document xform, String bindId, Nodeset nodeset) {
+	private static final String modelIdVariable = "modelId";
+	
+	private static Element getModel(Document xform, String modelId) {
 		
-		Bind bind = locate(xform, bindId);
+		Element model;
+		
+		if(FormManagerUtil.isEmpty(modelId))
+			model = FormManagerUtil.getDefaultFormModelElement(xform);
+			
+		else {
+			
+			XPathUtil xpath = FormManagerUtil.getFormModelElementByIdXPath();
+			
+			synchronized (xpath) {
+				
+				xpath.clearVariables();
+				xpath.setVariable(modelIdVariable, modelId);
+				model = (Element)xpath.getNode(xform);
+			}
+		}
+		
+		return model;
+	}
+	
+	public static Bind load(Element bindElement) {
+		
+		if(bindElement == null)
+			return null;
+		
+		Bind bind = new Bind();
+		bind.setId(bindElement.getAttribute(FormManagerUtil.id_att));
+		bind.setBindElement(bindElement);
+		
+		return bind;
+	}
+	
+	public static Bind create(Document xform, String bindId, String modelId, Nodeset nodeset) {
+		
+		Bind bind = locate(xform, bindId, modelId);
 		
 		if(bind == null) {
 			
+			Element model = getModel(xform, modelId);
+			
 			//create
-			Element bindElement = xform.createElementNS(FormManagerUtil.xforms_namespace_uri, FormManagerUtil.bind_tag);;
+			Element bindElement = xform.createElementNS(FormManagerUtil.xforms_namespace_uri, FormManagerUtil.bind_tag);
 			bindElement.setAttribute(FormManagerUtil.id_att, bindId);
 			
-			Element model = FormManagerUtil.getFormInstanceModelElement(xform);
 			model.appendChild(bindElement);
 			
 			bind = new Bind();
@@ -151,7 +194,98 @@ public class Bind {
 	}
 	
 	public void remove() {
-		getBindElement().getParentNode().removeChild(getBindElement());
+		
+		Element bindElement = getBindElement();
+		
+//		String schemaType = bindElement.getAttribute(FormManagerUtil.type_att);
+		
+//		FIXME: perhaps remove schema type here if that's the last used or smth
+//		if(schemaType != null && schemaType.startsWith(component.getId())) {
+//			
+//			Element schema_element = (Element)xforms_doc.getElementsByTagName(FormManagerUtil.schema_tag).item(0);
+//			
+//			Element type_element_to_remove = DOMUtil.getElementByAttributeValue(schema_element, "*", FormManagerUtil.name_att, schemaType);
+//			
+//			if(type_element_to_remove != null)
+//				schema_element.removeChild(type_element_to_remove);
+//		}
+		
+		bindElement.getParentNode().removeChild(bindElement);
+		setBindElement(null);
 		id = null;
+	}
+	
+	@Override
+	public Bind clone() {
+		
+		Bind bind = new Bind();
+		bind.setBindElement((Element)(getBindElement() == null ? null : getBindElement().cloneNode(true)));
+		bind.setId(getId());
+		bind.setNodeset(getNodeset() == null ? null : getNodeset().clone());
+		
+		return bind;
+	}
+	
+	public void setIsRequired(boolean isRequired) {
+		
+		this.isRequired = isRequired;
+		
+		if(isRequired)
+			getBindElement().setAttribute(FormManagerUtil.required_att, FormManagerUtil.xpath_true);
+		else
+			getBindElement().removeAttribute(FormManagerUtil.required_att);
+	}
+	
+	public boolean isRequired() {
+		
+		if(isRequired == null) {
+			Element bind = getBindElement();
+			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && bind.getAttribute(FormManagerUtil.required_att).equals(FormManagerUtil.xpath_true);
+		}
+		
+		return isRequired;
+	}
+	
+	public void rename(String bindName) {
+		
+		Element bindElement = getBindElement();
+		
+		String prevNodeset = bindElement.getAttribute(FormManagerUtil.nodeset_att);
+		
+		if(prevNodeset.contains(FormManagerUtil.slash))
+			prevNodeset = prevNodeset.substring(prevNodeset.indexOf(FormManagerUtil.slash));
+		else
+			prevNodeset = null;
+		
+//		TODO: what's the use case of prevNodeset?
+		
+		String nodesetPath = prevNodeset == null ? bindName : bindName+prevNodeset;
+		
+		bindElement.setAttribute(FormManagerUtil.nodeset_att, nodesetPath);
+		
+		Nodeset nodeset = getNodeset();
+		
+		if(nodeset != null) {
+			Element nodesetElement = nodeset.getNodesetElement();
+			nodesetElement = (Element)nodesetElement.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), bindName);
+			nodeset.setNodesetElement(nodesetElement);
+			nodeset.setPath(nodesetPath);
+		}
+	}
+	
+	public String getP3pType() {
+		
+		if(p3pType == null)
+			p3pType = getBindElement().getAttribute(FormManagerUtil.p3ptype_att);
+		
+		return p3pType;
+	}
+	
+	public void setP3pType(String p3pType) {
+		
+		if(p3pType == null)
+			getBindElement().removeAttribute(FormManagerUtil.p3ptype_att);
+		else
+			getBindElement().setAttribute(FormManagerUtil.p3ptype_att, p3pType);
 	}
 }

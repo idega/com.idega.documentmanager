@@ -1,7 +1,5 @@
 package com.idega.documentmanager.manager.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,53 +15,12 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XFormsManagerSelect {
 
-	private static Log logger = LogFactory.getLog(XFormsManagerSelectImpl.class);
-	
-	public void loadXFormsComponentByType(FormComponent component, String componentType) throws NullPointerException {
-		
-		CacheManager cacheManager = component.getContext().getCacheManager();
-		
-		cacheManager.checkForComponentType(componentType);
-		
-		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
-
-		if(xformsComponentDataBean != null) {
-			xformsComponentDataBean = (ComponentSelectDataBean)xformsComponentDataBean.clone();
-			component.setXformsComponentDataBean(xformsComponentDataBean);
-			return;
-		}
-		
-		Document componentsXFormsXml = cacheManager.getComponentsXforms();
-		Element componentXFormsElement = FormManagerUtil.getElementByIdFromDocument(componentsXFormsXml, FormManagerUtil.body_tag, componentType);
-		
-		if(componentXFormsElement == null) {
-			String msg = "Component cannot be found in components xforms document.";
-			logger.error(msg+
-				" Should not happen. Take a look, why component is registered in components_types, but is not present in components xforms document.");
-			throw new NullPointerException(msg);
-		}
-		
-		synchronized (XFormsManagerSelectImpl.class) {
-			
-			xformsComponentDataBean = (ComponentSelectDataBean)cacheManager.getCachedXformsComponent(componentType); 
-
-			if(xformsComponentDataBean != null) {
-				xformsComponentDataBean = (ComponentSelectDataBean)xformsComponentDataBean.clone();
-				component.setXformsComponentDataBean(xformsComponentDataBean);
-				return;
-			}
-			
-			loadXFormsComponent(component, componentsXFormsXml, componentXFormsElement);
-			cacheManager.cacheXformsComponent(componentType, (ComponentSelectDataBean)component.getXformsComponentDataBean().clone());
-		}
-	}
-	
 	@Override
 	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
 		return new ComponentSelectDataBean();
@@ -72,20 +29,21 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 	private static final String local_data_source = "_lds";
 	private static final String external_data_source = "_eds";
 	
-	protected void loadXFormsComponent(FormComponent component, Document components_xforms, Element xforms_element) {
+	@Override
+	protected void loadXFormsComponentDataBean(FormComponent component, Document xform, Element componentElement) {
 		
-		super.loadXFormsComponent(component, components_xforms, xforms_element);
+		super.loadXFormsComponentDataBean(component, xform, componentElement);
 		
 		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)component.getXformsComponentDataBean();
 		
-		Element component_element = xformsComponentDataBean.getElement();
-		String component_element_id = component_element.getAttribute(FormManagerUtil.id_att);
+		componentElement = xformsComponentDataBean.getElement();
+		String componentElementId = componentElement.getAttribute(FormManagerUtil.id_att);
 		
-		Element local_data_source_instance = FormManagerUtil.getElementByIdFromDocument(components_xforms, FormManagerUtil.head_tag, getLocalDataSourceInstanceIdentifier(component_element_id));
-		Element external_data_source_instance = FormManagerUtil.getElementByIdFromDocument(components_xforms, FormManagerUtil.head_tag, getExternalDataSourceInstanceIdentifier(component_element_id));
+		Element localDataSourceInstance = FormManagerUtil.getElementByIdFromDocument(xform, FormManagerUtil.head_tag, getLocalDataSourceInstanceIdentifier(componentElementId));
+		Element externalDataSourceInstance = FormManagerUtil.getElementByIdFromDocument(xform, FormManagerUtil.head_tag, getExternalDataSourceInstanceIdentifier(componentElementId));
 		
-		xformsComponentDataBean.setLocalItemsetInstance(local_data_source_instance);
-		xformsComponentDataBean.setExternalItemsetInstance(external_data_source_instance);
+		xformsComponentDataBean.setLocalItemsetInstance(localDataSourceInstance);
+		xformsComponentDataBean.setExternalItemsetInstance(externalDataSourceInstance);
 	}
 	private String getLocalDataSourceInstanceIdentifier(String element_id) {
 	

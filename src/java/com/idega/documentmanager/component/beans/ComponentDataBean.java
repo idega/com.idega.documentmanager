@@ -6,34 +6,35 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
+import com.idega.documentmanager.xform.Bind;
+
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class ComponentDataBean implements Cloneable {
 	
 	private Element element;
-	private Element bind;
-	private Element nodeset;
-	private Element preview_element;
-	private Element key_ext_instance;
-	private Element key_setvalue;
+	private Bind bind;
+	private Element previewElement;
+	private Element keyExtInstance;
+	private Element keySetvalue;
 	
 	private Element unlocalizedHtmlComponent;
 	private Map<Locale, Element> localizedHtmlComponents;
 	
 	public Element getPreviewElement() {
-		return preview_element;
+		return previewElement;
 	}
 	public void setPreviewElement(Element preview_element) {
-		this.preview_element = preview_element;
+		this.previewElement = preview_element;
 	}
-	public Element getBind() {
+	public Bind getBind() {
 		return bind;
 	}
-	public void setBind(Element bind) {
+	public void setBind(Bind bind) {
 		this.bind = bind;
 	}
 	public Element getElement() {
@@ -42,13 +43,8 @@ public class ComponentDataBean implements Cloneable {
 	public void setElement(Element element) {
 		this.element = element;
 	}
-	public Element getNodeset() {
-		return nodeset;
-	}
-	public void setNodeset(Element nodeset) {
-		this.nodeset = nodeset;
-	}
 	
+	@Override
 	public Object clone() {
 		
 		ComponentDataBean clone = getDataBeanInstance();
@@ -57,19 +53,16 @@ public class ComponentDataBean implements Cloneable {
 			clone.setElement((Element)getElement().cloneNode(true));
 		
 		if(getBind() != null)
-			clone.setBind((Element)getBind().cloneNode(true));
-		
-		if(getNodeset() != null)
-			clone.setNodeset((Element)getNodeset().cloneNode(true));
+			clone.setBind(getBind().clone());
 		
 		if(getPreviewElement() != null)
-			clone.setNodeset((Element)getPreviewElement().cloneNode(true));
+			clone.setPreviewElement((Element)getPreviewElement().cloneNode(true));
 		
 		if(getKeyExtInstance() != null)
-			clone.setNodeset((Element)getKeyExtInstance().cloneNode(true));
+			clone.setKeyExtInstance((Element)getKeyExtInstance().cloneNode(true));
 		
 		if(getKeySetvalue() != null)
-			clone.setNodeset((Element)getKeySetvalue().cloneNode(true));
+			clone.setKeySetvalue((Element)getKeySetvalue().cloneNode(true));
 		
 		return clone;
 	}
@@ -79,16 +72,16 @@ public class ComponentDataBean implements Cloneable {
 		return new ComponentDataBean();
 	}
 	public Element getKeyExtInstance() {
-		return key_ext_instance;
+		return keyExtInstance;
 	}
 	public void setKeyExtInstance(Element key_ext_instance) {
-		this.key_ext_instance = key_ext_instance;
+		this.keyExtInstance = key_ext_instance;
 	}
 	public Element getKeySetvalue() {
-		return key_setvalue;
+		return keySetvalue;
 	}
 	public void setKeySetvalue(Element key_setvalue) {
-		this.key_setvalue = key_setvalue;
+		this.keySetvalue = key_setvalue;
 	}
 	public Element getUnlocalizedHtmlComponent() {
 		return unlocalizedHtmlComponent;

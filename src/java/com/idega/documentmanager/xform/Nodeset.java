@@ -4,38 +4,33 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/11/02 15:04:56 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
-public class Nodeset {
+public class Nodeset implements Cloneable {
 
 	private String path;
-	private String mapping;
-	private Element nodeset;
+	private Element nodesetElement;
 	
 	protected Nodeset() { }
 
 	public String getMapping() {
 		
-		if(mapping == null || "".equals(mapping))
-			mapping = getNodeset().getAttribute(FormManagerUtil.mapping_att);
-		
-		return mapping;
+		return getNodesetElement().getAttribute(FormManagerUtil.mapping_att);
 	}
 
 	public void setMapping(String mapping) {
 
 		if(mapping == null)
-			getNodeset().removeAttribute(FormManagerUtil.mapping_att);
+			getNodesetElement().removeAttribute(FormManagerUtil.mapping_att);
 		else
-			getNodeset().setAttribute(FormManagerUtil.mapping_att, mapping);
-		
-		this.mapping = mapping;
+			getNodesetElement().setAttribute(FormManagerUtil.mapping_att, mapping);
 	}
 
 	public String getPath() {
@@ -46,16 +41,19 @@ public class Nodeset {
 		this.path = path;
 	}
 	
+	private static final String instanceIdVariable = "instanceId";
+	
 	/**
 	 * locates nodeset element in xf:instance/data.
 	 * only simple path (i.e. the element name that's the child of data element) is being supported
 	 * 
-	 * @param model - parent of xf:instance
+	 * @param model - current
 	 * @param nodesetPath - only simple path (i.e. the element name that's the child of data element) is being supported
 	 * @return Nodeset object with nodeset relevant data
 	 */
 	public static Nodeset locate(Element model, String nodesetPath) {
 
+		Element instance = findInstance(model, nodesetPath);
 		XPathUtil nodesetElementXPath = getNodesetElementXPath();
 		
 		Element nodesetElement;
@@ -63,8 +61,9 @@ public class Nodeset {
 		synchronized (nodesetElementXPath) {
 			
 			nodesetElementXPath.clearVariables();
-			nodesetElementXPath.setVariable(nodesetPathVariable, nodesetPath);
-			nodesetElement = (Element)nodesetElementXPath.getNode(model);
+			nodesetElementXPath.setVariable(nodesetPathVariable, 
+					nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(nodesetPath.lastIndexOf(CoreConstants.SLASH)+1) : nodesetPath);
+			nodesetElement = (Element)nodesetElementXPath.getNode(instance);
 		}
 		
 		if(nodesetElement == null)
@@ -72,16 +71,51 @@ public class Nodeset {
 
 		Nodeset nodeset = new Nodeset();
 		nodeset.setPath(nodesetPath);
-		nodeset.setNodeset(nodesetElement);
+		nodeset.setNodesetElement(nodesetElement);
 		
 		return nodeset;
+	}
+	
+	private static Element findInstance(Element model, String nodesetPath) {
+		
+		String instanceId = nodesetPath.contains(FormManagerUtil.inst_start) ?
+				
+				nodesetPath.substring(
+					nodesetPath.indexOf(FormManagerUtil.inst_start)
+					+FormManagerUtil.inst_start.length(),
+					nodesetPath.indexOf(FormManagerUtil.inst_end)
+				)
+		: null;
+		
+		
+		if(nodesetPath.contains(FormManagerUtil.slash))
+			nodesetPath = nodesetPath.substring(0, nodesetPath.indexOf(FormManagerUtil.slash));
+		
+		Element instance;
+		
+		if(FormManagerUtil.isEmpty(instanceId)) {
+			instance = FormManagerUtil.getInstanceElement(model);
+			
+		} else {
+			
+			XPathUtil xpath = FormManagerUtil.getInstanceElementByIdXPath();
+			
+			synchronized (xpath) {
+				
+				xpath.clearVariables();
+				xpath.setVariable(instanceIdVariable, instanceId);
+				instance = (Element)xpath.getNode(model);
+			}
+		}
+		
+		return instance;
 	}
 	
 	/**
 	 * Creates nodeset element and places it under xf:instance/data element under model provided 
 	 * 
 	 * 
-	 * @param model - model to place nodeset in
+	 * @param model - instance to place nodeset in
 	 * @param nodesetPath - path of nodeset. currently supported simple nodeset element name only
 	 * @return created nodeset object
 	 */
@@ -91,17 +125,30 @@ public class Nodeset {
 		
 		if(nodeset == null) {
 			
+			Element instance = findInstance(model, nodesetPath);
 			Document xform = model.getOwnerDocument();
 			//create
 			Element nodesetElement = xform.createElement(nodesetPath);
-			Element parent = (Element)getNodesetElementParentXPath().getNode(model);
+			Element parent = (Element)getNodesetElementParentXPath().getNode(instance);
 			parent.appendChild(nodesetElement);
 			
 			nodeset = new Nodeset();
-			nodeset.setNodeset(nodesetElement);
+			nodeset.setNodesetElement(nodesetElement);
 			nodeset.setPath(nodesetPath);
 		}
 			
+		return nodeset;
+	}
+	
+	public static Nodeset append(Element model, Element nodesetElement) {
+		
+		Element instance = FormManagerUtil.getInstanceElement(model);
+		Element parent = (Element)getNodesetElementParentXPath().getNode(instance);
+		parent.appendChild(nodesetElement);
+		
+		Nodeset nodeset = new Nodeset();
+		nodeset.setNodesetElement(nodesetElement);
+		nodeset.setPath(nodesetElement.getNodeName());
 		return nodeset;
 	}
 	
@@ -110,9 +157,9 @@ public class Nodeset {
 	private static final String nodesetPathVariable = "nodesetPath";
 	
 	private static synchronized XPathUtil getNodesetElementXPath() {
-		nodesetElementXPath = null;
+		
 		if(nodesetElementXPath == null)
-			nodesetElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data/child::node()[name(.) = $nodesetPath]");
+			nodesetElementXPath = new XPathUtil(".//node()[name(.) = $nodesetPath]");
 		
 		return nodesetElementXPath;
 	}
@@ -120,22 +167,32 @@ public class Nodeset {
 	private static synchronized XPathUtil getNodesetElementParentXPath() {
 		
 		if(nodesetElementParentXPath == null)
-			nodesetElementParentXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data");
+			nodesetElementParentXPath = new XPathUtil("./data");
 		
 		return nodesetElementParentXPath;
 	}
 
-	public Element getNodeset() {
-		return nodeset;
+	public Element getNodesetElement() {
+		return nodesetElement;
 	}
 
-	protected void setNodeset(Element nodeset) {
-		this.nodeset = nodeset;
+	protected void setNodesetElement(Element nodesetElement) {
+		this.nodesetElement = nodesetElement;
 	}
 	
 	public void remove() {
 		
-		getNodeset().getParentNode().removeChild(getNodeset());
+		getNodesetElement().getParentNode().removeChild(getNodesetElement());
 		path = null;
+	}
+	
+	@Override
+	public Nodeset clone() {
+		
+		Nodeset nodeset = new Nodeset();
+		nodeset.setNodesetElement((Element)(getNodesetElement() == null ? null : getNodesetElement().cloneNode(true)));
+		nodeset.setPath(getPath());
+		
+		return nodeset;
 	}
 }

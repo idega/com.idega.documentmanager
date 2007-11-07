@@ -14,16 +14,16 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements XFormsManagerPage {
 
 	@Override
-	public void loadXFormsComponentFromDocument(FormComponent component, String component_id) {
+	public void loadXFormsComponentFromDocument(FormComponent component) {
 		
-		super.loadXFormsComponentFromDocument(component, component_id);
+		super.loadXFormsComponentFromDocument(component);
 		checkForSpecialTypes(component);
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();

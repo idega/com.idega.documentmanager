@@ -24,18 +24,19 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/11/03 10:49:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
 	private static final String actionTaken = "actionTaken";
+	private static final String bindIdVariable = "bindId";
 	
 	@Override
-	public void loadXFormsComponentFromDocument(FormComponent component, String component_id) {
+	public void loadXFormsComponentFromDocument(FormComponent component) {
 		
-		super.loadXFormsComponentFromDocument(component, component_id);
+		super.loadXFormsComponentFromDocument(component);
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
@@ -231,6 +232,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 			return;
 		
 		String bindId = setValueEl.getAttribute(FormManagerUtil.bind_att);
+		String modelId = setValueEl.getAttribute(FormManagerUtil.model_att);
 		setValueEl.getParentNode().removeChild(setValueEl);
 		
 		if(bindId == null)
@@ -243,13 +245,13 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		
 		synchronized (xutil) {
 			xutil.clearVariables();
-			xutil.setVariable("bindId", bindId);
+			xutil.setVariable(bindIdVariable, bindId);
 			bindedTo = (NodeList)xutil.getNodeset(xform);
 		}
 		
 		if(bindedTo == null || bindedTo.getLength() == 0) {
 			
-			Bind bind = Bind.locate(xform, bindId);
+			Bind bind = Bind.locate(xform, bindId, modelId);
 			if(bind != null) {
 				
 				Nodeset nodeset = bind.getNodeset();
@@ -290,20 +292,21 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 					buttonElement.appendChild(setValueEl);
 			}
 			
-			Bind bind = Bind.locate(xform, actionTaken);
+			Bind bind = Bind.locate(xform, actionTaken, null);
 			
 			if(bind == null) {
 				
-				Nodeset nodeset = Nodeset.locate(FormManagerUtil.getFormInstanceModelElement(xform), actionTaken);
+				Element modelElement = FormManagerUtil.getFormInstanceModelElement(xform);
 				
-				if(nodeset == null) {
-					
-					Element model = FormManagerUtil.getFormInstanceModelElement(xform);
-					nodeset = Nodeset.create(model, actionTaken);
-				}
+				Nodeset nodeset = Nodeset.locate(modelElement, actionTaken);
+				
+				if(nodeset == null)
+					nodeset = Nodeset.create(modelElement, actionTaken);
+				
+				nodeset.setMapping("string:"+actionTaken);
 					
 //				create
-				bind = Bind.create(xform, actionTaken, nodeset);
+				bind = Bind.create(xform, actionTaken, null, nodeset);
 				bind.setType("string");
 			}
 			

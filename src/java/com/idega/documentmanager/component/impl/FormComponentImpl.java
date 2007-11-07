@@ -3,7 +3,6 @@ package com.idega.documentmanager.component.impl;
 import java.util.List;
 import java.util.Locale;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.component.Component;
@@ -22,14 +21,15 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
-	protected FormComponent componentAfterMe;
 	private  String componentId;
+	
+	protected FormComponent componentAfterMe;
 	protected String type;
 	
 	protected FormComponentContainer parent;
@@ -38,8 +38,6 @@ public class FormComponentImpl implements FormComponent, Component {
 	protected boolean created = false;
 	protected boolean load = false;
 	
-	protected XFormsManager xforms_manager;
-	protected HtmlManager html_manager;
 	private FormDocument formDocument;
 	
 	private ComponentDataBean xformsComponentDataBean;
@@ -56,23 +54,19 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public void render() {
 		
-		Document xforms_doc = getContext().getXformsXmlDoc();
-		
-		if(xforms_doc == null)
-			throw new NullPointerException("Form Xforms document was not provided");
-		
 		if(load || !created) {
 			
-			XFormsManager xforms_manager = getXFormsManager();
+			XFormsManager xformsManager = getXFormsManager();
 			
 			if(load) {
 				
-				xforms_manager.loadXFormsComponentFromDocument(this, getId());
+				xformsManager.loadXFormsComponentFromDocument(this);
 				
 			} else {
-				xforms_manager.loadXFormsComponentByType(this, type);
-				xforms_manager.addComponentToDocument(this);
+				xformsManager.loadXFormsComponentByTypeFromComponentsXForm(this, type);
+				xformsManager.addComponentToDocument(this);
 			}
+			
 			setProperties();
 			
 			if(!load)
@@ -312,7 +306,6 @@ public class FormComponentImpl implements FormComponent, Component {
 		created = false;
 		load = false;
 		formDocument = null;
-		xforms_manager = null;
 	}
 	
 	public Element getDefaultHtmlRepresentationByType(String component_type) {
