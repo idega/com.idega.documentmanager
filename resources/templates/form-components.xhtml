@@ -81,6 +81,39 @@
 			<lockey_button_submit.label lang="en">Submit</lockey_button_submit.label>
 		</localized_strings>
 	</xf:instance>
+	
+	<xf:instance id="components-datatypes-mappings" xmlns="">
+		<componentDataTypes>
+		
+			<component component_id="fbcomp_textarea" accessSupport="rw">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbcomp_secret" accessSupport="w">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbcomp_multiple_select_minimal" accessSupport="rw">
+				<datatype>list</datatype>
+			</component>
+			<component component_id="fbcomp_single_select_minimal" accessSupport="rw">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbcomp_multiple_select" accessSupport="rw">
+				<datatype>list</datatype>
+			</component>
+			<component component_id="fbcomp_single_select" accessSupport="rw">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbcomp_email" accessSupport="rw">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbcomp_upload_file" accessSupport="w">
+				<datatype>file</datatype>
+			</component>
+			<component component_id="fbcomp_simple_text" accessSupport="r">
+				<datatype>string</datatype>
+			</component>
+		</componentDataTypes>
+	</xf:instance>
 
 	<xf:instance id="datasets_examples" xmlns="">
 		<examples> 
@@ -276,11 +309,6 @@
 		<xf:textarea bind="textarea" id="fbcomp_textarea">
 			<xf:label
 				ref="instance('localized_strings')/lockey_textarea.title[@lang=instance('localized_strings')/current_language]"
-				model="data_model" />
-		</xf:textarea>
-		<xf:textarea bind="rich_textarea" mediatype="text/html" id="fbcomp_rich_textarea">
-			<xf:label
-				ref="instance('localized_strings')/lockey_rich_textarea.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:textarea>
 		<xf:secret bind="secret" id="fbcomp_secret">
