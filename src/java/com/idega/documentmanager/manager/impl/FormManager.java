@@ -12,6 +12,8 @@ import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.component.ConstComponentCategory;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.component.datatypes.ComponentType;
+import com.idega.documentmanager.component.datatypes.ConstComponentDatatype;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.form.impl.Form;
 import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
@@ -22,9 +24,9 @@ import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/14 10:52:00 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/10 13:52:48 $ by $Author: alexis $
  */
 public class FormManager implements DocumentManager {
 	
@@ -85,6 +87,10 @@ public class FormManager implements DocumentManager {
 				: getCacheManager().getComponentTypesByCategory(category.getComponentsCategory());
 	}
 	
+	public List<ComponentType> getComponentsByDatatype(ConstComponentDatatype datatype) {
+		return getCacheManager().getComponentTypesByDatatype(datatype.getDatatype());
+	}
+	
 	public void init() throws InitializationException {
 		if(inited) {			
 			logger.log(Level.WARNING, "init(): tried to call, when already inited");
@@ -106,6 +112,7 @@ public class FormManager implements DocumentManager {
 			cacheManager.setFormXformsTemplate(getFormXformsTemplate());
 			cacheManager.setAllComponentsTypes(componentsTypes);
 			cacheManager.setCategorizedComponentTypes(FormManagerUtil.getCategorizedComponentsTypes(getComponentsXforms()));
+			cacheManager.setTypesByDatatype(FormManagerUtil.getComponentsTypesByDatatype(getComponentsXforms()));
 			cacheManager.setComponentsXforms(getComponentsXforms());
 			cacheManager.setComponentsXml(componentsXml);
 			cacheManager.setComponentsXsd(getComponentsXsd());

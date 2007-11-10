@@ -7,14 +7,16 @@ import org.w3c.dom.Document;
 
 import com.idega.documentmanager.business.component.ConstComponentCategory;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.component.datatypes.ComponentType;
+import com.idega.documentmanager.component.datatypes.ConstComponentDatatype;
 import com.idega.documentmanager.manager.impl.CacheManager;
 import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/10 13:52:24 $ by $Author: alexis $
  */
 public interface DocumentManager {
 
@@ -37,6 +39,12 @@ public interface DocumentManager {
 	 * @return List of available form components types by category
 	 */
 	public List<String> getAvailableFormComponentsTypesList(ConstComponentCategory category);
+	
+	/**
+	 * 
+	 * @return List of available form components types by datatype
+	 */
+	public List<ComponentType> getComponentsByDatatype(ConstComponentDatatype category);
 
 	/**
 	 * Open and load document by form id

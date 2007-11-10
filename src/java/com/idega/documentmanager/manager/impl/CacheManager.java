@@ -11,15 +11,16 @@ import org.w3c.dom.Element;
 
 import com.idega.core.cache.IWCacheManager2;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
+import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.documentmanager.component.impl.FormComponentFactory;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/05 12:27:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/10 13:52:48 $ by $Author: alexis $
  */
 public class CacheManager implements Singleton {
 	
@@ -31,6 +32,7 @@ public class CacheManager implements Singleton {
 	private List<String> components_types_to_list;
 	private Map<String, ComponentDataBean> cachedXformsComponents;
 	private Map<String, List<String>> categorized_types;
+	private Map<String, List<ComponentType>> typesByDatatype;
 	
 	private Map<String, Element> cachedDefaultComponentLocalizations;
 	
@@ -78,6 +80,11 @@ public class CacheManager implements Singleton {
 	public void setCategorizedComponentTypes(Map<String, List<String>> categorized) {
 		
 		categorized_types = categorized;
+	}
+	
+	public List<ComponentType> getComponentTypesByDatatype(String datatype) {
+		return typesByDatatype == null || datatype == null ? null :
+			typesByDatatype.get(datatype);
 	}
 	
 	public List<String> getComponentTypesByCategory(String category) {
@@ -177,5 +184,13 @@ public class CacheManager implements Singleton {
 	protected Map<String, Element> getCachedDefaultComponentLocalizations() {
 		
 		return cachedDefaultComponentLocalizations;
+	}
+
+	public Map<String, List<ComponentType>> getTypesByDatatype() {
+		return typesByDatatype;
+	}
+
+	public void setTypesByDatatype(Map<String, List<ComponentType>> typesByDatatype) {
+		this.typesByDatatype = typesByDatatype;
 	}
 }
