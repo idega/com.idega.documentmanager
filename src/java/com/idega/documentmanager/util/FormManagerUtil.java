@@ -26,14 +26,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/10 14:00:18 $ by $Author: alexis $
  */
 public class FormManagerUtil {
 	
@@ -114,6 +115,8 @@ public class FormManagerUtil {
 	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
 	public static final String mapping_att = "mapping";
 	public static final String action_att = "action";
+	public static final String datatype_tag = "datatype";
+	public static final String accessSupport_att = "accessSupport";
 	public static final String required_att = "required";
 	public static final String xpath_true = "true()";
 	public static final String xpath_false = "false()";
@@ -698,6 +701,41 @@ public class FormManagerUtil {
 		}
 		
 		switch_element.getParentNode().removeChild(switch_element);
+	}
+	
+	public static Map<String, List<ComponentType>> getComponentsTypesByDatatype(Document form_components_doc) {
+		
+		Element instance_element = getElementByIdFromDocument(form_components_doc, head_tag, "components-datatypes-mappings");
+		NodeList list = instance_element.getElementsByTagName("component");
+		
+		Map<String, List<ComponentType>> types = new HashMap<String, List<ComponentType>>();
+		
+		for (int i = 0; i < list.getLength(); i++) {
+			
+			Element component = (Element) list.item(i);
+			String componentId = component.getAttribute(component_id_att);
+			String accessSupport = component.getAttribute(accessSupport_att);
+			ComponentType type = new ComponentType(componentId, accessSupport);
+			
+			NodeList datatypes = component.getElementsByTagName(datatype_tag);
+			
+			for (int j = 0; j < datatypes.getLength(); j++) {
+				
+				Element datatype = (Element)datatypes.item(j);
+				String value = datatype.getTextContent();
+				
+				if(types.containsKey(value)) {
+					types.get(value).add(type);
+				} else {
+					List<ComponentType> newList = new ArrayList<ComponentType>();
+					newList.add(type);
+					types.put(value, newList);
+				}
+			}
+		}
+		
+		return types;
+		
 	}
 	
 	public static Map<String, List<String>> getCategorizedComponentsTypes(Document form_components_doc) {
