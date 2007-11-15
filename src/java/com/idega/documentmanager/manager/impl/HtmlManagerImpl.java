@@ -16,9 +16,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/11/15 09:24:14 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 15:27:32 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
@@ -45,9 +45,7 @@ public class HtmlManagerImpl implements HtmlManager {
 	
 	public void clearHtmlComponents(FormComponent component) {
 		
-		ComponentDataBean componentDataBean = component.getXformsComponentDataBean();
-		componentDataBean.getLocalizedHtmlComponents().clear();
-		componentDataBean.setUnlocalizedHtmlComponent(null);
+		component.getXformsComponentDataBean().getLocalizedHtmlComponents().clear();
 	}
 	
 	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component) throws Exception {
@@ -56,7 +54,7 @@ public class HtmlManagerImpl implements HtmlManager {
 		
 		Document componentsXml = formDocument.getComponentsXml();
 		
-		if(componentsXml == null || formDocument.isFormDocumentModified() || true) {
+		if(componentsXml == null || formDocument.isFormDocumentModified()) {
 			
 			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
 			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);

@@ -27,9 +27,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 15:27:32 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -79,7 +79,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		}
 		
 		loadXFormsComponentDataBean(component, componentsXFormsXml, componentXFormsElement);
-		//cacheManager.cacheXformsComponent(componentType, (ComponentDataBean)component.getXformsComponentDataBean().clone());
+		cacheManager.cacheXformsComponent(componentType, (ComponentDataBean)component.getXformsComponentDataBean().clone());
 	}
 	
 	public void loadXFormsComponentFromDocument(FormComponent component) {

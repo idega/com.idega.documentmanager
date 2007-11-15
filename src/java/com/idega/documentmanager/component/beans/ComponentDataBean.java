@@ -10,9 +10,9 @@ import com.idega.documentmanager.xform.Bind;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 15:27:32 $ by $Author: civilis $
  */
 public class ComponentDataBean implements Cloneable {
 	
@@ -22,7 +22,6 @@ public class ComponentDataBean implements Cloneable {
 	private Element keyExtInstance;
 	private Element keySetvalue;
 	
-	private Element unlocalizedHtmlComponent;
 	private Map<Locale, Element> localizedHtmlComponents;
 	
 	public Element getPreviewElement() {
@@ -82,12 +81,6 @@ public class ComponentDataBean implements Cloneable {
 	}
 	public void setKeySetvalue(Element key_setvalue) {
 		this.keySetvalue = key_setvalue;
-	}
-	public Element getUnlocalizedHtmlComponent() {
-		return unlocalizedHtmlComponent;
-	}
-	public void setUnlocalizedHtmlComponent(Element unlocalizedHtmlComponent) {
-		this.unlocalizedHtmlComponent = unlocalizedHtmlComponent;
 	}
 	public Map<Locale, Element> getLocalizedHtmlComponents() {
 		
