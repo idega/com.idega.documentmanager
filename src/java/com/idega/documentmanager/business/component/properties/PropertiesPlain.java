@@ -1,14 +1,16 @@
 package com.idega.documentmanager.business.component.properties;
 
+import com.idega.documentmanager.component.beans.LocalizedStringBean;
+
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public interface PropertiesPlain extends PropertiesComponent {
 
-	public abstract String getText();
-		
-	public abstract void setText(String text);
+	public abstract LocalizedStringBean getText();
+
+	public abstract void setText(LocalizedStringBean text);
 }

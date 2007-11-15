@@ -1,14 +1,15 @@
 package com.idega.documentmanager.business.component.properties;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.jbpm.def.Variable;
 
 /**
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
@@ -36,7 +37,9 @@ public interface PropertiesComponent {
 	
 	public abstract void setHelpText(LocalizedStringBean help_text);
 	
-	public abstract String getVariableName();
+	public abstract Variable getVariable();
 		
-	public abstract void setVariableName(String variableName);
+	public abstract void setVariable(Variable variable);
+	
+	public abstract void setVariable(String variableStringRepresentation);
 }

@@ -10,9 +10,9 @@ import com.idega.documentmanager.manager.XFormsManagerPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class FormComponentPageImpl extends FormComponentContainerImpl implements Page, FormComponentPage {
 	
@@ -59,7 +59,7 @@ public class FormComponentPageImpl extends FormComponentContainerImpl implements
 		if(getButtonArea() != null)
 			throw new IllegalArgumentException("Button area already exists in the page, remove first");
 		
-		return (ButtonArea)addComponent(FormComponentFactory.fbcomp_button_area, component_after_this_id);
+		return (ButtonArea)addComponent(FormComponentFactory.fbc_button_area, component_after_this_id);
 	}
 	public void setButtonAreaComponentId(String button_area_id) {
 		this.button_area_id = button_area_id;

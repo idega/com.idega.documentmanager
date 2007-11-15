@@ -38,5 +38,9 @@
       <groupId>com.idega.block.platform</groupId>
       <artifactId>org.chiba.web</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.idega.block.addon</groupId>
+      <artifactId>org.jboss.jbpm</artifactId>
+    </dependency>
   </dependencies>
 </project>

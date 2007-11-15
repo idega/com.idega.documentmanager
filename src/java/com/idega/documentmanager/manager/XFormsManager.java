@@ -6,12 +6,13 @@ import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
+import com.idega.jbpm.def.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public interface XFormsManager {
 
@@ -45,5 +46,5 @@ public interface XFormsManager {
 	
 	public abstract boolean getIsRequired(FormComponent component);
 	
-	public abstract String getVariableName(FormComponent component);
+	public abstract Variable getVariable(FormComponent component);
 }

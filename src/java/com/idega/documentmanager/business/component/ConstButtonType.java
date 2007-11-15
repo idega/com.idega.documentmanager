@@ -6,16 +6,16 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public enum ConstButtonType {
 	
-	PREVIOUS_PAGE_BUTTON {public String toString() { return "fbcomp_button_previous"; }},
-	NEXT_PAGE_BUTTON {public String toString() { return "fbcomp_button_next"; }},
-	SUBMIT_FORM_BUTTON {public String toString() { return "fbcomp_button_submit"; }},
-	RESET_FORM_BUTTON {public String toString() { return "fbcomp_button_reset"; }};
+	PREVIOUS_PAGE_BUTTON {public String toString() { return "fbc_button_previous"; }},
+	NEXT_PAGE_BUTTON {public String toString() { return "fbc_button_next"; }},
+	SUBMIT_FORM_BUTTON {public String toString() { return "fbc_button_submit"; }},
+	RESET_FORM_BUTTON {public String toString() { return "fbc_button_reset"; }};
 	
 	public static Set<String> getAllTypesInStrings() {
 		

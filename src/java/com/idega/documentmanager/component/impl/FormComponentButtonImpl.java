@@ -6,14 +6,13 @@ import com.idega.documentmanager.component.FormComponentButton;
 import com.idega.documentmanager.component.FormComponentButtonArea;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesButton;
-import com.idega.documentmanager.manager.HtmlManagerButton;
 import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/11/03 10:49:14 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -38,12 +37,6 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 	
 	public void setLastPageId(String last_page_id) {
 		getXFormsManager().setLastPageToSubmitButton(this, last_page_id);
-	}
-	
-	@Override
-	protected HtmlManagerButton getHtmlManager() {
-		
-		return getContext().getHtmlManagerFactory().getHtmlManagerButton();
 	}
 	
 	@Override

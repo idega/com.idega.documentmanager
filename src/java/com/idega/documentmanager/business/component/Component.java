@@ -8,9 +8,9 @@ import com.idega.documentmanager.business.component.properties.PropertiesCompone
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public interface Component {
 
@@ -24,5 +24,5 @@ public interface Component {
 	
 	public abstract String getType();
 	
-	public Element getDefaultHtmlRepresentationByType(String component_type);
+//	public Element getDefaultHtmlRepresentationByType(String component_type);
 }

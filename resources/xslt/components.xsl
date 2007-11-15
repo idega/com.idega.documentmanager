@@ -16,9 +16,9 @@
 		<xsl:apply-templates select="fieldset" />
 	</xsl:template>
 	<xsl:template match="fieldset">
-			<xsl:copy-of select ="div[starts-with(@id, 'fbcomp_')]" />
-			<xsl:copy-of select ="span[starts-with(@id, 'fbcomp_')]" />
-			<xsl:copy-of select ="fieldset[starts-with(@id, 'fbcomp_')]" />
-			<xsl:copy-of select ="hr[starts-with(@id, 'fbcomp_')]" />
+			<xsl:copy-of select ="div[starts-with(@id, 'fbc_')]" />
+			<xsl:copy-of select ="span[starts-with(@id, 'fbc_')]" />
+			<xsl:copy-of select ="fieldset[starts-with(@id, 'fbc_')]" />
+			<xsl:copy-of select ="hr[starts-with(@id, 'fbc_')]" />
 	</xsl:template>
 </xsl:stylesheet>

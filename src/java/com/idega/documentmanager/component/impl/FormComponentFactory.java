@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -27,10 +27,10 @@ public class FormComponentFactory implements Singleton {
 	private static final String type_non_display = "type_non_display";
 	private static final String type_plain = "type_plain";
 	public static final String page_type_tag = FormManagerUtil.case_tag;
-	public static final String page_type = "fbcomp_page";
-	public static final String confirmation_page_type = "fbcomp_confirmation_page";
+	public static final String page_type = "fbc_page";
+	public static final String confirmation_page_type = "fbc_confirmation_page";
 	public static final String button_type = FormManagerUtil.trigger_tag;
-	public static final String fbcomp_button_area = "fbcomp_button_area";
+	public static final String fbc_button_area = "fbc_button_area";
 	public static final String page_type_thx = "thx_page";
 	
 	private FormComponentFactory() { 
@@ -38,38 +38,38 @@ public class FormComponentFactory implements Singleton {
 		components_tags_classified = new HashMap<String, List<String>>();
 		
 		List<String> types = new ArrayList<String>();
-		types.add("fbcomp_text");
-		types.add("fbcomp_textarea");
-		types.add("fbcomp_secret");
-		types.add("fbcomp_email");
-		types.add("fbcomp_upload_file");
+		types.add("fbc_text");
+		types.add("fbc_textarea");
+		types.add("fbc_secret");
+		types.add("fbc_email");
+		types.add("fbc_upload_file");
 		types.add("xf:input");
 		types.add("xf:secret");
 		types.add("xf:textarea");
 		components_tags_classified.put(type_simple, types);
 		
 		List<String> non_display_types = new ArrayList<String>();
-		non_display_types.add(fbcomp_button_area);
+		non_display_types.add(fbc_button_area);
 		non_display_types.add(page_type);
 		non_display_types.add(confirmation_page_type);
 		components_tags_classified.put(type_non_display, non_display_types);
 		
 		types = new ArrayList<String>();
 		
-		types.add("fbcomp_multiple_select_minimal");
+		types.add("fbc_multiple_select_minimal");
 		types.add("xf:select");
-		types.add("fbcomp_single_select_minimal");
+		types.add("fbc_single_select_minimal");
 		types.add("xf:select1");
-		types.add("fbcomp_multiple_select");
-		types.add("fbcomp_single_select");
+		types.add("fbc_multiple_select");
+		types.add("fbc_single_select");
 		
 		components_tags_classified.put(type_select, types);
 		
 		types = new ArrayList<String>();
 		
-		types.add("fbcomp_simple_text");
-		types.add("fbcomp_header_text");
-		types.add("fbcomp_separator");
+		types.add("fbc_simple_text");
+		types.add("fbc_header_text");
+		types.add("fbc_separator");
 		
 		components_tags_classified.put(type_plain, types);
 	}
@@ -105,7 +105,7 @@ public class FormComponentFactory implements Singleton {
 			return new FormComponentThankYouPageImpl();
 		if(component_type.equals(page_type_tag) || component_type.equals(page_type) || component_type.equals(confirmation_page_type))
 			return new FormComponentPageImpl();
-		if(component_type.equals(fbcomp_button_area))
+		if(component_type.equals(fbc_button_area))
 			return new FormComponentButtonAreaImpl();
 		if(component_type.equals(button_type) || ConstButtonType.getAllTypesInStrings().contains(component_type))
 			return new FormComponentButtonImpl();

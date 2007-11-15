@@ -27,11 +27,9 @@
 	
 	<bean id="htmlManagerFactory" class="com.idega.documentmanager.manager.HtmlManagerFactory" scope="singleton">
 		<property name="htmlManager" ref="htmlManager" />
-		<property name="htmlManagerButton" ref="htmlManagerButton" />
 	</bean>
 	
 	<bean id="htmlManager" class="com.idega.documentmanager.manager.impl.HtmlManagerImpl" scope="singleton" />
-	<bean id="htmlManagerButton" class="com.idega.documentmanager.manager.impl.HtmlManagerButtonImpl" scope="singleton" />
 	
 	<bean id="xformsManager" class="com.idega.documentmanager.manager.impl.XFormsManagerImpl" scope="singleton" />
 	<bean id="xformsManagerButton" class="com.idega.documentmanager.manager.impl.XFormsManagerButtonImpl" scope="singleton" />

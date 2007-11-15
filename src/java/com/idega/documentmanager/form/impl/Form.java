@@ -17,12 +17,13 @@ import com.idega.documentmanager.component.impl.FormDocumentImpl;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.util.InitializationException;
+import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -171,7 +172,7 @@ public class Form {
 	public void setXFormsDocumentSourceCode(String srcXml) throws Exception {
 		
 		if(builder == null)
-			builder = FormManagerUtil.getDocumentBuilder();
+			builder = XmlUtil.getDocumentBuilder();
 		
 		clear();
 		formDocument.setLoad(true);

@@ -3,12 +3,14 @@ package com.idega.documentmanager.component.properties.impl;
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.jbpm.def.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
@@ -18,7 +20,7 @@ public class ComponentProperties implements PropertiesComponent {
 	private LocalizedStringBean helpText;
 	private String p3ptype;
 	private String autofillKey;
-	private String variableName;
+	private Variable variable;
 	
 	protected FormComponent component;
 	
@@ -104,14 +106,19 @@ public class ComponentProperties implements PropertiesComponent {
 	public void setPlainHelpText(LocalizedStringBean help_text) {
 		this.helpText = help_text;
 	}
-	public String getVariableName() {
-		return variableName;
+	public Variable getVariable() {
+		return variable;
 	}
-	public void setVariableName(String variableName) {
-		this.variableName = "".equals(variableName) ? null : variableName;
+	public void setVariable(Variable variable) {
+		this.variable = variable;
 		component.update(ConstUpdateType.VARIABLE_NAME);
 	}
-	public void setPlainVariableName(String variableName) {
-		this.variableName = "".equals(variableName) ? null : variableName;
+	
+	public void setVariable(String variableStringRepresentation) {
+		setVariable(FormManagerUtil.isEmpty(variableStringRepresentation) ? null : Variable.parseDefaultStringRepresentation(variableStringRepresentation));
+	}
+	
+	public void setPlainVariable(Variable variable) {
+		this.variable = variable;
 	}
 }

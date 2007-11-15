@@ -21,9 +21,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -120,7 +120,7 @@ public class FormComponentImpl implements FormComponent, Component {
 		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings(this));
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(this));
 		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
-		properties.setPlainVariableName(getXFormsManager().getVariableName(this));
+		properties.setPlainVariable(getXFormsManager().getVariable(this));
 	}
 	
 	protected void changeBindNames() {
@@ -308,11 +308,6 @@ public class FormComponentImpl implements FormComponent, Component {
 		formDocument = null;
 	}
 	
-	public Element getDefaultHtmlRepresentationByType(String component_type) {
-		
-		return getHtmlManager().getDefaultHtmlRepresentationByType(component_type);
-	}
-
 	public ComponentDataBean getXformsComponentDataBean() {
 		return xformsComponentDataBean;
 	}

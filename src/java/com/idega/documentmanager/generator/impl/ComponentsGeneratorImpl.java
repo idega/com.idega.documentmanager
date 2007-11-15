@@ -19,6 +19,7 @@ import com.idega.documentmanager.IWBundleStarter;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.repository.data.Singleton;
+import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -37,8 +38,8 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	private final URI temporal_xml_stylesheet_uri =
 		URI.create("bundle://"+IWBundleStarter.IW_BUNDLE_IDENTIFIER+"/"+"resources/xslt/htmlxml.xsl");
 	
-	private TransformerService transf_service;
-	private Document xforms_doc;
+	private TransformerService transfService;
+	private Document xformsDoc;
 
 	private UIGenerator temporal_xml_components_generator;
 	private UIGenerator final_xml_components_generator;
@@ -60,11 +61,11 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	protected ComponentsGeneratorImpl() { }
 
 	public boolean isInitiated() {
-		return xforms_doc != null && transf_service != null;
+		return xformsDoc != null && transfService != null;
 	}
 	
 	public void setDocument(Document xforms_doc) {
-		this.xforms_doc = xforms_doc;
+		this.xformsDoc = xforms_doc;
 	}
 	
 	public Document generateHtmlComponentsDocument() throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
@@ -72,18 +73,18 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 		return generateHtmlComponentsDocument(true);
 	}
 	
-	protected Document generateHtmlComponentsDocument(boolean use_adapter) throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
+	protected Document generateHtmlComponentsDocument(boolean useAdapter) throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
 		
 		if(!isInitiated()) {
 			
-			String err_msg = new StringBuffer("Either is not provided:")
+			String errMsg = new StringBuffer("Either is not provided:")
 			.append("\nxforms doc: ")
-			.append(xforms_doc)
+			.append(xformsDoc)
 			.append("\ntransformer service: ")
-			.append(transf_service)
+			.append(transfService)
 			.toString();
 			
-			throw new NullPointerException(err_msg);
+			throw new NullPointerException(errMsg);
 		}
 		
         /*
@@ -91,34 +92,34 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
          */
         UIGenerator gen = getTemporalXmlComponentsGenerator();
         
-    	if(use_adapter) {
+    	if(useAdapter) {
     		
     		FluxAdapter adapter = new FluxAdapter();
-        	adapter.setXForms(xforms_doc);
+        	adapter.setXForms(xformsDoc);
         	adapter.init();
     	} else
-    		copyLocalizationKeysToElements(xforms_doc);
+    		copyLocalizationKeysToElements(xformsDoc);
     	
-    	gen.setInput(xforms_doc);
+    	gen.setInput(xformsDoc);
     	
-    	DocumentBuilder document_builder = FormManagerUtil.getDocumentBuilder();
-        Document temp_xml_doc = document_builder.newDocument();
+    	DocumentBuilder documentBuilder = XmlUtil.getDocumentBuilder();
+        Document tempXmlDoc = documentBuilder.newDocument();
         
-        gen.setOutput(temp_xml_doc);
+        gen.setOutput(tempXmlDoc);
     	gen.generate();
     	
     	/*
     	 * generate final components xml
     	 */
     	gen = getFinalXmlComponentsGenerator();
-    	gen.setInput(temp_xml_doc);
+    	gen.setInput(tempXmlDoc);
     	
-    	temp_xml_doc = document_builder.newDocument();
-    	gen.setOutput(temp_xml_doc);
+    	tempXmlDoc = documentBuilder.newDocument();
+    	gen.setOutput(tempXmlDoc);
     	
     	gen.generate();
     	
-    	return temp_xml_doc;
+    	return tempXmlDoc;
 	}
 	
 	public Document generateBaseComponentsDocument() throws NullPointerException, ParserConfigurationException, XFormsException, Exception {
@@ -150,7 +151,7 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	}
 	
 	public void setTransformerService(TransformerService transf_service) {
-		this.transf_service = transf_service;
+		this.transfService = transf_service;
 	}
 	
 	protected UIGenerator getTemporalXmlComponentsGenerator() {
@@ -161,7 +162,7 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 				
 				if(temporal_xml_components_generator == null) {
 					XSLTGenerator gen = new XSLTGenerator();
-					gen.setTransformerService(transf_service);
+					gen.setTransformerService(transfService);
 					gen.setStylesheetURI(temporal_xml_stylesheet_uri);
 					gen.setParameter("selector-prefix", "s_");
 					//gen.setParameter("remove-upload-prefix", removeUploadPrefix);
@@ -186,7 +187,7 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 				
 				if(final_xml_components_generator == null) {
 					XSLTGenerator gen = new XSLTGenerator();
-					gen.setTransformerService(transf_service);
+					gen.setTransformerService(transfService);
 					gen.setStylesheetURI(final_xml_stylesheet_uri);
 					
 					final_xml_components_generator = gen;

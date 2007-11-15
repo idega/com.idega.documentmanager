@@ -12,16 +12,16 @@ import org.w3c.dom.Document;
 
 import com.idega.documentmanager.IWBundleStarter;
 import com.idega.documentmanager.manager.impl.CacheManager;
-import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.idegaweb.DefaultIWBundle;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
+import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/22 15:38:17 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -88,7 +88,7 @@ public class DocumentManagerFactory {
 		Document doc = null;
 		InputStream stream = getResourceInputStream(iwma, bundle, pathWithinBundle);
 
-		DocumentBuilder docBuilder = FormManagerUtil.getDocumentBuilder();
+		DocumentBuilder docBuilder = XmlUtil.getDocumentBuilder();
 		doc = docBuilder.parse(stream);
 		stream.close();
 

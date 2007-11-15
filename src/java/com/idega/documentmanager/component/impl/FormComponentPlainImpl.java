@@ -1,9 +1,5 @@
 package com.idega.documentmanager.component.impl;
 
-import java.util.Locale;
-
-import org.w3c.dom.Element;
-
 import com.idega.documentmanager.business.component.ComponentPlain;
 import com.idega.documentmanager.business.component.properties.PropertiesPlain;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesPlain;
@@ -12,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -63,13 +59,6 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 		default:
 			break;
 		}
-	}
-	
-	@Override
-	public Element getHtmlRepresentation(Locale locale) throws Exception {
-
-//		TODO: wtf?
-		return (Element)getXformsComponentDataBean().getElement().cloneNode(true);
 	}
 	
 	@Override

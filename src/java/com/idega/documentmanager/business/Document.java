@@ -9,6 +9,7 @@ import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
 import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
+import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
@@ -76,4 +77,6 @@ public interface Document extends Container {
 	public abstract DocumentMetaInformationManager getMetaInformationManager();
 	
 	public abstract Element getSubmissionInstanceElement();
+	
+	public abstract FormVariablesHandler getFormVariablesHandler();	
 }

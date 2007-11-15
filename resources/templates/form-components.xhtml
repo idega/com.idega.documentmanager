@@ -49,68 +49,76 @@
 </xf:model>
 <xf:model id="data_model">
 	<xf:instance id="localized_strings" xmlns="">
-		<localized_strings> <current_language>en</current_language>
-		<default_language>en</default_language> <lockey_email.title lang="en">Email</lockey_email.title>
-		<lockey_email.title lang="is">Email</lockey_email.title> <lockey_email.error
-			lang="en">Invalid email</lockey_email.error> <lockey_email.error
-			lang="is">Invalid email</lockey_email.error> <lockey_select1_full.title
-			lang="en">Radiobutton</lockey_select1_full.title> <lockey_select1_full.title
-			lang="is">Radiobutton</lockey_select1_full.title> <lockey_select_full.title
-			lang="en">Checkbox</lockey_select_full.title> <lockey_select_full.title
-			lang="is">Checkbox</lockey_select_full.title> <lockey_select1_minimal.title
-			lang="en">Dropdown menu</lockey_select1_minimal.title> <lockey_select1_minimal.title
-			lang="is">Dropdown menu</lockey_select1_minimal.title> <lockey_select_minimal.title
-			lang="en">List</lockey_select_minimal.title> <lockey_select_minimal.title
-			lang="is">List</lockey_select_minimal.title> <lockey_secret.title
-			lang="en">Password input</lockey_secret.title> <lockey_secret.title
-			lang="is">Password input</lockey_secret.title> <lockey_textarea.title
-			lang="en">Paragraph text input</lockey_textarea.title> <lockey_textarea.title
-			lang="is">Paragraph text input</lockey_textarea.title> <lockey_rich_textarea.title
-			lang="en">Rich text input</lockey_rich_textarea.title> <lockey_rich_textarea.title
-			lang="is">Rich text input</lockey_rich_textarea.title> <lockey_input.title
-			lang="en">Simple text input</lockey_input.title> <lockey_input.title
-			lang="is">Simple text input</lockey_input.title> <lockey_upload_file.title
-			lang="en">File upload</lockey_upload_file.title> <lockey_upload_file.title
-			lang="is">File upload</lockey_upload_file.title> <lockey_multi_upload_file.title
-			lang="en">Multi upload</lockey_multi_upload_file.title> <lockey_multi_upload_file.title
-			lang="is">Multi upload</lockey_multi_upload_file.title> 
-			<lockey_page.label lang="en">Section</lockey_page.label>
-			<lockey_confirmation_page.label lang="en">Confirmation Section</lockey_confirmation_page.label>
-			<lockey_button_next.label lang="en">Next</lockey_button_next.label>
-			<lockey_button_previous.label lang="en">Previous</lockey_button_previous.label>
-			<lockey_button_submit.label lang="en">Submit</lockey_button_submit.label>
+		<localized_strings>
+			<current_language>en</current_language>
+			<default_language>en</default_language>
+			
+			<email.title lang="en">Email</email.title>
+			<email.title lang="is">Email</email.title>
+			<email.error lang="en">Invalid email</email.error>
+			<email.error lang="is">Invalid email</email.error>
+			<select1_full.title lang="en">Radiobutton</select1_full.title>
+			<select1_full.title lang="is">Radiobutton</select1_full.title>
+			<select_full.title lang="en">Checkbox</select_full.title>
+			<select_full.title lang="is">Checkbox</select_full.title>
+			<select1_minimal.title lang="en">Dropdown menu</select1_minimal.title>
+			<select1_minimal.title lang="is">Dropdown menu</select1_minimal.title>
+			<select_minimal.title lang="en">List</select_minimal.title>
+			<select_minimal.title lang="is">List</select_minimal.title>
+			<secret.title lang="en">Password input</secret.title>
+			<secret.title lang="is">Password input</secret.title>
+			<textarea.title lang="en">Paragraph text input</textarea.title>
+			<textarea.title lang="is">Paragraph text input</textarea.title>
+			<rich_textarea.title lang="en">Rich text input</rich_textarea.title>
+			<rich_textarea.title lang="is">Rich text input</rich_textarea.title>
+			<input.title lang="en">Simple text input</input.title>
+			<input.title lang="is">Simple text input</input.title>
+			<upload_file.title lang="en">File upload</upload_file.title>
+			<upload_file.title lang="is">File upload</upload_file.title>
+			<multi_upload_file.title lang="en">Multi upload</multi_upload_file.title>
+			<multi_upload_file.title lang="is">Multi upload</multi_upload_file.title> 
+			<page.label lang="en">Section</page.label>
+			<confirmation_page.label lang="en">Confirmation Section</confirmation_page.label>
+			<button_next.label lang="en">Next</button_next.label>
+			<button_previous.label lang="en">Previous</button_previous.label>
+			<button_submit.label lang="en">Submit</button_submit.label>
+			<simple_text.text lang="en">Paragraph text</simple_text.text>
+			<header_text.text lang="en">Header text</header_text.text>
 		</localized_strings>
 	</xf:instance>
 	
 	<xf:instance id="components-datatypes-mappings" xmlns="">
-			<component component_id="fbcomp_textarea" accessSupport="rw">
+		<componentDataTypes>
+		
+			<component component_id="fbc_textarea" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbcomp_secret" accessSupport="w">
+			<component component_id="fbc_secret" accessSupport="w">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbcomp_multiple_select_minimal" accessSupport="rw">
+			<component component_id="fbc_multiple_select_minimal" accessSupport="rw">
 				<datatype>list</datatype>
 			</component>
-			<component component_id="fbcomp_single_select_minimal" accessSupport="rw">
+			<component component_id="fbc_single_select_minimal" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbcomp_multiple_select" accessSupport="rw">
+			<component component_id="fbc_multiple_select" accessSupport="rw">
 				<datatype>list</datatype>
 			</component>
-			<component component_id="fbcomp_single_select" accessSupport="rw">
+			<component component_id="fbc_single_select" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbcomp_email" accessSupport="rw">
+			<component component_id="fbc_email" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbcomp_upload_file" accessSupport="w">
+			<component component_id="fbc_upload_file" accessSupport="w">
 				<datatype>file</datatype>
 			</component>
-			<component component_id="fbcomp_simple_text" accessSupport="r">
+			<component component_id="fbc_simple_text" accessSupport="r">
 				<datatype>string</datatype>
 				<datatype>list</datatype>
 			</component>
+		</componentDataTypes>
 	</xf:instance>
 
 	<xf:instance id="datasets_examples" xmlns="">
@@ -178,7 +186,7 @@
 		</examples>
 	</xf:instance>
 
-	<xf:instance id="fbcomp_multiple_select_minimal_lds" xmlns="">
+	<xf:instance id="fbc_multiple_select_minimal_lds" xmlns="">
 		<local_src>
  	       <localizedEntries lang="en">
     	       <item>
@@ -188,7 +196,7 @@
            </localizedEntries>
         </local_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_single_select_minimal_lds" xmlns="">
+	<xf:instance id="fbc_single_select_minimal_lds" xmlns="">
 		<local_src>
  	       <localizedEntries lang="en">
     	       <item>
@@ -198,7 +206,7 @@
            </localizedEntries>
         </local_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_multiple_select_lds" xmlns="">
+	<xf:instance id="fbc_multiple_select_lds" xmlns="">
 		<local_src>
  	       <localizedEntries lang="en">
     	       <item>
@@ -208,7 +216,7 @@
            </localizedEntries>
         </local_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_single_select_lds" xmlns="">
+	<xf:instance id="fbc_single_select_lds" xmlns="">
 		<local_src>
  	       <localizedEntries lang="en">
     	       <item>
@@ -218,45 +226,45 @@
            </localizedEntries>
         </local_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_multiple_select_minimal_eds" xmlns="">
+	<xf:instance id="fbc_multiple_select_minimal_eds" xmlns="">
 		<ext_src> </ext_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_single_select_minimal_eds" xmlns="">
+	<xf:instance id="fbc_single_select_minimal_eds" xmlns="">
 		<ext_src> </ext_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_multiple_select_eds" xmlns="">
+	<xf:instance id="fbc_multiple_select_eds" xmlns="">
 		<ext_src> </ext_src>
 	</xf:instance>
-	<xf:instance id="fbcomp_single_select_eds" xmlns="">
+	<xf:instance id="fbc_single_select_eds" xmlns="">
 		<ext_src> </ext_src>
 	</xf:instance>
 	
 	<xf:instance id="component_categories" xmlns="">
 		<category name="basic">
-			<component component_id="fbcomp_text" />
-			<component component_id="fbcomp_textarea" />
-			<component component_id="fbcomp_secret" />
-			<component component_id="fbcomp_multiple_select_minimal" />
-			<component component_id="fbcomp_single_select_minimal" />
-			<component component_id="fbcomp_multiple_select" />
-			<component component_id="fbcomp_single_select" />
-			<component component_id="fbcomp_email" />
-			<component component_id="fbcomp_upload_file" />
+			<component component_id="fbc_text" />
+			<component component_id="fbc_textarea" />
+			<component component_id="fbc_secret" />
+			<component component_id="fbc_multiple_select_minimal" />
+			<component component_id="fbc_single_select_minimal" />
+			<component component_id="fbc_multiple_select" />
+			<component component_id="fbc_single_select" />
+			<component component_id="fbc_email" />
+			<component component_id="fbc_upload_file" />
 		</category>
 		<category name="buttons">
-			<component component_id="fbcomp_button_next" />
-			<component component_id="fbcomp_button_previous" />
-			<component component_id="fbcomp_button_submit" />
+			<component component_id="fbc_button_next" />
+			<component component_id="fbc_button_previous" />
+			<component component_id="fbc_button_submit" />
 		</category>
 		<category name="non-display">
-			<component component_id="fbcomp_button_area" />
-			<component component_id="fbcomp_page" />
-			<component component_id="fbcomp_confirmation_page" />
+			<component component_id="fbc_button_area" />
+			<component component_id="fbc_page" />
+			<component component_id="fbc_confirmation_page" />
 		</category>
 		<category name="plain">
-			<component component_id="fbcomp_simple_text" />
-			<component component_id="fbcomp_header_text" />
-			<component component_id="fbcomp_separator" />
+			<component component_id="fbc_simple_text" />
+			<component component_id="fbc_header_text" />
+			<component component_id="fbc_separator" />
 		</category>
 	</xf:instance>
 </xf:model>
@@ -264,7 +272,7 @@
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-		<xf:group appearance="full" id="fbcomp_multi_upload_file" bind="multi_upload">
+		<xf:group appearance="full" id="fbc_multi_upload_file" bind="multi_upload">
 			<tr>
                 <td/>
                 <td>
@@ -284,7 +292,7 @@
                     </xf:group>
                 </td>
             </tr>
-			<xf:output ref="instance('localized_strings')/lockey_multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			<xf:output ref="instance('localized_strings')/multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			<xf:repeat nodeset="file" appearance="full">
 	        	<tr>
 	            	<td>    
@@ -299,105 +307,109 @@
 	            </tr>
 	        </xf:repeat>
         </xf:group>
-		<xf:input bind="text" id="fbcomp_text">
+		<xf:input bind="text" id="fbc_text">
 			<xf:label
-				ref="instance('localized_strings')/lockey_input.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/input.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:input>
-		<xf:textarea bind="textarea" id="fbcomp_textarea">
+		<xf:textarea bind="textarea" id="fbc_textarea">
 			<xf:label
-				ref="instance('localized_strings')/lockey_textarea.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/textarea.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:textarea>
-		<xf:secret bind="secret" id="fbcomp_secret">
+		<xf:secret bind="secret" id="fbc_secret">
 			<xf:label
-				ref="instance('localized_strings')/lockey_secret.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/secret.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:secret>
 		<xf:select bind="multiple_select_minimal"
-			id="fbcomp_multiple_select_minimal" appearance="minimal">
+			id="fbc_multiple_select_minimal" appearance="minimal">
 			<xf:label
-				ref="instance('localized_strings')/lockey_select_minimal.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/select_minimal.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:itemset model="data_model" nodeset="instance('fbcomp_multiple_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+			<xf:itemset model="data_model" nodeset="instance('fbc_multiple_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
 	            <xf:label ref="item_label" />
                 <xf:value ref="item_value" />
             </xf:itemset>
 		</xf:select>
 		<xf:select1 bind="single_select_minimal"
-			id="fbcomp_single_select_minimal" appearance="minimal">
+			id="fbc_single_select_minimal" appearance="minimal">
 			<xf:label
-				ref="instance('localized_strings')/lockey_select1_minimal.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/select1_minimal.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:itemset model="data_model" nodeset="instance('fbcomp_single_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+			<xf:itemset model="data_model" nodeset="instance('fbc_single_select_minimal_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
 	            <xf:label ref="item_label" />
                 <xf:value ref="item_value" />
             </xf:itemset>	
 		</xf:select1>
-		<xf:select bind="multiple_select" id="fbcomp_multiple_select"
+		<xf:select bind="multiple_select" id="fbc_multiple_select"
 			appearance="full">
 			<xf:label
-				ref="instance('localized_strings')/lockey_select_full.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/select_full.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:itemset model="data_model" nodeset="instance('fbcomp_multiple_select_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+			<xf:itemset model="data_model" nodeset="instance('fbc_multiple_select_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
 	            <xf:label ref="item_label" />
                 <xf:value ref="item_value" />
             </xf:itemset>
 		</xf:select>
-		<xf:select1 bind="single_select" id="fbcomp_single_select"
+		<xf:select1 bind="single_select" id="fbc_single_select"
 			appearance="full">
 			<xf:label
-				ref="instance('localized_strings')/lockey_select1_full.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/select1_full.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:itemset model="data_model" nodeset="instance('fbcomp_single_select_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+			<xf:itemset model="data_model" nodeset="instance('fbc_single_select_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
 	            <xf:label ref="item_label" />
                 <xf:value ref="item_value" />
             </xf:itemset>
 		</xf:select1>
-		<xf:input bind="email" id="fbcomp_email">
+		<xf:input bind="email" id="fbc_email">
 			<xf:label
-				ref="instance('localized_strings')/lockey_email.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/email.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 			<xf:alert>
 				<xf:output
-					ref="instance('localized_strings')/lockey_email.error[@lang=instance('localized_strings')/current_language]"
+					ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"
 					model="data_model" />
 			</xf:alert>
 		</xf:input>
-		<xf:upload bind="upload_file" id="fbcomp_upload_file">
+		<xf:upload bind="upload_file" id="fbc_upload_file">
 			<xf:label
-				ref="instance('localized_strings')/lockey_upload_file.title[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 			<xf:filename ref="attachment/@filename" />
 			<xf:mediatype ref="attachment/@content-type" />
 		</xf:upload>
 	
-		<div id="fbcomp_button_area" name="fbcomp_button_area" class="fbcomp_button_area"></div>
-		<div id="fbcomp_simple_text" name="fbcomp_simple_text" class="fbcomp_simple_text">Put your text here</div>
-		<div id="fbcomp_header_text" name="fbcomp_header_text" class="fbcomp_header_text">Put your header here</div>
-		<hr id="fbcomp_separator" name="fbcomp_separator" class="fbcomp_separator" />
-		<xf:group id="fbcomp_page" appearance="full">
+		<div id="fbc_button_area" name="fbc_button_area" class="fbc_button_area"></div>
+		<div id="fbc_simple_text" name="fbc_simple_text" class="fbc_simple_text"><xf:output
+						ref="instance('localized_strings')/simple_text.text[@lang=instance('localized_strings')/current_language]"
+						model="data_model" /></div>
+		<div id="fbc_header_text" name="fbc_header_text" class="fbc_header_text"><xf:output
+						ref="instance('localized_strings')/header_text.text[@lang=instance('localized_strings')/current_language]"
+						model="data_model" /></div>
+		<hr id="fbc_separator" name="fbc_separator" class="fbc_separator" />
+		<xf:group id="fbc_page" appearance="full">
 			<xf:label 
-				ref="instance('localized_strings')/lockey_page.label[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/page.label[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:group>
-		<xf:group id="fbcomp_confirmation_page" appearance="full" name="fbcomp_confirmation_page">
+		<xf:group id="fbc_confirmation_page" appearance="full" name="fbc_confirmation_page">
 			<xf:label 
-				ref="instance('localized_strings')/lockey_confirmation_page.label[@lang=instance('localized_strings')/current_language]"
+				ref="instance('localized_strings')/confirmation_page.label[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:group>
-		<xf:trigger id="fbcomp_button_next" name="fbcomp_button_next">
-		  	<xf:label ref="instance('localized_strings')/lockey_button_next.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+		<xf:trigger id="fbc_button_next" name="fbc_button_next">
+		  	<xf:label ref="instance('localized_strings')/button_next.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 	        <xf:toggle ev:event="DOMActivate" />
 	        <xf:refresh />
 	    </xf:trigger>
-	    <xf:trigger id="fbcomp_button_previous" name="fbcomp_button_previous">
-			<xf:label ref="instance('localized_strings')/lockey_button_previous.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+	    <xf:trigger id="fbc_button_previous" name="fbc_button_previous">
+			<xf:label ref="instance('localized_strings')/button_previous.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 	        <xf:toggle ev:event="DOMActivate" />
 	        <xf:refresh />
 	    </xf:trigger>
-	 	<xf:trigger id="fbcomp_button_submit" name="fbcomp_button_submit">
-			<xf:label ref="instance('localized_strings')/lockey_button_submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+	 	<xf:trigger id="fbc_button_submit" name="fbc_button_submit">
+			<xf:label ref="instance('localized_strings')/button_submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 	  	  	<xf:send submission="submit_data_submission" />
 	        <xf:toggle ev:event="DOMActivate" />
 	    </xf:trigger>

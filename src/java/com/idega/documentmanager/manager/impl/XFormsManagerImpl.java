@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
@@ -21,12 +22,14 @@ import com.idega.documentmanager.manager.XFormsManager;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
 import com.idega.documentmanager.xform.Nodeset;
+import com.idega.jbpm.def.Variable;
+import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -34,6 +37,9 @@ public class XFormsManagerImpl implements XFormsManager {
 	
 	private static final String simple_type = "xs:simpleType";
 	private static final String complex_type = "xs:complexType";
+	
+	private XPathUtil bindsByNodesetXPath;
+	private static final String nodesetVariable = "nodeset";
 	
 	public void loadXFormsComponentByTypeFromComponentsXForm(FormComponent component, String componentType) throws NullPointerException {
 		
@@ -379,7 +385,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
-		PropertiesComponent props = component.getProperties();
+		PropertiesComponent properties = component.getProperties();
 		
 		Element element = xformsComponentDataBean.getElement();
 		NodeList alerts = element.getElementsByTagName(FormManagerUtil.alert_tag);
@@ -388,27 +394,21 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			Element alert = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "alert");
 			
-			Document xforms_doc = component.getContext().getXformsXmlDoc();
+			Document xform = component.getContext().getXformsXmlDoc();
 			
-			alert = (Element)xforms_doc.importNode(alert, true);
+			alert = (Element)xform.importNode(alert, true);
 			element.appendChild(alert);
 			Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
-			String new_err_id = new StringBuilder(FormManagerUtil.loc_key_identifier)
-			.append(component.getId())
-			.append('.')
-			.append("error")
-			.toString();
+			String localizedKey = new StringBuilder(component.getId()).append(".error").toString();
 			
-			FormManagerUtil.putLocalizedText(
-					new_err_id, FormManagerUtil.localized_entries, output, xforms_doc, props.getErrorMsg());
+			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, output, xform, properties.getErrorMsg());
 		} else {
 			
 			Element alert = (Element)alerts.item(0);
 			Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
-			FormManagerUtil.putLocalizedText(
-					null, null, output, component.getContext().getXformsXmlDoc(), props.getErrorMsg());
+			FormManagerUtil.putLocalizedText(null, null, output, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
 		}
 	}
 	
@@ -416,7 +416,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
-		PropertiesComponent props = component.getProperties();
+		PropertiesComponent properties = component.getProperties();
 		
 		Element element = xformsComponentDataBean.getElement();
 		NodeList helps = element.getElementsByTagName(FormManagerUtil.help_tag);
@@ -425,27 +425,23 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			Element help = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "help");
 			
-			Document xforms_doc = component.getContext().getXformsXmlDoc();
+			Document xform = component.getContext().getXformsXmlDoc();
 			
-			help = (Element)xforms_doc.importNode(help, true);
+			help = (Element)xform.importNode(help, true);
 			element.appendChild(help);
 			Element output = (Element)help.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
-			String new_help_id = new StringBuilder(FormManagerUtil.loc_key_identifier)
-			.append(component.getId())
-			.append('.')
-			.append("help")
-			.toString();
+			String localizedKey = new StringBuilder(component.getId()).append(".help").toString();
 			
-			FormManagerUtil.putLocalizedText(
-					new_help_id, FormManagerUtil.localized_entries, output, xforms_doc, props.getHelpText());
+			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, output, xform, properties.getHelpText());
+			
 		} else {
 			
 			Element alert = (Element)helps.item(0);
 			Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
 			FormManagerUtil.putLocalizedText(
-					null, null, output, component.getContext().getXformsXmlDoc(), props.getHelpText());
+					null, null, output, component.getContext().getXformsXmlDoc(), properties.getHelpText());
 		}
 	}
 	
@@ -542,12 +538,18 @@ public class XFormsManagerImpl implements XFormsManager {
 		if(bind == null)
 			return;
 		
+		Node bindElementParent = bind.getBindElement().getParentNode();
 		Nodeset nodeset = bind.getNodeset();
-		
-		if(nodeset != null)
-			nodeset.remove();
-		
 		bind.remove();
+
+		if(nodeset != null) {
+
+//			we don't remove nodeset if there exists any bind elements pointing to this nodeset
+			NodeList bindsByNodeset = getBindsByNodeset(bindElementParent, nodeset.getPath());
+			
+			if(bindsByNodeset == null || bindsByNodeset.getLength() == 0)
+				nodeset.remove();
+		}
 	}
 	
 	protected void removeComponentLocalization(FormComponent component) {
@@ -620,6 +622,7 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			nodeset = Nodeset.append(FormManagerUtil.getFormInstanceModelElement(xform), newNodesetElement);
 		}
+		
 		return nodeset;
 	}
 	
@@ -651,8 +654,94 @@ public class XFormsManagerImpl implements XFormsManager {
 	protected void updateVariableName(FormComponent component) {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Bind bind = xformsComponentDataBean.getBind();
+		
+		if(bind == null)
+			return;
+		
 		PropertiesComponent properties = component.getProperties();
-		xformsComponentDataBean.getBind().getNodeset().setMapping(properties.getVariableName());
+		String variableStringRepresentation = properties.getVariable() == null ? null : properties.getVariable().getDefaultStringRepresentation();
+		
+		if(variableStringRepresentation == null) {
+			
+//			remove variable
+			
+			Nodeset nodeset = bind.getNodeset();
+			
+			if(nodeset != null) {
+				
+//				check if there are any bindings that are pointing to this nodeset
+				NodeList bindsByNodeset = getBindsByNodeset(bind.getBindElement().getParentNode(), nodeset.getPath());
+				
+				if(bindsByNodeset != null && bindsByNodeset.getLength() == 1) {
+//					this bind is the only one pointing to the nodeset, so we are free to remove variable for it
+					nodeset.setMapping(null);
+					
+				} else {
+					
+//					create separate nodeset
+					nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
+					bind.setNodeset(nodeset);
+				}
+			}
+			
+		} else {
+			
+//			create new or assing to existing nodeset
+			
+			Nodeset currentNodeset = bind.getNodeset();
+			
+			if(currentNodeset == null) {
+				
+				Nodeset nodeset = Nodeset.locateByMapping(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), variableStringRepresentation);
+				
+				if(nodeset == null) {
+					
+					nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
+					nodeset.setMapping(variableStringRepresentation);
+				}
+				
+				bind.setNodeset(nodeset);
+				
+			} else {
+				
+				if(!variableStringRepresentation.equals(currentNodeset.getMapping())) {
+					
+					NodeList bindsByNodeset = getBindsByNodeset(bind.getBindElement().getParentNode(), currentNodeset.getPath());
+					
+					if(bindsByNodeset != null && bindsByNodeset.getLength() == 1) {
+
+//						there're no additional binds pointing to current nodeset
+						
+						Nodeset nodeset = Nodeset.locateByMapping(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), variableStringRepresentation);
+						
+						if(nodeset != null) {
+
+//							removing current and assiging to existing one
+							currentNodeset.remove();
+							bind.setNodeset(nodeset);
+							
+						} else {
+						
+							currentNodeset.setMapping(variableStringRepresentation);
+						}
+
+					} else {
+						
+//						someone else is pointing at current nodeset too, so we can't rename variable and cannot remove current nodeset. either create new nodeset or assing to existing (if any)
+						Nodeset nodeset = Nodeset.locateByMapping(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), variableStringRepresentation);
+						
+						if(nodeset == null) {
+							
+							nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
+							nodeset.setMapping(variableStringRepresentation);
+						}
+						
+						bind.setNodeset(nodeset);
+					}
+				}
+			}
+		}
 	}
 	
 	protected void updateAutofillKey(FormComponent component) {
@@ -660,9 +749,9 @@ public class XFormsManagerImpl implements XFormsManager {
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		PropertiesComponent props = component.getProperties();
-		String autofill_key = props.getAutofillKey();
+		String autofillKey = props.getAutofillKey();
 		
-		if(autofill_key == null && (xformsComponentDataBean.getKeyExtInstance() != null || xformsComponentDataBean.getKeySetvalue() != null)) {
+		if(autofillKey == null && (xformsComponentDataBean.getKeyExtInstance() != null || xformsComponentDataBean.getKeySetvalue() != null)) {
 			
 			Element rem_el = xformsComponentDataBean.getKeyExtInstance();
 			if(rem_el != null)
@@ -674,11 +763,11 @@ public class XFormsManagerImpl implements XFormsManager {
 				rem_el.getParentNode().removeChild(rem_el);
 			xformsComponentDataBean.setKeySetvalue(null);
 			
-		} else if(autofill_key != null) {
+		} else if(autofillKey != null) {
 			
-			autofill_key = FormManagerUtil.autofill_key_prefix+autofill_key;
+			autofillKey = FormManagerUtil.autofill_key_prefix+autofillKey;
 			
-			String src = FormManagerUtil.context_att_pref+autofill_key;
+			String src = FormManagerUtil.context_att_pref+autofillKey;
 			
 			if(xformsComponentDataBean.getKeyExtInstance() != null) {
 				
@@ -687,13 +776,13 @@ public class XFormsManagerImpl implements XFormsManager {
 			} else {
 
 				Element model = component.getFormDocument().getFormDataModelElement();
-				Element inst_el = model.getOwnerDocument().createElementNS(model.getNamespaceURI(), FormManagerUtil.instance_tag);
-				inst_el.setAttribute(FormManagerUtil.relevant_att, FormManagerUtil.xpath_false);
+				Element instanceElement = model.getOwnerDocument().createElementNS(model.getNamespaceURI(), FormManagerUtil.instance_tag);
+				instanceElement.setAttribute(FormManagerUtil.relevant_att, FormManagerUtil.xpath_false);
 				
-				inst_el = (Element)model.appendChild(inst_el);
-				inst_el.setAttribute(FormManagerUtil.src_att, src);
-				inst_el.setAttribute(FormManagerUtil.id_att, component.getId()+FormManagerUtil.autofill_instance_ending);
-				xformsComponentDataBean.setKeyExtInstance(inst_el);
+				instanceElement = (Element)model.appendChild(instanceElement);
+				instanceElement.setAttribute(FormManagerUtil.src_att, src);
+				instanceElement.setAttribute(FormManagerUtil.id_att, component.getId()+FormManagerUtil.autofill_instance_ending);
+				xformsComponentDataBean.setKeyExtInstance(instanceElement);
 			}
 			
 			String value = 
@@ -701,7 +790,7 @@ public class XFormsManagerImpl implements XFormsManager {
 				.append(xformsComponentDataBean.getKeyExtInstance().getAttribute(FormManagerUtil.id_att))
 				.append(FormManagerUtil.inst_end)
 				.append(FormManagerUtil.slash)
-				.append(autofill_key)
+				.append(autofillKey)
 				.toString();
 			
 			if(xformsComponentDataBean.getKeySetvalue() != null) {
@@ -746,7 +835,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		return FormManagerUtil.getHelpTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
 	}
 	
-	public String getVariableName(FormComponent component) {
+	public Variable getVariable(FormComponent component) {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
@@ -757,7 +846,12 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		Nodeset nodeset = bind.getNodeset();
 		
-		return nodeset == null ? null : nodeset.getMapping();
+		if(nodeset == null)
+			return null;
+		
+		String mapping = nodeset.getMapping();
+		
+		return FormManagerUtil.isEmpty(mapping) ? null : Variable.parseDefaultStringRepresentation(mapping);
 	}
 	
 	public void loadConfirmationElement(FormComponent component, FormComponentPage confirmation_page) {
@@ -863,5 +957,16 @@ public class XFormsManagerImpl implements XFormsManager {
 		return key.startsWith(FormManagerUtil.autofill_key_prefix) ? 
 			key.substring(FormManagerUtil.autofill_key_prefix.length()) :
 			key;
+	}
+	
+	protected synchronized NodeList getBindsByNodeset(Node context, String nodeset) {
+		
+		if(bindsByNodesetXPath == null)
+			bindsByNodesetXPath = new XPathUtil(".//xf:bind[@nodeset=$nodeset]");
+		
+		bindsByNodesetXPath.clearVariables();
+		bindsByNodesetXPath.setVariable(nodesetVariable, nodeset);
+		
+		return bindsByNodesetXPath.getNodeset(context);
 	}
 }

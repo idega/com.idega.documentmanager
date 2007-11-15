@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.FormComponent;
-import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.beans.ComponentDocumentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
@@ -14,9 +13,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/10/14 06:55:13 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
@@ -34,20 +33,19 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getAutofillAction() == null) {
 			
-			Document xforms_doc = component.getContext().getXformsXmlDoc();
+			Document xform = component.getContext().getXformsXmlDoc();
 			
-			Element autofill_model = 
-				FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.autofill_model_id);
+			Element autofillModel = FormManagerUtil.getElementById(xform, FormManagerUtil.autofill_model_id);
 			
-			if(autofill_model == null) {
-				autofill_model = FormManagerUtil.getItemElementById(CacheManager.getInstance().getComponentsXforms(), "autofill-model");
-				autofill_model = (Element)xforms_doc.importNode(autofill_model, true);
-				Element head_element = (Element)xforms_doc.getElementsByTagName(FormManagerUtil.head_tag).item(0);
-				autofill_model = (Element)head_element.appendChild(autofill_model);
-				autofill_model.setAttribute(FormManagerUtil.id_att, FormManagerUtil.autofill_model_id);
-				componentDocumentDataBean.setAutofillAction((Element)autofill_model.getElementsByTagName("*").item(0));
+			if(autofillModel == null) {
+				autofillModel = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "autofill-model");
+				autofillModel = (Element)xform.importNode(autofillModel, true);
+				Element headElement = (Element)xform.getElementsByTagName(FormManagerUtil.head_tag).item(0);
+				autofillModel = (Element)headElement.appendChild(autofillModel);
+				autofillModel.setAttribute(FormManagerUtil.id_att, FormManagerUtil.autofill_model_id);
+				componentDocumentDataBean.setAutofillAction((Element)autofillModel.getElementsByTagName("*").item(0));
 			} else
-				componentDocumentDataBean.setAutofillAction(autofill_model); 
+				componentDocumentDataBean.setAutofillAction(autofillModel); 
 		}
 		
 		return componentDocumentDataBean.getAutofillAction();
@@ -59,12 +57,10 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getFormDataModel() == null) {
 			
-			FormDocument formDocument = component.getFormDocument();
-			
-			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, formDocument.getFormId()));
+			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementById(component.getContext().getXformsXmlDoc(), FormManagerUtil.submission_model));
 
 			if(componentDocumentDataBean.getFormDataModel() == null)
-				throw new NullPointerException("Form model element not found. Incorrect xforms document.");
+				throw new NullPointerException("Submission model element not found by submission model id: "+FormManagerUtil.submission_model);
 		}
 		
 		return componentDocumentDataBean.getFormDataModel();
@@ -84,7 +80,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 				
 				instance = FormManagerUtil.getItemElementById(CacheManager.getInstance().getComponentsXforms(), FormManagerUtil.sections_visualization_instance_item);
 				instance = (Element)xforms_doc.importNode(instance, true);
-				Element data_model = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.data_mod);
+				Element data_model = FormManagerUtil.getElementById(xforms_doc, FormManagerUtil.data_mod);
 				instance = (Element)data_model.appendChild(instance);
 			}
 			

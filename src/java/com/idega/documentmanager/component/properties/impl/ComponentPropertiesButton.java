@@ -1,12 +1,13 @@
 package com.idega.documentmanager.component.properties.impl;
 
 import com.idega.documentmanager.business.component.properties.PropertiesButton;
+import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/03 10:49:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
  */
 public class ComponentPropertiesButton extends ComponentProperties implements PropertiesButton {
 	
@@ -20,6 +21,6 @@ public class ComponentPropertiesButton extends ComponentProperties implements Pr
 		component.update(ConstUpdateType.BUTTON_REFER_TO_ACTION);
 	}
 	public void setReferActionPlain(String referAction) {
-		this.referAction = "".equals(referAction) ? null : referAction;
+		this.referAction = CoreConstants.EMPTY.equals(referAction) ? null : referAction;
 	}
 }

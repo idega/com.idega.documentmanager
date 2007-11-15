@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 09:24:16 $ by $Author: civilis $
  */
 public class Nodeset implements Cloneable {
 
@@ -71,6 +71,30 @@ public class Nodeset implements Cloneable {
 
 		Nodeset nodeset = new Nodeset();
 		nodeset.setPath(nodesetPath);
+		nodeset.setNodesetElement(nodesetElement);
+		
+		return nodeset;
+	}
+	
+	public static Nodeset locateByMapping(Element model, String mapping) {
+
+		Element instance = FormManagerUtil.getInstanceElement(model);
+		XPathUtil nodesetElementByMappingXPath = getNodesetElementByMappingXPath();
+		
+		Element nodesetElement;
+		
+		synchronized (nodesetElementByMappingXPath) {
+			
+			nodesetElementByMappingXPath.clearVariables();
+			nodesetElementByMappingXPath.setVariable(mappingVariable, mapping);
+			nodesetElement = (Element)nodesetElementByMappingXPath.getNode(instance);
+		}
+		
+		if(nodesetElement == null)
+			return null;
+
+		Nodeset nodeset = new Nodeset();
+		nodeset.setPath(nodesetElement.getNodeName());
 		nodeset.setNodesetElement(nodesetElement);
 		
 		return nodeset;
@@ -154,14 +178,25 @@ public class Nodeset implements Cloneable {
 	
 	private static XPathUtil nodesetElementXPath;
 	private static XPathUtil nodesetElementParentXPath;
+	private static XPathUtil nodesetElementByMappingXPath;
+	
 	private static final String nodesetPathVariable = "nodesetPath";
+	private static final String mappingVariable = "mapping";
 	
 	private static synchronized XPathUtil getNodesetElementXPath() {
 		
 		if(nodesetElementXPath == null)
-			nodesetElementXPath = new XPathUtil(".//node()[name(.) = $nodesetPath]");
+			nodesetElementXPath = new XPathUtil(".//*[name(.) = $nodesetPath]");
 		
 		return nodesetElementXPath;
+	}
+	
+	private static synchronized XPathUtil getNodesetElementByMappingXPath() {
+		
+		if(nodesetElementByMappingXPath == null)
+			nodesetElementByMappingXPath = new XPathUtil(".//*[@mapping = $mapping]");
+		
+		return nodesetElementByMappingXPath;
 	}
 	
 	private static synchronized XPathUtil getNodesetElementParentXPath() {
