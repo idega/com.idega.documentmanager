@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/15 14:16:58 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -813,13 +813,10 @@ public class FormManagerUtil {
 	}
 	
 	public static String getFormId(Document xformsDoc) {
-		
-		Element model = getFormInstanceModelElement(xformsDoc);
-		return model.getAttribute(id_att);
+		return getFormIdElement(xformsDoc).getTextContent();
 	}
 	
 	public static void setFormId(Document xformsDoc, String formId) {
-		
 		getFormIdElement(xformsDoc).setTextContent(formId);
 	}
 	
