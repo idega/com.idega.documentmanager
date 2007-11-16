@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2007/11/15 14:16:58 $ by $Author: civilis $
+ * Last modified: $Date: 2007/11/16 13:48:29 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -73,8 +73,8 @@ public class FormManagerUtil {
 	public static final String model_att = "model";
 	public static final String src_att = "src";
 	public static final String context_att_pref = "context:";
-	public static final String item_label_tag = "item_label";
-	public static final String item_value_tag = "item_value";
+	public static final String item_label_tag = "itemLabel";
+	public static final String item_value_tag = "itemValue";
 	public static final String localized_entries_tag = "localizedEntries";
 	public static final String default_language_tag = "default_language";
 	public static final String form_id_tag = "form_id";

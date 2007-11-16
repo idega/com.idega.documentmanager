@@ -24,8 +24,8 @@
 
 	<xs:complexType name="itemType">
 		<xs:sequence>
-			<xs:element name="item_label" type="xs:string"></xs:element>
-			<xs:element name="item_value" type="xs:string"></xs:element>
+			<xs:element name="itemLabel" type="xs:string"></xs:element>
+			<xs:element name="itemValue" type="xs:string"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 

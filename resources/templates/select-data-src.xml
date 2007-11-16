@@ -5,30 +5,30 @@ xsi:schemaLocation="http://www.idega.is/select-data-src/ select-data-src.xsd">
 
 	<localizedEntries lang="en"> 
 	  <item>
-        <item_label>Country</item_label>
-        <item_value></item_value>
+        <itemLabel>Country</itemLabel>
+        <itemValue></itemValue>
       </item>
 	  <item>
-        <item_label>Lithuania</item_label>
-        <item_value>lt</item_value>
+        <itemLabel>Lithuania</itemLabel>
+        <itemValue>lt</itemValue>
       </item>
 	  <item>
-        <item_label>Iceland</item_label>
-        <item_value>is</item_value>
+        <itemLabel>Iceland</itemLabel>
+        <itemValue>is</itemValue>
       </item>
       <item>
-        <item_label>Legoland</item_label>
-        <item_value>ll</item_value>
+        <itemLabel>Legoland</itemLabel>
+        <itemValue>ll</itemValue>
       </item>
 	</localizedEntries>
 	<localizedEntries lang="is">
 	  <item>
-        <item_label>eg tala islensku</item_label>
-        <item_value>lt</item_value>
+        <itemLabel>eg tala islensku</itemLabel>
+        <itemValue>lt</itemValue>
       </item>
 	  <item>
-        <item_label>eg tala ekki islensku</item_label>
-        <item_value>ekki</item_value>
+        <itemLabel>eg tala ekki islensku</itemLabel>
+        <itemValue>ekki</itemValue>
       </item>
 	</localizedEntries>
 </choiceListData>
