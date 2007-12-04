@@ -12,7 +12,7 @@ import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.component.Component;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
-import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
+import com.idega.documentmanager.business.component.properties.ParametersManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.FormComponent;
@@ -26,9 +26,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/04 14:02:27 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -39,7 +39,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private String formId;
 	private PropertiesDocument properties;
 	private List<String> registeredForLastPageIdPages;
-	private DocumentMetaInformationManager metaInformationManager;
+	private ParametersManager parametersManager;
 	
 	private Form form;
 	
@@ -323,7 +323,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		setRegisteredForLastPageIdPages(null);
 		clearFormTitle();
 		clearFormId();
-		setMetaInformationManager(null);
+		parametersManager = null;
 		super.clear();
 	}
 	
@@ -393,14 +393,14 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		this.registeredForLastPageIdPages = registeredForLastPageIdPages;
 	}
 	
-	public DocumentMetaInformationManager getMetaInformationManager() {
-		return metaInformationManager;
-	}
-
-	public void setMetaInformationManager(DocumentMetaInformationManager manager) {
-		if(manager != null)
-			manager.setDocumentComponent(this);
-		metaInformationManager = manager;
+	public ParametersManager getParametersManager() {
+		
+		if(parametersManager == null) {
+			parametersManager = new ParametersManager();
+			parametersManager.setFormDocumentComponent(this);
+		}
+		
+		return parametersManager;
 	}
 
 	public Element getSubmissionElement() {

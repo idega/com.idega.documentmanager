@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.business.component.Container;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
-import com.idega.documentmanager.business.component.properties.DocumentMetaInformationManager;
+import com.idega.documentmanager.business.component.properties.ParametersManager;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
@@ -72,9 +72,7 @@ public interface Document extends Container {
 	
 	public abstract PropertiesDocument getProperties();
 	
-	public abstract void setMetaInformationManager(DocumentMetaInformationManager manager);
-	
-	public abstract DocumentMetaInformationManager getMetaInformationManager();
+	public abstract ParametersManager getParametersManager();
 	
 	public abstract Element getSubmissionInstanceElement();
 	

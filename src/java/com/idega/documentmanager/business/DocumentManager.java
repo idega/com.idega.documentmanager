@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.InitializationException;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/11/10 13:52:24 $ by $Author: alexis $
+ * Last modified: $Date: 2007/12/04 14:02:28 $ by $Author: civilis $
  */
 public interface DocumentManager {
 
@@ -58,6 +58,8 @@ public interface DocumentManager {
 	public abstract com.idega.documentmanager.business.Document openForm(String form_id) throws NullPointerException, FormLockException, Exception;
 	
 	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc) throws NullPointerException, Exception;
+	
+	public abstract com.idega.documentmanager.business.Document openFormAndGenerateId(Document xformsDoc) throws NullPointerException, Exception;
 	
 	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception;
 	

@@ -21,9 +21,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/04 14:02:28 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -146,6 +146,16 @@ public class Form {
 		
 		Form form = loadDocument(xformsXmlDoc, context);
 		form.formDocument.setFormId(formId);
+		
+		return form;
+	}
+	
+	public static Form loadDocumentAndGenerateId(Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
+		
+		Form form = loadDocument(xformsXmlDoc, context);
+		
+		String defaultFormName = form.getDocument().getFormTitle().getString(form.getDefaultLocale());
+		form.formDocument.setFormId(context.getPersistenceManager().generateFormId(defaultFormName));
 		
 		return form;
 	}
