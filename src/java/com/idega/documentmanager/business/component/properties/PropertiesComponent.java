@@ -7,9 +7,9 @@ import com.idega.jbpm.def.Variable;
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
@@ -42,4 +42,8 @@ public interface PropertiesComponent {
 	public abstract void setVariable(Variable variable);
 	
 	public abstract void setVariable(String variableStringRepresentation);
+	
+	public abstract boolean isReadonly();
+	
+	public abstract void setReadonly(boolean readonly);
 }

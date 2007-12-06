@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/11/15 09:24:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class Nodeset implements Cloneable {
 
@@ -19,6 +19,14 @@ public class Nodeset implements Cloneable {
 	private Element nodesetElement;
 	
 	protected Nodeset() { }
+
+	public String getContent() {
+		return nodesetElement.getTextContent();
+	}
+
+	public void setContent(String content) {
+		nodesetElement.setTextContent(content);
+	}
 
 	public String getMapping() {
 		

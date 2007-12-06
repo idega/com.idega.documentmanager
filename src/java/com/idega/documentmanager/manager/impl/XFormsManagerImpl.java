@@ -27,9 +27,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2007/11/15 15:27:32 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -354,6 +354,10 @@ public class XFormsManagerImpl implements XFormsManager {
 		case VARIABLE_NAME:
 			updateVariableName(component);
 			break;
+			
+		case READ_ONLY:
+			updateReadonly(component);
+			break;
 
 		default:
 			break;
@@ -379,6 +383,21 @@ public class XFormsManagerImpl implements XFormsManager {
 				component.getContext().getXformsXmlDoc(),
 				locStr
 		);
+	}
+	
+	public void setReadonly(FormComponent component, boolean readonly) {
+	
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Bind bind = xformsComponentDataBean.getBind();
+		
+		if(bind != null)
+			bind.setReadonly(readonly);
+	}
+	
+	
+	protected void updateReadonly(FormComponent component) {
+		
+		setReadonly(component, component.getProperties().isReadonly());
 	}
 	
 	protected void updateErrorMsg(FormComponent component) {
@@ -816,12 +835,20 @@ public class XFormsManagerImpl implements XFormsManager {
 		return FormManagerUtil.getLabelLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
 	}
 	
-	public boolean getIsRequired(FormComponent component) {
+	public boolean isRequired(FormComponent component) {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		Bind bind = xformsComponentDataBean.getBind();
 		
 		return bind != null && bind.isRequired();
+	}
+	
+	public boolean isReadonly(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Bind bind = xformsComponentDataBean.getBind();
+		
+		return bind != null && bind.isReadonly();
 	}
 	
 	public LocalizedStringBean getErrorLabelLocalizedStrings(FormComponent component) {

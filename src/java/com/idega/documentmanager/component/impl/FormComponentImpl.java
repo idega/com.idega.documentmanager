@@ -21,9 +21,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:30 $ by $Author: civilis $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -116,11 +116,12 @@ public class FormComponentImpl implements FormComponent, Component {
 			return;
 		
 		properties.setPlainLabel(getXFormsManager().getLocalizedStrings(this));
-		properties.setPlainRequired(getXFormsManager().getIsRequired(this));
+		properties.setPlainRequired(getXFormsManager().isRequired(this));
 		properties.setPlainErrorMsg(getXFormsManager().getErrorLabelLocalizedStrings(this));
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(this));
 		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
 		properties.setPlainVariable(getXFormsManager().getVariable(this));
+		properties.setPlainReadonly(getXFormsManager().isReadonly(this));
 	}
 	
 	protected void changeBindNames() {
@@ -315,5 +316,13 @@ public class FormComponentImpl implements FormComponent, Component {
 	public void setXformsComponentDataBean(
 			ComponentDataBean xformsComponentDataBean) {
 		this.xformsComponentDataBean = xformsComponentDataBean;
+	}
+	
+	public void setReadonly(boolean readonly) {
+		getXFormsManager().setReadonly(this, readonly);
+	}
+	
+	public boolean isReadonly() {
+		return getXFormsManager().isReadonly(this);
 	}
 }

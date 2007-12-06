@@ -10,9 +10,9 @@ import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
@@ -25,9 +25,9 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 	public void render() {
 		boolean load = this.load;
 		super.render();
-		FormComponentButtonArea my_button_area = (FormComponentButtonArea)parent;
+		FormComponentButtonArea buttonArea = (FormComponentButtonArea)parent;
 		if(!load)
-			setSiblingsAndParentPages(my_button_area.getPreviousPage(), my_button_area.getNextPage());
+			setSiblingsAndParentPages(buttonArea.getPreviousPage(), buttonArea.getNextPage());
 		((FormComponentButtonArea)parent).setButtonMapping(getType(), getId());
 	}
 	
@@ -35,8 +35,8 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 		getXFormsManager().renewButtonPageContextPages(this, previous, next);
 	}
 	
-	public void setLastPageId(String last_page_id) {
-		getXFormsManager().setLastPageToSubmitButton(this, last_page_id);
+	public void setLastPageId(String pageId) {
+		getXFormsManager().setLastPageToSubmitButton(this, pageId);
 	}
 	
 	@Override
@@ -67,5 +67,14 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 		
 		getProperties().setReferAction(null);
 		super.remove();
+	}
+	
+	@Override
+	public void setReadonly(boolean readonly) {
+
+//		for submit button only - hide if readonly (form)
+		
+		if(getXFormsManager().isSubmitButton(this))
+			getXFormsManager().setReadonly(this, readonly);
 	}
 }

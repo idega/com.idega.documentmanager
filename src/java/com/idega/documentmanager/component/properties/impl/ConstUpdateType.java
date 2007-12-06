@@ -2,10 +2,10 @@ package com.idega.documentmanager.component.properties.impl;
 
 /**
  * 
- *  Last modified: $Date: 2007/10/30 21:57:44 $ by $Author: civilis $
+ *  Last modified: $Date: 2007/12/06 20:31:30 $ by $Author: civilis $
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public enum ConstUpdateType {
 	
@@ -18,6 +18,7 @@ public enum ConstUpdateType {
 	THANKYOU_TEXT,
 	AUTOFILL_KEY,
 	HELP_TEXT,
+	READ_ONLY,
 	TEXT,
 	STEPS_VISUALIZATION_USED,
 	SUBMISSION_ACTION,

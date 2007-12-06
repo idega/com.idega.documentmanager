@@ -76,5 +76,7 @@ public interface Document extends Container {
 	
 	public abstract Element getSubmissionInstanceElement();
 	
-	public abstract FormVariablesHandler getFormVariablesHandler();	
+	public abstract FormVariablesHandler getFormVariablesHandler();
+	
+	public abstract void setReadonly(boolean readonly);
 }

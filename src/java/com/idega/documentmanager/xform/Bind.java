@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -27,10 +27,13 @@ public class Bind implements Cloneable {
 	private String type;
 	private String p3pType;
 	private Boolean isRequired;
+	private Boolean readonly;
+	private String relevant;
 	
 	public Element getBindElement() {
 		return bindElement;
 	}
+	
 	protected void setBindElement(Element bindElement) {
 		this.bindElement = bindElement;
 	}
@@ -246,6 +249,24 @@ public class Bind implements Cloneable {
 		return isRequired;
 	}
 	
+	public boolean isReadonly() {
+		
+		if(readonly == null) {
+			Element bind = getBindElement();
+			readonly = bind.hasAttribute(FormManagerUtil.readonly_att) && bind.getAttribute(FormManagerUtil.readonly_att).equals(FormManagerUtil.xpath_true);
+		}
+		
+		return readonly;
+	}
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
+		
+		if(readonly)
+			getBindElement().setAttribute(FormManagerUtil.readonly_att, FormManagerUtil.xpath_true);
+		else
+			getBindElement().removeAttribute(FormManagerUtil.readonly_att);
+	}
+	
 	public void rename(String bindName) {
 		
 		Element bindElement = getBindElement();
@@ -287,5 +308,24 @@ public class Bind implements Cloneable {
 			getBindElement().removeAttribute(FormManagerUtil.p3ptype_att);
 		else
 			getBindElement().setAttribute(FormManagerUtil.p3ptype_att, p3pType);
+	}
+
+	public String getRelevant() {
+		
+		if(relevant == null) {
+			Element bind = getBindElement();
+			relevant = bind.hasAttribute(FormManagerUtil.relevant_att) ? bind.getAttribute(FormManagerUtil.relevant_att) : null;
+		}
+		
+		return relevant;
+	}
+
+	public void setRelevant(String relevant) {
+		this.relevant = relevant;
+		
+		if(relevant != null)
+			getBindElement().setAttribute(FormManagerUtil.relevant_att, relevant);
+		else
+			getBindElement().removeAttribute(FormManagerUtil.relevant_att);
 	}
 }

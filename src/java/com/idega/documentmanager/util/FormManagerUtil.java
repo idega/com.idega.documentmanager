@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2007/11/16 13:48:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -113,6 +113,7 @@ public class FormManagerUtil {
 	public static final String mapping_att = "mapping";
 	public static final String action_att = "action";
 	public static final String required_att = "required";
+	public static final String readonly_att = "readonly";
 	public static final String xpath_true = "true()";
 	public static final String xpath_false = "false()";
 	public static final String datatype_tag = "datatype";
@@ -756,7 +757,7 @@ public class FormManagerUtil {
 		return (Element)formIdElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getSubmissionElement(Document context) {
+	public static synchronized Element getSubmissionElement(Node context) {
 		
 		if(submissionElementXPath == null)
 			submissionElementXPath = new XPathUtil(".//xf:submission[@id='submit_data_submission']");

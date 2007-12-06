@@ -10,9 +10,9 @@ import com.idega.jbpm.def.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public interface XFormsManager {
 
@@ -44,7 +44,11 @@ public interface XFormsManager {
 	
 	public abstract String getAutofillKey(FormComponent component);
 	
-	public abstract boolean getIsRequired(FormComponent component);
+	public abstract boolean isRequired(FormComponent component);
 	
 	public abstract Variable getVariable(FormComponent component);
+	
+	public abstract boolean isReadonly(FormComponent component);
+	
+	public void setReadonly(FormComponent component, boolean readonly);
 }

@@ -8,13 +8,14 @@ import com.idega.jbpm.def.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:30 $ by $Author: civilis $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
-	private boolean required;
+	private boolean required = false;
+	private boolean readonly = false;
 	private LocalizedStringBean label;
 	private LocalizedStringBean errorMsg;
 	private LocalizedStringBean helpText;
@@ -71,6 +72,8 @@ public class ComponentProperties implements PropertiesComponent {
 		.append(autofillKey)
 		.append("\nhelp text: ")
 		.append(helpText)
+		.append("\nreadonly: ")
+		.append(readonly)
 		
 		.toString();
 	}
@@ -120,5 +123,17 @@ public class ComponentProperties implements PropertiesComponent {
 	
 	public void setPlainVariable(Variable variable) {
 		this.variable = variable;
+	}
+	public boolean isReadonly() {
+		return readonly;
+	}
+	public void setReadonly(boolean readonly) {
+		
+		this.readonly = readonly;
+		component.update(ConstUpdateType.READ_ONLY);
+	}
+	
+	public void setPlainReadonly(boolean readonly) {
+		this.readonly = readonly;
 	}
 }

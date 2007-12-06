@@ -7,9 +7,9 @@ import com.idega.documentmanager.context.DMContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public interface FormComponent {
 
@@ -54,4 +54,8 @@ public interface FormComponent {
 	public abstract DMContext getContext();
 
 	public abstract void setContext(DMContext context);
+	
+	public abstract void setReadonly(boolean readonly);
+	
+	public abstract boolean isReadonly();
 }

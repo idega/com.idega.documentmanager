@@ -24,14 +24,16 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
 	private static final String actionTaken = "actionTaken";
 	private static final String bindIdVariable = "bindId";
+	
+	private XPathUtil sendSubmissionXPath;
 	
 	@Override
 	public void loadXFormsComponentFromDocument(FormComponent component) {
@@ -374,5 +376,53 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		PropertiesButton properties = (PropertiesButton)component.getProperties();
 		String referAction = properties.getReferAction();
 		setReferAction(component, referAction);
+	}
+	
+	@Override
+	protected void updateReadonly(FormComponent component) {
+		
+		setReadonly(component, component.getProperties().isReadonly());
+	}
+	
+	@Override
+	public void setReadonly(FormComponent component, boolean readonly) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Bind bind = xformsComponentDataBean.getBind();
+		
+		if(bind == null) {
+
+			bind = Bind.create(component.getContext().getXformsXmlDoc(), "bind."+component.getId(), null, null);
+			xformsComponentDataBean.setBind(bind);
+			xformsComponentDataBean.getElement().setAttribute(FormManagerUtil.bind_att, bind.getId());
+			Nodeset nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
+			bind.setNodeset(nodeset);
+			bind.setRelevant(nodeset.getPath());
+		}
+
+		bind.getNodeset().setContent(readonly ? FormManagerUtil.xpath_false : FormManagerUtil.xpath_true);
+	}
+	
+	@Override
+	public boolean isReadonly(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		Bind bind = xformsComponentDataBean.getBind();
+		
+		return bind != null && bind.getNodeset().getContent().equals(FormManagerUtil.xpath_false);
+	}
+	
+	private synchronized Element getSendSubmissionElement(Node context) {
+		
+		if(sendSubmissionXPath == null)
+			sendSubmissionXPath = new XPathUtil(".//xf:send[@submission='submit_data_submission']");
+		
+		return (Element)sendSubmissionXPath.getNode(context);
+	}
+	
+	public boolean isSubmitButton(FormComponent component) {
+
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		return getSendSubmissionElement(xformsComponentDataBean.getElement()) != null;
 	}
 }
