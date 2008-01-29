@@ -9,7 +9,7 @@
   <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.documentmanager</artifactId>
   <name>idegaWeb Document Manager</name>
-  <version>4.0.0</version>
+  <version>4.0.1-SNAPSHOT</version>
   <inceptionYear>2006</inceptionYear>
   <description>idegaWeb Document Manager is responsible for managing xforms document</description>
   <scm>
@@ -19,7 +19,6 @@
      -->
     <connection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.documentmanager/</connection>
     <developerConnection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.documentmanager/</developerConnection>
-    <tag>com_idega_block_addon_super-4_0_0</tag>
   </scm>
 
   <developers>
@@ -40,12 +39,12 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>org.chiba.web</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.idega.block.addon</groupId>
       <artifactId>org.jboss.jbpm</artifactId>
-      <version>4.0.0</version>
+      <version>4.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
