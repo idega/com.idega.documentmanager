@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/02/12 14:39:03 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -29,6 +29,7 @@ public class Bind implements Cloneable {
 	private Boolean isRequired;
 	private Boolean readonly;
 	private String relevant;
+	private Boolean isRelevant;
 	
 	public Element getBindElement() {
 		return bindElement;
@@ -327,5 +328,37 @@ public class Bind implements Cloneable {
 			getBindElement().setAttribute(FormManagerUtil.relevant_att, relevant);
 		else
 			getBindElement().removeAttribute(FormManagerUtil.relevant_att);
+	}
+
+	/**
+	 * 
+	 * @return if the attribute contains xpath expression true() or false(), null, if attribute contains anything else 
+	 */
+	public Boolean getIsRelevant() {
+		
+		if(isRelevant == null) {
+
+			String relVal = getRelevant();
+			
+			if(FormManagerUtil.xpath_true.equals(relVal))
+				isRelevant = true;
+			else if(FormManagerUtil.xpath_false.equals(relVal))
+				isRelevant = false;
+		}
+		
+		return isRelevant;
+	}
+
+	public void setIsRelevant(Boolean isRelevant) {
+		
+		if(isRelevant == null)
+			throw new IllegalArgumentException("No value provided");
+		
+		if(isRelevant)
+			setRelevant(FormManagerUtil.xpath_true);
+		else
+			setRelevant(FormManagerUtil.xpath_false);
+		
+		this.isRelevant = isRelevant;
 	}
 }
