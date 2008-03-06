@@ -10,7 +10,12 @@ import com.idega.documentmanager.manager.XFormsManagerMultiUpload;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.util.xml.XPathUtil;
 
-
+/**
+ * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2008/03/06 12:21:08 $ by $Author: arunas $
+ */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements XFormsManagerMultiUpload{
 	
 
