@@ -22,6 +22,7 @@
 		<property name="xformsManagerPage" ref="xformsManagerPage" />
 		<property name="xformsManagerPlain" ref="xformsManagerPlain" />
 		<property name="xformsManagerSelect" ref="xformsManagerSelect" />
+		<property name="xformsManagerMultiUpload" ref="xformsManagerMultiUpload" /> 
 		<property name="xformsManagerThankYouPage" ref="xformsManagerThankYouPage" />
 	</bean>
 	
@@ -38,6 +39,11 @@
 	<bean id="xformsManagerPage" class="com.idega.documentmanager.manager.impl.XFormsManagerPageImpl" scope="singleton" />
 	<bean id="xformsManagerPlain" class="com.idega.documentmanager.manager.impl.XFormsManagerPlainImpl" scope="singleton" />
 	<bean id="xformsManagerSelect" class="com.idega.documentmanager.manager.impl.XFormsManagerSelectImpl" scope="singleton" />
+    <bean id="xformsManagerMultiUpload" class="com.idega.documentmanager.manager.impl.XFormsManagerMultiUploadImpl" scope="singleton" /> 
+	
+	
+	
+	
 	<bean id="xformsManagerThankYouPage" class="com.idega.documentmanager.manager.impl.XFormsManagerThankYouPageImpl" scope="singleton" />
 	
 </beans>

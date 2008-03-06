@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:xf="http://www.w3.org/2002/xforms"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:ev="http://www.w3.org/2001/xml-events">
+<html xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:xf="http://www.w3.org/2002/xforms" 
+xmlns:ev="http://www.w3.org/2001/xml-events" 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <head>
 <title>formbuilder components</title>
 
 <xf:model id="components_model" schema="default-components.xsd">
+
 	<xf:instance id="components_instance" xmlns="">
 		<data> 
 			<text /> 
@@ -17,20 +20,12 @@
 			<single_select_minimal />
 			<multiple_select />
 			<single_select /> 
-			<upload_file><attachment filename="" content-type="" /></upload_file> 
+			<uploadfile><attachment filename="" mediatype="" /></uploadfile> 
 			<page /> 
 		</data>
-	</xf:instance>
-	<xf:instance id="control-instance">
-    	<control xmlns="">
-        	<simple-upload-trigger/>
-            <add-upload-trigger/>
-            <remove-upload-trigger/>
-        </control>
-    </xf:instance>
-    <xf:instance id="file-template">
-    	<file xmlns="" filename="" mediatype="" />
-    </xf:instance>
+	</xf:instance>	
+	<!-- types hexBinary anyURI base64Binary -->
+    <xf:bind id ="uploadfile" nodeset="uploadfile" type="anyURI" />
 	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
@@ -40,8 +35,6 @@
 		type="string" />
 	<xf:bind id="multiple_select" nodeset="multiple_select" type="string" />
 	<xf:bind id="single_select" nodeset="single_select" type="string" />
-	<xf:bind id="upload_file" nodeset="upload_file"
-		type="xs:base64Binary" />
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
@@ -75,8 +68,10 @@
 			<input.title lang="is">Simple text input</input.title>
 			<upload_file.title lang="en">File upload</upload_file.title>
 			<upload_file.title lang="is">File upload</upload_file.title>
-			<multi_upload_file.title lang="en">Multi upload</multi_upload_file.title>
-			<multi_upload_file.title lang="is">Multi upload</multi_upload_file.title> 
+			<multi_upload_file.label lang="en">Add One</multi_upload_file.label>
+			<multi_upload_file.label lang="is">Add One</multi_upload_file.label> 
+			<multi_upload_file.remove lang="en">Remove</multi_upload_file.remove>
+			<multi_upload_file.remove lang="is">Remove</multi_upload_file.remove>
 			<page.label lang="en">Section</page.label>
 			<confirmation_page.label lang="en">Confirmation Section</confirmation_page.label>
 			<button_next.label lang="en">Next</button_next.label>
@@ -114,13 +109,21 @@
 			<component component_id="fbc_upload_file" accessSupport="w">
 				<datatype>file</datatype>
 			</component>
+			<component component_id="fbc_multi_upload_file" accessSupport="w">
+				<datatype>file</datatype>
+			</component>
+			
 			<component component_id="fbc_simple_text" accessSupport="r">
 				<datatype>string</datatype>
 				<datatype>list</datatype>
 			</component>
 		</componentDataTypes>
 	</xf:instance>
-
+	
+  <xf:instance id="fbc_multi_upload_file_upd">
+    	<attachment xmlns="" filename="" mediatype="" />
+    </xf:instance>
+    
 	<xf:instance id="datasets_examples" xmlns="">
 		<examples> 
 			<item id="itemset"> <xf:itemset model="data_model">
@@ -250,6 +253,8 @@
 			<component component_id="fbc_single_select" />
 			<component component_id="fbc_email" />
 			<component component_id="fbc_upload_file" />
+			<component component_id="fbc_multi_upload_file"/>
+				
 		</category>
 		<category name="buttons">
 			<component component_id="fbc_button_next" />
@@ -272,41 +277,28 @@
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-		<xf:group appearance="full" id="fbc_multi_upload_file" bind="multi_upload">
-			<tr>
-                <td/>
-                <td>
-                    <xf:group ref="instance('control-instance')/add-upload-trigger">
-                        <xf:trigger appearance="minimal">
-                            <xf:label><img src="../apps/xforms-upload/images/add.gif"/></xf:label>
-                            <xf:insert ev:event="DOMActivate" nodeset="instance('components_instance')/attachment" at="last()" position="after" origin="instance('file-template')"/>
-                        </xf:trigger>
-                    </xf:group>
-                </td>
-                <td>
-                    <xf:group ref="instance('control-instance')/add-upload-trigger">
-                        <xf:trigger appearance="minimal">
-                            <xf:label>Add One</xf:label>
-                            <xf:insert ev:event="DOMActivate" nodeset="instance('files-instance')/attachment" at="last()" position="after" origin="instance('file-template')"/>
-                        </xf:trigger>
-                    </xf:group>
-                </td>
-            </tr>
-			<xf:output ref="instance('localized_strings')/multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			<xf:repeat nodeset="file" appearance="full">
-	        	<tr>
-	            	<td>    
-	                    <xf:output value="count(preceding-sibling::file) + 1"/>
-	                </td>
-	                <td>
-	                    <xf:upload ref=".">
-							<xf:filename ref="@filename"/>
-	                		<xf:mediatype ref="@mediatype"/>
-						</xf:upload>
-	                </td>
-	            </tr>
-	        </xf:repeat>
-        </xf:group>
+	<xf:group appearance="full" bind="uploadfile" id ="fbc_multi_upload_file">
+		<xf:trigger>
+			<xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			<xf:insert ev:event="DOMActivate" nodeset="instance('components_instance')/uploadfile/attachment" at="last()" position="after" origin="instance('fbc_multi_upload_file_upd')"/>
+		</xf:trigger>
+		<xf:repeat nodeset="instance('data-instance')/uploadfile/attachment" id="data_repeat">
+		
+		<xf:output value="count(preceding-sibling::attachment) + 1">
+		</xf:output>
+
+ 		<xf:upload bind="uploadfile">
+            <xf:filename ref="attachment/@filename"/>
+        	<xf:mediatype ref="attachment/@mediatype"/>
+        </xf:upload>
+        
+         <xf:trigger>
+			<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			<xf:delete ev:event="DOMActivate" nodeset="instance('components_instance')/uploadfile/attachment" at="index('data_repeat')"/>
+		</xf:trigger>
+			
+		</xf:repeat>
+	</xf:group>
 		<xf:input bind="text" id="fbc_text">
 			<xf:label
 				ref="instance('localized_strings')/input.title[@lang=instance('localized_strings')/current_language]"
@@ -372,14 +364,13 @@
 					model="data_model" />
 			</xf:alert>
 		</xf:input>
-		<xf:upload bind="upload_file" id="fbc_upload_file">
-			<xf:label
-				ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]"
-				model="data_model" />
-			<xf:filename ref="attachment/@filename" />
-			<xf:mediatype ref="attachment/@content-type" />
-		</xf:upload>
-	
+			
+        <xf:upload bind="uploadfile" id="fbc_upload_file" > 
+			<xf:label ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
+            <xf:filename ref="attachment/@filename"/>
+        	<xf:mediatype ref="attachment/@mediatype"/>
+        </xf:upload>
+  	
 		<div id="fbc_button_area" name="fbc_button_area" class="fbc_button_area"></div>
 		<div id="fbc_simple_text" name="fbc_simple_text" class="fbc_simple_text"><xf:output
 						ref="instance('localized_strings')/simple_text.text[@lang=instance('localized_strings')/current_language]"

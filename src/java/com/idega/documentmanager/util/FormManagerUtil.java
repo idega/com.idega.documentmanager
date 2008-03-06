@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/06 12:08:24 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -119,6 +119,7 @@ public class FormManagerUtil {
 	public static final String datatype_tag = "datatype";
 	public static final String accessSupport_att = "accessSupport";
 	public static final String submission_model = "submission_model";
+	public static final String origin_att = "origin";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -903,10 +904,7 @@ public class FormManagerUtil {
 			NodeList nodes = getElementsContainingAttribute(doc, null, "nodeset");
 			
 			System.out.println("xx:"+nodes.getLength());
-			DOMUtil.prettyPrintDOM(nodes.item(0));
-			
-			
-		} catch (Exception e) {
+			DOMUtil.prettyPrintDOM(nodes.item(0));} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

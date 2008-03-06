@@ -2,9 +2,9 @@ package com.idega.documentmanager.manager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/05 11:42:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/06 12:11:38 $ by $Author: arunas $
  */
 public class XFormsManagerFactory {
 
@@ -15,7 +15,9 @@ public class XFormsManagerFactory {
 	private XFormsManagerPage			xformsManagerPage;
 	private XFormsManagerPlain 			xformsManagerPlain;
 	private XFormsManagerSelect 		xformsManagerSelect;
+	private XFormsManagerMultiUpload	xformsManagerMultiUpload;
 	private XFormsManagerThankYouPage 	xformsManagerThankYouPage;
+	
 	
 	public XFormsManagerFactory() { }
 	
@@ -59,6 +61,9 @@ public class XFormsManagerFactory {
 	public XFormsManagerSelect getXformsManagerSelect() {
 		return xformsManagerSelect;
 	}
+	public XFormsManagerMultiUpload getXformsManagerMultiUpload() {
+		return xformsManagerMultiUpload;
+	}
 	public void setXformsManagerSelect(XFormsManagerSelect xformsManagerSelect) {
 		this.xformsManagerSelect = xformsManagerSelect;
 	}
@@ -68,5 +73,10 @@ public class XFormsManagerFactory {
 	public void setXformsManagerThankYouPage(
 			XFormsManagerThankYouPage xformsManagerThankYouPage) {
 		this.xformsManagerThankYouPage = xformsManagerThankYouPage;
+	}
+
+	public void setXformsManagerMultiUpload(
+			XFormsManagerMultiUpload xformsManagerMultiUpload) {
+		this.xformsManagerMultiUpload = xformsManagerMultiUpload;
 	}
 }
