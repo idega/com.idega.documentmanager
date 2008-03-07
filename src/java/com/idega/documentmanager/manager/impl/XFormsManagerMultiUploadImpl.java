@@ -12,9 +12,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/03/06 12:21:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/07 13:44:15 $ by $Author: civilis $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements XFormsManagerMultiUpload{
 	
@@ -47,14 +47,16 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 		return element_id+upload_data_source;
 	}
 	
-	
-	public void removeMultiUploadComponentSourcesFromXFormsDocument(FormComponent component) {
+	@Override
+	public void removeComponentFromXFormsDocument(FormComponent component) {
 		
 		ComponentMultiUploadBean xforms_component = (ComponentMultiUploadBean)component.getXformsComponentDataBean();
 		Element data_src_element = xforms_component.getMultiUploadInstance();
 		
 		if(data_src_element != null)
 			data_src_element.getParentNode().removeChild(data_src_element);
+		
+		super.removeComponentFromXFormsDocument(component);
 	}
 	
 	// component attach to document
