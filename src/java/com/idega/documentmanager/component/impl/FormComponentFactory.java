@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/03/06 12:12:03 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/12 10:11:49 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -76,6 +76,7 @@ public class FormComponentFactory implements Singleton {
 		
 		types = new ArrayList<String>();
 		types.add("fbc_multi_upload_file");
+		types.add("xf:group");
 		components_tags_classified.put(type_upload, types);
 		
 	}
