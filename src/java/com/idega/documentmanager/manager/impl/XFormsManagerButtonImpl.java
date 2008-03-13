@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/02/12 14:39:03 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/13 09:29:19 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -397,13 +397,9 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 			xformsComponentDataBean.getElement().setAttribute(FormManagerUtil.bind_att, bind.getId());
 			Nodeset nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
 			bind.setNodeset(nodeset);
-//			bind.setRelevant(nodeset.getPath());
 		}
 		
 		bind.setIsRelevant(!readonly);
-
-		//bind.getNodeset().setContent(readonly ? FormManagerUtil.xpath_false : FormManagerUtil.xpath_true);
-		DOMUtil.prettyPrintDOM(component.getFormDocument().getContext().getXformsXmlDoc());
 	}
 	
 	@Override
