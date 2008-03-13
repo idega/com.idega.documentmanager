@@ -277,7 +277,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-	<xf:group appearance="full" bind="uploadfile" id ="fbc_multi_upload_file">
+	<xf:group appearance="full" bind="uploadfile" name = "fbc_multi_upload_file" id ="fbc_multi_upload_file">
 		<xf:trigger>
 			<xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			<xf:insert ev:event="DOMActivate" nodeset="instance('components_instance')/uploadfile/attachment" at="last()" position="after" origin="instance('fbc_multi_upload_file_upd')"/>
