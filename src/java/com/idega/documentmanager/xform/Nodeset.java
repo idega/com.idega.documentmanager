@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/14 15:04:00 $ by $Author: civilis $
  */
 public class Nodeset implements Cloneable {
 
@@ -70,7 +70,7 @@ public class Nodeset implements Cloneable {
 			
 			nodesetElementXPath.clearVariables();
 			nodesetElementXPath.setVariable(nodesetPathVariable, 
-					nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(nodesetPath.lastIndexOf(CoreConstants.SLASH)+1) : nodesetPath);
+					nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(0, nodesetPath.indexOf(CoreConstants.SLASH)-1) : nodesetPath);
 			nodesetElement = (Element)nodesetElementXPath.getNode(instance);
 		}
 		
@@ -237,5 +237,15 @@ public class Nodeset implements Cloneable {
 		nodeset.setPath(getPath());
 		
 		return nodeset;
+	}
+	
+	public void rename(String newName) {
+
+		String path = getPath();
+		Element nodesetElement = getNodesetElement();
+		path = path.replaceFirst(nodesetElement.getNodeName(), newName);
+		nodesetElement = (Element)nodesetElement.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), newName);
+		setNodesetElement(nodesetElement);
+		setPath(path);
 	}
 }
