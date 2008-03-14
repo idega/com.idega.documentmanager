@@ -21,11 +21,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multiple_select />
 			<single_select /> 
 			<uploadfile><attachment filename="" mediatype="" /></uploadfile> 
+			<multiupload filename="" mediatype=""/>
 			<page /> 
 		</data>
 	</xf:instance>	
+	
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id ="uploadfile" nodeset="uploadfile" type="anyURI" />
+    <xf:bind id="multiupload" nodeset="multiupload" type="anyURI"/>
+       
 	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
 	<xf:bind id="secret" nodeset="secret" type="string" />
@@ -120,10 +124,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		</componentDataTypes>
 	</xf:instance>
 	
-  <xf:instance id="fbc_multi_upload_file_upd">
-    	<attachment xmlns="" filename="" mediatype="" />
-    </xf:instance>
-    
 	<xf:instance id="datasets_examples" xmlns="">
 		<examples> 
 			<item id="itemset"> <xf:itemset model="data_model">
@@ -277,27 +277,28 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-	<xf:group appearance="full" bind="uploadfile" name = "fbc_multi_upload_file" id ="fbc_multi_upload_file">
-		<xf:trigger>
-			<xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			<xf:insert ev:event="DOMActivate" nodeset="instance('components_instance')/uploadfile/attachment" at="last()" position="after" origin="instance('fbc_multi_upload_file_upd')"/>
-		</xf:trigger>
-		<xf:repeat nodeset="instance('data-instance')/uploadfile/attachment" id="data_repeat">
+	<xf:group appearance="full"  bind="multiupload" id ="fbc_multi_upload_file">
+	
+		 <xf:trigger>
+                   <xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+                    <xf:action>
+                        <xf:insert nodeset="instance('data-instance')/multiupload" at="last()" position="after"/>
+                    </xf:action>
+         </xf:trigger>
+                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="full">
+                  	<xf:output value="count(preceding-sibling::multiupload) + 1"/>
+                    <xf:upload ref=".">
+                        <xf:filename ref="@filename"/>
+                        <xf:mediatype ref="@mediatype"/>      
+                    </xf:upload>
+               	    <xf:trigger>
+               	   	<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
+               	    <xf:action>
+					 	<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload"/>
+					</xf:action>
+					</xf:trigger>
+                </xf:repeat>
 		
-		<xf:output value="count(preceding-sibling::attachment) + 1">
-		</xf:output>
-
- 		<xf:upload bind="uploadfile">
-            <xf:filename ref="attachment/@filename"/>
-        	<xf:mediatype ref="attachment/@mediatype"/>
-        </xf:upload>
-        
-         <xf:trigger>
-			<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			<xf:delete ev:event="DOMActivate" nodeset="instance('components_instance')/uploadfile/attachment" at="index('data_repeat')"/>
-		</xf:trigger>
-			
-		</xf:repeat>
 	</xf:group>
 		<xf:input bind="text" id="fbc_text">
 			<xf:label
