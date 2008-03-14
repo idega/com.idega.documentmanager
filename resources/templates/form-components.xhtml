@@ -21,14 +21,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multiple_select />
 			<single_select /> 
 			<uploadfile><attachment filename="" mediatype="" /></uploadfile> 
-			<multiupload filename="" mediatype=""/>
+			<multiupload><entry filename="" mediatype=""/></multiupload>
+			
 			<page /> 
 		</data>
 	</xf:instance>	
 	
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id ="uploadfile" nodeset="uploadfile" type="anyURI" />
-    <xf:bind id="multiupload" nodeset="multiupload" type="anyURI"/>
+    <xf:bind id="multiupload" nodeset="multiupload/entry" type="anyURI"/>
        
 	<xf:bind id="text" nodeset="text" type="string" />
 	<xf:bind id="textarea" nodeset="textarea" type="string" />
