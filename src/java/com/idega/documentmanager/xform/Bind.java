@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/02/12 14:39:03 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/14 15:04:00 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -268,30 +268,14 @@ public class Bind implements Cloneable {
 			getBindElement().removeAttribute(FormManagerUtil.readonly_att);
 	}
 	
-	public void rename(String bindName) {
+	public void rename(String newName) {
 		
-		Element bindElement = getBindElement();
-		
-		String prevNodeset = bindElement.getAttribute(FormManagerUtil.nodeset_att);
-		
-		if(prevNodeset.contains(FormManagerUtil.slash))
-			prevNodeset = prevNodeset.substring(prevNodeset.indexOf(FormManagerUtil.slash));
-		else
-			prevNodeset = null;
-		
-//		TODO: what's the use case of prevNodeset?
-		
-		String nodesetPath = prevNodeset == null ? bindName : bindName+prevNodeset;
-		
-		bindElement.setAttribute(FormManagerUtil.nodeset_att, nodesetPath);
-		
+		//Element bindElement = getBindElement();
 		Nodeset nodeset = getNodeset();
 		
 		if(nodeset != null) {
-			Element nodesetElement = nodeset.getNodesetElement();
-			nodesetElement = (Element)nodesetElement.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), bindName);
-			nodeset.setNodesetElement(nodesetElement);
-			nodeset.setPath(nodesetPath);
+			
+			nodeset.rename(newName);
 		}
 	}
 	
