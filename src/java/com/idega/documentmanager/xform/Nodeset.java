@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/03/19 12:25:51 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/19 15:09:30 $ by $Author: arunas $
  */
 public class Nodeset implements Cloneable {
 
