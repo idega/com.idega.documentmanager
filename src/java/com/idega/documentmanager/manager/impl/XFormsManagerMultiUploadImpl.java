@@ -12,9 +12,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/03/14 12:10:03 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/19 11:42:54 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements XFormsManagerMultiUpload{
 	
@@ -23,9 +23,6 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 	private static final String REPEAT_TAG ="./descendant::xf:repeat[@id='upload-entries']";
 	private static final String DELETE_TAG="./descendant::xf:delete";
 	private static final String INSTANCE = "instance('data-instance')/Add_One_";
-	private static final String OUTPUT="./descendant::xf:output";
-	private static final String OUTPUT_VALUE_BEGIN="count(preceding-sibling::Add_One_";
-	private static final String OUTPUT_VALUE_END=") + 1";
 	private static final String BIND = "bind.";
 	@Override
 	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
@@ -70,16 +67,13 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 			insert = (Element)util.getNode(xfMultiUploadComponentBean.getElement());
 			insert.setAttribute(FormManagerUtil.nodeset_att, constructInsertNodeset(component.getId()));
 			
-			util = new XPathUtil(OUTPUT);
-			insert = (Element)util.getNode(xfMultiUploadComponentBean.getElement());
-			insert.setAttribute(FormManagerUtil.value_att, constructOutputValue(component.getId()));
-
+		
 	}
 	
 	private String constructInsertNodeset(String component_id) {
 		
 		StringBuffer buf = new StringBuffer();		
-		buf.append(INSTANCE).append(component_id);
+		buf.append(INSTANCE).append(component_id).append("/entry");
 		return buf.toString();
 		
 	}
@@ -92,11 +86,4 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 		
 	}
 	
-	private String constructOutputValue(String component_id) {
-		
-		StringBuffer buf = new StringBuffer();		
-		buf.append(OUTPUT_VALUE_BEGIN).append(component_id).append(OUTPUT_VALUE_END);
-		return buf.toString();
-		
-	}
 }

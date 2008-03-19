@@ -9,14 +9,17 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/03/14 15:04:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/19 11:43:00 $ by $Author: arunas $
  */
 public class Nodeset implements Cloneable {
 
 	private String path;
+	
 	private Element nodesetElement;
+	
+	private static String nodesetPath;
 	
 	protected Nodeset() { }
 
@@ -59,18 +62,21 @@ public class Nodeset implements Cloneable {
 	 * @param nodesetPath - only simple path (i.e. the element name that's the child of data element) is being supported
 	 * @return Nodeset object with nodeset relevant data
 	 */
+	public static void setNodesetPath(String nodePath) {
+		nodesetPath = nodePath;
+	}
 	public static Nodeset locate(Element model, String nodesetPath) {
 
 		Element instance = findInstance(model, nodesetPath);
 		XPathUtil nodesetElementXPath = getNodesetElementXPath();
-		
+		setNodesetPath(nodesetPath);
 		Element nodesetElement;
-		
+		String nodesetName = nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(0, nodesetPath.indexOf(CoreConstants.SLASH)) : nodesetPath;
 		synchronized (nodesetElementXPath) {
 			
 			nodesetElementXPath.clearVariables();
-			nodesetElementXPath.setVariable(nodesetPathVariable, 
-					nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(0, nodesetPath.indexOf(CoreConstants.SLASH)-1) : nodesetPath);
+			
+			nodesetElementXPath.setVariable(nodesetPathVariable, nodesetName);
 			nodesetElement = (Element)nodesetElementXPath.getNode(instance);
 		}
 		
@@ -240,10 +246,15 @@ public class Nodeset implements Cloneable {
 	}
 	
 	public void rename(String newName) {
-
+		
+		
 		String path = getPath();
 		Element nodesetElement = getNodesetElement();
-		path = path.replaceFirst(nodesetElement.getNodeName(), newName);
+
+		String add_node =  nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(nodesetPath.indexOf(CoreConstants.SLASH), nodesetPath.length() ) : "";
+		String newBindName = newName+add_node;
+		path = path.replaceFirst(nodesetElement.getNodeName(), newBindName);
+		
 		nodesetElement = (Element)nodesetElement.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), newName);
 		setNodesetElement(nodesetElement);
 		setPath(path);
