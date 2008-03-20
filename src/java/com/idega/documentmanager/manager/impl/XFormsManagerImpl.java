@@ -27,9 +27,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/20 10:40:11 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -635,11 +635,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		if(nodeset != null) {
 			
 			Document xform = component.getContext().getXformsXmlDoc();
-
-			Element newNodesetElement = (Element)xform.importNode(nodeset.getNodesetElement(), true);
-			newNodesetElement = (Element)xform.renameNode(newNodesetElement, newNodesetElement.getNamespaceURI(), bindId);
-			
-			nodeset = Nodeset.append(FormManagerUtil.getFormInstanceModelElement(xform), newNodesetElement);
+			nodeset = Nodeset.importNodeset(FormManagerUtil.getFormInstanceModelElement(xform), nodeset, bindId);
 		}
 		
 		return nodeset;

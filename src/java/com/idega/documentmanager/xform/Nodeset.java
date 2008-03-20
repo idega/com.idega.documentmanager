@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/03/20 07:10:05 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/20 10:40:11 $ by $Author: civilis $
  */
 public class Nodeset implements Cloneable {
 
@@ -173,15 +173,22 @@ public class Nodeset implements Cloneable {
 		return nodeset;
 	}
 	
-	public static Nodeset append(Element model, Element nodesetElement) {
+	public static Nodeset importNodeset(Element model, Nodeset nodesetToImport, String newNodesetName) {
+		
+		Element nodesetElement = nodesetToImport.getNodesetElement();
+		nodesetElement = (Element)model.getOwnerDocument().importNode(nodesetElement, true);
+		nodesetElement = (Element)model.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), newNodesetName);
 		
 		Element instance = FormManagerUtil.getInstanceElement(model);
 		Element parent = (Element)getNodesetElementParentXPath().getNode(instance);
 		parent.appendChild(nodesetElement);
 		
+		String path = nodesetToImport.getPath();
+		path = path.replaceFirst(nodesetElement.getNodeName(), newNodesetName);
+		
 		Nodeset nodeset = new Nodeset();
 		nodeset.setNodesetElement(nodesetElement);
-		nodeset.setPath(nodesetElement.getNodeName());
+		nodeset.setPath(path);
 		return nodeset;
 	}
 	
