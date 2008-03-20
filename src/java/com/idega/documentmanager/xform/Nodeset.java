@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/03/20 10:40:11 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/20 13:02:48 $ by $Author: arunas $
  */
 public class Nodeset implements Cloneable {
 
@@ -174,17 +174,17 @@ public class Nodeset implements Cloneable {
 	}
 	
 	public static Nodeset importNodeset(Element model, Nodeset nodesetToImport, String newNodesetName) {
+	    
+	    	Element nodesetElement = nodesetToImport.getNodesetElement();
+	    	String path = nodesetToImport.getPath();
+		path = path.replaceFirst(nodesetElement.getNodeName(), newNodesetName);
 		
-		Element nodesetElement = nodesetToImport.getNodesetElement();
 		nodesetElement = (Element)model.getOwnerDocument().importNode(nodesetElement, true);
 		nodesetElement = (Element)model.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), newNodesetName);
 		
 		Element instance = FormManagerUtil.getInstanceElement(model);
 		Element parent = (Element)getNodesetElementParentXPath().getNode(instance);
 		parent.appendChild(nodesetElement);
-		
-		String path = nodesetToImport.getPath();
-		path = path.replaceFirst(nodesetElement.getNodeName(), newNodesetName);
 		
 		Nodeset nodeset = new Nodeset();
 		nodeset.setNodesetElement(nodesetElement);
@@ -252,7 +252,7 @@ public class Nodeset implements Cloneable {
 		String path = getPath();
 		Element nodesetElement = getNodesetElement();
 		
-		path = path.replaceFirst(nodesetElement.getNodeName(), newName);
+		path = path.replaceFirst( nodesetElement.getNodeName(), newName);
 		nodesetElement = (Element)nodesetElement.getOwnerDocument().renameNode(nodesetElement, nodesetElement.getNamespaceURI(), newName);
 		setNodesetElement(nodesetElement);
 		setPath(path);

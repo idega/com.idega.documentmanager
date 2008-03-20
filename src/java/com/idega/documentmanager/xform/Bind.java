@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/03/14 15:05:54 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/20 13:02:48 $ by $Author: arunas $
  */
 public class Bind implements Cloneable {
 
@@ -272,8 +272,7 @@ public class Bind implements Cloneable {
 		
 		Nodeset nodeset = getNodeset();
 		
-		if(nodeset != null) {
-			
+		if(nodeset != null) {	
 			nodeset.rename(newName);
 		}
 		
