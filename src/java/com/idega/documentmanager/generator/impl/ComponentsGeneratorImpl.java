@@ -7,7 +7,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.chiba.adapter.ui.UIGenerator;
 import org.chiba.adapter.ui.XSLTGenerator;
-import org.chiba.web.flux.FluxAdapter;
 import org.chiba.xml.xforms.exception.XFormsException;
 import org.chiba.xml.xslt.TransformerService;
 import org.w3c.dom.Document;
@@ -15,11 +14,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.idega.documentmanager.IWBundleStarter;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.presentation.IWContext;
 import com.idega.repository.data.Singleton;
 import com.idega.util.xml.XmlUtil;
+
+import corg.chiba.web.flux.FluxAdapter;
+
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -33,10 +36,13 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	
 	protected static ComponentsGeneratorImpl me = null;
 	
-	private final URI final_xml_stylesheet_uri =
-		URI.create("bundle://"+IWBundleStarter.IW_BUNDLE_IDENTIFIER+"/"+"resources/xslt/components.xsl");
-	private final URI temporal_xml_stylesheet_uri =
-		URI.create("bundle://"+IWBundleStarter.IW_BUNDLE_IDENTIFIER+"/"+"resources/xslt/htmlxml.xsl");
+	private String finalStyleshhetUriStr = "file:" + IWMainApplication.getIWMainApplication(IWContext.getInstance()).getApplicationRealPath() +
+														"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/components.xsl";
+	
+	private String temporalStyleSheetUriStr = "file:" + IWMainApplication.getIWMainApplication(IWContext.getInstance()).getApplicationRealPath() +
+														"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/html4.xsl";
+	private final URI final_xml_stylesheet_uri = URI.create(finalStyleshhetUriStr);
+	private final URI temporal_xml_stylesheet_uri = URI.create(temporalStyleSheetUriStr);
 	
 	private TransformerService transfService;
 	private Document xformsDoc;
@@ -45,7 +51,6 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	private UIGenerator final_xml_components_generator;
 	
 	public static ComponentsGeneratorImpl getInstance() {
-		
 		if (me == null) {
 			
 			synchronized (ComponentsGeneratorImpl.class) {
@@ -156,11 +161,11 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	
 	protected UIGenerator getTemporalXmlComponentsGenerator() {
 		
-		if(temporal_xml_components_generator == null) {
+		if(temporal_xml_components_generator == null || true) {
 			
 			synchronized (this) {
 				
-				if(temporal_xml_components_generator == null) {
+				if(temporal_xml_components_generator == null || true) {
 					XSLTGenerator gen = new XSLTGenerator();
 					gen.setTransformerService(transfService);
 					gen.setStylesheetURI(temporal_xml_stylesheet_uri);
