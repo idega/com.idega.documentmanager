@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  *
- * Last modified: $Date: 2008/03/21 15:54:40 $ by $Author: anton $
+ * Last modified: $Date: 2008/03/26 10:47:45 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -42,6 +42,7 @@ public class FormManagerUtil {
 	public static final String help_tag = "xf:help";
 	public static final String head_tag = "head";
 	public static final String id_att = "id";
+	public static final String at_att = "at";
 	public static final String type_att = "type";
 	public static final String slash = "/";
 	public static final String fb_ = "fb_";

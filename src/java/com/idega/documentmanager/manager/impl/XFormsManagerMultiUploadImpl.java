@@ -12,18 +12,22 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/03/19 11:42:54 $ by $Author: arunas $
+ * Last modified: $Date: 2008/03/26 10:47:56 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements XFormsManagerMultiUpload{
 	
 
 	private static final String INSERT_TAG = "./descendant::xf:insert[@at='last()']";
-	private static final String REPEAT_TAG ="./descendant::xf:repeat[@id='upload-entries']";
+	private static final String REPEAT_TAG ="./descendant::xf:repeat";
 	private static final String DELETE_TAG="./descendant::xf:delete";
 	private static final String INSTANCE = "instance('data-instance')/Add_One_";
 	private static final String BIND = "bind.";
+	private static final String REPEAT = "upload_entries_";
+	private static final String ENTRY = "/entry";
+	private static final String AT_START = "index('";
+	private static final String AT_END = "')";
 	@Override
 	protected ComponentDataBean newXFormsComponentDataBeanInstance() {
 		return new ComponentMultiUploadBean();
@@ -61,11 +65,13 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 		
 			util = new XPathUtil(REPEAT_TAG);
 			insert = (Element)util.getNode(xfMultiUploadComponentBean.getElement());
-			insert.setAttribute(FormManagerUtil.bind_att, constuructRepeatdBind(component.getId()));
+			insert.setAttribute(FormManagerUtil.bind_att, constructRepeatBind(component.getId()));
+			insert.setAttribute(FormManagerUtil.id_att, constructRepeatId(component.getId()));
 				
 			util = new XPathUtil(DELETE_TAG);
 			insert = (Element)util.getNode(xfMultiUploadComponentBean.getElement());
 			insert.setAttribute(FormManagerUtil.nodeset_att, constructInsertNodeset(component.getId()));
+			insert.setAttribute(FormManagerUtil.at_att, constructDeleteAt(component.getId()));
 			
 		
 	}
@@ -73,17 +79,27 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements X
 	private String constructInsertNodeset(String component_id) {
 		
 		StringBuffer buf = new StringBuffer();		
-		buf.append(INSTANCE).append(component_id).append("/entry");
+		buf.append(INSTANCE).append(component_id).append(ENTRY);
 		return buf.toString();
 		
 	}
 	
-	private String constuructRepeatdBind (String component_id) {
+	private String constructRepeatBind (String component_id) {
 		
 		StringBuffer buf = new StringBuffer();
 		buf.append(BIND).append(component_id);
 		return buf.toString();
 		
+	}
+	private String constructRepeatId (String component_id){
+	    StringBuffer buf = new StringBuffer();
+	    buf.append(REPEAT).append(component_id);
+	    return buf.toString();
+	}
+	private String constructDeleteAt (String component_id){
+	    StringBuffer buf = new StringBuffer();
+	    buf.append(AT_START).append(REPEAT).append(component_id).append(AT_END);
+	    return buf.toString();
 	}
 	
 }
