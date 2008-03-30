@@ -4,9 +4,9 @@ import com.idega.documentmanager.business.component.ComponentMultiUpload;
 import com.idega.documentmanager.manager.XFormsManagerMultiUpload;;
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/03/07 13:44:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/30 15:22:16 $ by $Author: civilis $
  */
 public class FormComponentMultiUploadImpl extends FormComponentImpl implements ComponentMultiUpload{
 	
@@ -14,5 +14,15 @@ public class FormComponentMultiUploadImpl extends FormComponentImpl implements C
 	public XFormsManagerMultiUpload getXFormsManager() {
 		
 		return getContext().getXformsManagerFactory().getXformsManagerMultiUpload();
+	}
+	
+	@Override
+	public void setReadonly(boolean readonly) {
+		
+		if(readonly) {
+
+//			TODO: temporary, needs to transform to link list for downloading files
+			remove();
+		}
 	}
 }

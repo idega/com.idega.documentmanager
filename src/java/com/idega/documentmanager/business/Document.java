@@ -13,10 +13,10 @@ import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
- * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.7 $
  *
+ * Last modified: $Date: 2008/03/30 15:22:16 $ by $Author: civilis $
  */
 public interface Document extends Container {
 

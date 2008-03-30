@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.w3c.dom.Element;
 
@@ -20,9 +19,9 @@ import com.idega.documentmanager.manager.XFormsManagerContainer;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/12/06 20:31:30 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/30 15:22:16 $ by $Author: civilis $
  */
 public class FormComponentContainerImpl extends FormComponentImpl implements FormComponentContainer, Container {
 	
@@ -222,7 +221,7 @@ public class FormComponentContainerImpl extends FormComponentImpl implements For
 	@Override
 	public void setReadonly(boolean readonly) {
 
-		for (Entry<String, FormComponent> componentEntry : getContainedComponents().entrySet())
-			componentEntry.getValue().setReadonly(readonly);
+		for (FormComponent component : getContainedComponents().values())
+			component.setReadonly(readonly);
 	}
 }
