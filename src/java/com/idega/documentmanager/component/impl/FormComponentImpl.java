@@ -21,9 +21,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2007/12/06 20:31:30 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/01 10:13:36 $ by $Author: arunas $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -196,6 +196,9 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public void setLoad(boolean load) {
 		this.load = load;
+	}
+	public boolean getLoad() {
+		return load;
 	}
 	
 	public Element getHtmlRepresentation(Locale locale) throws Exception {
