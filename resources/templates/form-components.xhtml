@@ -26,7 +26,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             </uploadfile>
 			<multiupload>
 			     <entry filename="" mediatype=""/>
-			     <entry filename="" mediatype=""/>
             </multiupload>
 			<page /> 
 		</data>
@@ -78,6 +77,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<input.title lang="is">Simple text input</input.title>
 			<upload_file.title lang="en">File upload</upload_file.title>
 			<upload_file.title lang="is">File upload</upload_file.title>
+			<multi_upload_file.title lang="en">Multi file upload</multi_upload_file.title>
+			<multi_upload_file.title lang="is">Multi file upload</multi_upload_file.title> 
 			<multi_upload_file.label lang="en">Add One</multi_upload_file.label>
 			<multi_upload_file.label lang="is">Add One</multi_upload_file.label> 
 			<multi_upload_file.remove lang="en">Remove</multi_upload_file.remove>
@@ -288,15 +289,17 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-	<xf:group appearance="full"  bind="multiupload" id ="fbc_multi_upload_file" name = "fbc_multi_upload_file">
-	
+	<xf:group appearance="full" bind="multiupload" id ="fbc_multi_upload_file" name = "fbc_multi_upload_file" >
+	    <xf:output>
+	     <xf:label ref="instance('localized_strings')/multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
+	    </xf:output> 
 		 <xf:trigger>
                    <xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
                     <xf:action>
                         <xf:insert nodeset="instance('data-instance')/multiupload/entry" at="last()" position="before"/>
                     </xf:action>
          </xf:trigger>
-                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="full">
+                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="full" >
                     <xf:upload ref=".">
                         <xf:filename ref="@filename"/>
                         <xf:mediatype ref="@mediatype"/>      
