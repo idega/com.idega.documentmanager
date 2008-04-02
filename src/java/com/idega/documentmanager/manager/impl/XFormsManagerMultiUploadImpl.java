@@ -12,9 +12,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
- * Last modified: $Date: 2008/04/01 10:15:38 $ by $Author: arunas $
+ * Last modified: $Date: 2008/04/02 15:11:50 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUpload {
@@ -39,17 +39,14 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     protected void loadXFormsComponentDataBean(FormComponent component,
 	    Document xform, Element componentElement) {
 	super.loadXFormsComponentDataBean(component, xform, componentElement);
-	if (component.getLoad()){
-	    
-	    	ComponentMultiUploadBean xforms_component = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
-	    	
+	
 	    	XPathUtil util = new XPathUtil(".//xf:bind[@id='bind."+componentElement.getAttribute("id")+"']");
-	    	
 		Element bindElement = (Element) util.getNode(xform.getFirstChild());
 		Bind bind = Bind.load(bindElement);
-		xforms_component.setBind(bind);
-	}
-	
+		if (bind != null){
+		    ComponentMultiUploadBean xforms_component = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
+		    xforms_component.setBind(bind);
+		}
     }
 
     @Override
@@ -72,22 +69,16 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 
 	super.addComponentToDocument(component);
 
-	ComponentMultiUploadBean xfMultiUploadComponentBean = (ComponentMultiUploadBean) component
-		.getXformsComponentDataBean();
+	ComponentMultiUploadBean xfMultiUploadComponentBean = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
 
 	XPathUtil util = new XPathUtil(INSERT_TAG);
-	Element nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
-	nodeElement.setAttribute(FormManagerUtil.nodeset_att,
-		constructInsertNodeset(component.getId()));
+	Element nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
+	nodeElement.setAttribute(FormManagerUtil.nodeset_att,constructInsertNodeset(component.getId()));
 
 	util = new XPathUtil(REPEAT_TAG);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
-	nodeElement.setAttribute(FormManagerUtil.bind_att,
-		constructRepeatBind(component.getId()));
-	nodeElement.setAttribute(FormManagerUtil.id_att,
-		constructRepeatId(component.getId()));
+	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
+	nodeElement.setAttribute(FormManagerUtil.bind_att,constructRepeatBind(component.getId()));
+	nodeElement.setAttribute(FormManagerUtil.id_att, constructRepeatId(component.getId()));
 
 	util = new XPathUtil(DELETE_TAG);
 	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean

@@ -7,9 +7,9 @@ import com.idega.documentmanager.context.DMContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/04/01 10:13:06 $ by $Author: arunas $
+ * Last modified: $Date: 2008/04/02 15:12:06 $ by $Author: arunas $
  */
 public interface FormComponent {
 
@@ -34,8 +34,6 @@ public interface FormComponent {
 	public abstract void remove();
 	
 	public abstract void setLoad(boolean load);
-	
-	public abstract boolean getLoad();
 	
 	public abstract void setParent(FormComponentContainer parent);
 	
