@@ -21,12 +21,13 @@ import com.idega.documentmanager.manager.HtmlManagerFactory;
 import com.idega.documentmanager.manager.XFormsManagerFactory;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.util.InitializationException;
+import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/12/04 14:02:26 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
  */
 public class FormManager implements DocumentManager {
 	
@@ -97,7 +98,7 @@ public class FormManager implements DocumentManager {
 		return getCacheManager().getComponentTypesByDatatype(datatype.getDatatype());
 	}
 	
-	public void init() throws InitializationException {
+	public void init(IWMainApplication iwma) throws InitializationException {
 		if(inited) {			
 			logger.log(Level.WARNING, "init(): tried to call, when already inited");
 			return;
@@ -106,6 +107,7 @@ public class FormManager implements DocumentManager {
 		long start = System.currentTimeMillis();
 		try {
 			// setup ComponentsGenerator
+			ComponentsGeneratorImpl.init(iwma);
 			ComponentsGeneratorImpl componentsGenerator = ComponentsGeneratorImpl.getInstance();
 			componentsGenerator.setTransformerService(getTransformerService());
 			componentsGenerator.setDocument(getComponentsXforms());

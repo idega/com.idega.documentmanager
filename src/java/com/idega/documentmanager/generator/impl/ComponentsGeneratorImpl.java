@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.idegaweb.IWMainApplication;
-import com.idega.presentation.IWContext;
 import com.idega.repository.data.Singleton;
 import com.idega.util.xml.XmlUtil;
 
@@ -36,13 +35,8 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	
 	protected static ComponentsGeneratorImpl me = null;
 	
-	private String finalStyleshhetUriStr = "file:" + IWMainApplication.getIWMainApplication(IWContext.getInstance()).getApplicationRealPath() +
-														"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/components.xsl";
-	
-	private String temporalStyleSheetUriStr = "file:" + IWMainApplication.getIWMainApplication(IWContext.getInstance()).getApplicationRealPath() +
-														"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/html4.xsl";
-	private final URI final_xml_stylesheet_uri = URI.create(finalStyleshhetUriStr);
-	private final URI temporal_xml_stylesheet_uri = URI.create(temporalStyleSheetUriStr);
+	private final URI final_xml_stylesheet_uri;
+	private final URI temporal_xml_stylesheet_uri;
 	
 	private TransformerService transfService;
 	private Document xformsDoc;
@@ -51,20 +45,28 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
 	private UIGenerator final_xml_components_generator;
 	
 	public static ComponentsGeneratorImpl getInstance() {
-		if (me == null) {
-			
-			synchronized (ComponentsGeneratorImpl.class) {
-				if (me == null) {
-					me = new ComponentsGeneratorImpl();
-				}
-			}
-		}
-
+		
 		return me;
 	}
 	
-	protected ComponentsGeneratorImpl() { }
-
+	public synchronized static void init(IWMainApplication iwma) {
+		
+		if(me == null)
+			me = new ComponentsGeneratorImpl(iwma);
+	}
+	
+	protected ComponentsGeneratorImpl(IWMainApplication iwma) {
+		
+		String finalStyleshhetUriStr = "file:" + iwma.getApplicationRealPath() +
+		"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/components.xsl";
+		final_xml_stylesheet_uri = URI.create(finalStyleshhetUriStr);
+		
+		String temporalStyleSheetUriStr = "file:" + iwma.getApplicationRealPath() +
+		"idegaweb/bundles/org.chiba.web.bundle/resources/xslt/html4.xsl";
+		
+		temporal_xml_stylesheet_uri = URI.create(temporalStyleSheetUriStr);
+	}
+	
 	public boolean isInitiated() {
 		return xformsDoc != null && transfService != null;
 	}

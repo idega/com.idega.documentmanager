@@ -11,12 +11,13 @@ import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.documentmanager.component.datatypes.ConstComponentDatatype;
 import com.idega.documentmanager.manager.impl.CacheManager;
 import com.idega.documentmanager.util.InitializationException;
+import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/12/04 14:02:28 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/02 19:21:34 $ by $Author: civilis $
  */
 public interface DocumentManager {
 
@@ -65,7 +66,7 @@ public interface DocumentManager {
 	
 	public abstract void setPersistenceManager(PersistenceManager persistence_manager);
 	
-	public abstract void init() throws InitializationException;
+	public abstract void init(IWMainApplication iwma) throws InitializationException;
 	
 	public abstract boolean isInited();
 	

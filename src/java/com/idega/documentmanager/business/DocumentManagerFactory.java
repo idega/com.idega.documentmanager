@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.chiba.xml.xslt.TransformerService;
@@ -19,9 +18,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -43,17 +42,16 @@ public class DocumentManagerFactory {
 	}
 	public DocumentManagerFactory() { }
 	
-	public synchronized DocumentManager newDocumentManager(FacesContext ctx) {
+	public synchronized DocumentManager newDocumentManager(IWMainApplication iwma) {
 		
 		DocumentManager documentManager = getDocumentManager();
 		
 		if(!documentManager.isInited()) {
 			
-			IWMainApplication iwma = IWMainApplication.getIWMainApplication(ctx);
 			TransformerService transformerService = (TransformerService)iwma.getAttribute(TransformerService.class.getName());
 			
 			CacheManager cacheManager = getCacheManager();
-			cacheManager.initAppContext(ctx);
+			cacheManager.initAppContext(iwma);
 			
 			IWBundle bundle = iwma.getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER);
 			
@@ -67,7 +65,7 @@ public class DocumentManagerFactory {
 				documentManager.setFormXformsTemplate(formXformsTemplate);
 				documentManager.setCacheManager(cacheManager);
 				documentManager.setTransformerService(transformerService);
-				documentManager.init();
+				documentManager.init(iwma);
 				
 			} catch (Exception e) {
 				throw new RuntimeException("Failed to initialize document manager", e);

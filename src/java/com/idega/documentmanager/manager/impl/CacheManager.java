@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,9 +16,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/11/10 13:52:48 $ by $Author: alexis $
+ * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
  */
 public class CacheManager implements Singleton {
 	
@@ -146,12 +144,10 @@ public class CacheManager implements Singleton {
 		return all_components_types;
 	}
 	
-	public void initAppContext(FacesContext ctx) {
+	public void initAppContext(IWMainApplication iwma) {
 		
-		if(ctx == null)
-			throw new NullPointerException("FacesContext not set");
-		
-		IWMainApplication iwma = IWMainApplication.getIWMainApplication(ctx);
+		if(iwma == null)
+			throw new NullPointerException("IWMainApplication not set");
 		
 		@SuppressWarnings("unchecked")
 		Map<String, ComponentDataBean> cachedXformsComponents = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
