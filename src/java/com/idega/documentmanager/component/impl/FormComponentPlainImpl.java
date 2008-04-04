@@ -8,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/04 17:09:43 $ by $Author: arunas $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -50,7 +50,8 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 		
 		switch (what) {
 		case TEXT:
-			getHtmlManager().clearHtmlComponents(this);
+		    	getHtmlManager().clearHtmlComponents(this);
+			getFormDocument().setFormDocumentModified(true);
 			break;
 			
 		case AUTOFILL_KEY:
