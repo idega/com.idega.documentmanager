@@ -2,9 +2,14 @@ package com.idega.documentmanager.manager.impl;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.idega.documentmanager.business.component.properties.PropertiesMultiUpload;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.beans.ComponentMultiUploadBean;
+import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.manager.XFormsManagerMultiUpload;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
@@ -12,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
- * Last modified: $Date: 2008/04/02 15:11:50 $ by $Author: arunas $
+ * Last modified: $Date: 2008/04/07 10:45:17 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUpload {
@@ -29,6 +34,17 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     private static final String AT_START = "index('";
     private static final String AT_END = "')";
     private static final String GROUP_ELEMENT = "./descendant::xf:group";
+    private static final String LABELS = ".//xf:label[@model]";
+    private static final String APPEND_TITLE = ".title";
+    private static final String APPEND_REMOVE = ".remove";
+    private static final String APPEND_LABEL = ".label";
+    
+    private static final int TITLE_LABEL = 0;
+    private static final int ADD_BUTTON_LABEL = 1;
+    private static final int REMOVE_BUTTON_LABEL = 2;
+    
+    
+    final private XPathUtil labelsXPathUT = new XPathUtil(LABELS);
 
     @Override
     protected ComponentDataBean newXFormsComponentDataBeanInstance() {
@@ -39,8 +55,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     protected void loadXFormsComponentDataBean(FormComponent component,
 	    Document xform, Element componentElement) {
 	super.loadXFormsComponentDataBean(component, xform, componentElement);
-	
-	    	XPathUtil util = new XPathUtil(".//xf:bind[@id='bind."+componentElement.getAttribute("id")+"']");
+	    	XPathUtil util = new XPathUtil(".//xf:bind[@id='bind."+componentElement.getAttribute(FormManagerUtil.id_att)+"']");
 		Element bindElement = (Element) util.getNode(xform.getFirstChild());
 		Bind bind = Bind.load(bindElement);
 		if (bind != null){
@@ -92,7 +107,6 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
 		.getElement());
 	nodeElement.removeAttribute(FormManagerUtil.bind_att);
-
     }
 
     private String constructInsertNodeset(String component_id) {
@@ -122,5 +136,112 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	buf.append(AT_START).append(REPEAT).append(component_id).append(AT_END);
 	return buf.toString();
     }
+    
+    @Override
+    public void update(FormComponent component, ConstUpdateType what) {
+		
+		switch (what) {
+			
+		case ADD_BUTTON_LABEL:
+			updateAddButtonLabel(component);
+			break;
+			
+		case REMOVE_BUTTON_LABEL:
+			updateRemoveButtonLabel(component);
+			break;
+		case LABEL:
+		    	updateLabel(component);
+		    	break;
+		
+		default:
+			break;
+		}
+	}
+// 	getting all labels nodes from component   
+    protected NodeList getLabelNodeList (FormComponent component){
+	NodeList labels;
+	ComponentMultiUploadBean xfMultiUploadComponent = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
+	synchronized (labelsXPathUT) {
+	    labels = labelsXPathUT.getNodeset(xfMultiUploadComponent.getElement());
+	}
+	return labels;
+    }
+
+   protected void updateAddButtonLabel(FormComponent component) {
+	
+	PropertiesMultiUpload properties = (PropertiesMultiUpload)component.getProperties();
+	LocalizedStringBean localizedText = properties.getAddButtonLabel();
+	NodeList labels = getLabelNodeList(component);
+		
+	if(labels == null || labels.getLength() == 0)
+		return;
+	
+	Element addButtonlabel = (Element)labels.item(ADD_BUTTON_LABEL);
+	
+	String ref = addButtonlabel.getAttribute(FormManagerUtil.ref_s_att);
+	
+	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_LABEL).toString(), null, 
+		addButtonlabel,
+			component.getContext().getXformsXmlDoc(),
+			localizedText
+	);
+
+   } 	
+   
+   protected void updateRemoveButtonLabel(FormComponent component) {
+	
+	PropertiesMultiUpload properties = (PropertiesMultiUpload)component.getProperties();
+	LocalizedStringBean localizedText = properties.getRemoveButtonLabel();
+	NodeList labels = getLabelNodeList(component);
+	
+	if(labels == null || labels.getLength() == 0)
+		return;
+	
+	Element removeButtonlabel = (Element)labels.item(REMOVE_BUTTON_LABEL);
+	String ref = removeButtonlabel.getAttribute(FormManagerUtil.ref_s_att);
+	
+	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_REMOVE).toString(), null, 
+		removeButtonlabel,
+		component.getContext().getXformsXmlDoc(),
+		localizedText
+	);
+   } 
+   
+   @Override
+   protected void updateLabel(FormComponent component) {
+       	PropertiesMultiUpload properties = (PropertiesMultiUpload)component.getProperties();
+	LocalizedStringBean localizedText = properties.getLabel();
+	NodeList labels = getLabelNodeList(component);
+	
+	if(labels == null || labels.getLength() == 0)
+		return;
+	
+	Element title = (Element)labels.item(TITLE_LABEL);
+	String ref = title.getAttribute(FormManagerUtil.ref_s_att);
+
+	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_TITLE).toString(), null, 
+		title,
+		component.getContext().getXformsXmlDoc(),
+		localizedText
+	);
+       
+   }
+    
+    public LocalizedStringBean getAddButtonLabel(FormComponent component) {
+	NodeList labels = getLabelNodeList(component);
+	if(labels == null || labels.getLength() == 0)
+		return null;
+	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(ADD_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
+    }
+
+    public LocalizedStringBean getRemoveButtonLabel(FormComponent component) {
+	
+	NodeList labels = getLabelNodeList(component);
+	if(labels == null || labels.getLength() == 0)
+		return null;
+	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(REMOVE_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
+
+    }
+    
 
 }
