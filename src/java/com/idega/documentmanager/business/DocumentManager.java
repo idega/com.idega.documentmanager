@@ -15,25 +15,13 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/02 19:21:34 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/10 01:08:00 $ by $Author: civilis $
  */
 public interface DocumentManager {
 
-	/**
-	 * creates primary user form document and stores it depending
-	 * 
-	 * @param form_id - cannot be null
-	 * @param name - form name. Can be null, then default is used.
-	 *  
-	 * @throws NullPointerException - form_id was not provided
-	 * @throws Exception - some kind of other error occured
-	 * 
-	 * @return Created form document
-	 */
-	public abstract com.idega.documentmanager.business.Document createForm(String form_id, LocalizedStringBean name)
-			throws NullPointerException, Exception;
+	public com.idega.documentmanager.business.Document createForm(LocalizedStringBean formName, String formType);
 
 	/**
 	 * 
@@ -47,22 +35,9 @@ public interface DocumentManager {
 	 */
 	public List<ComponentType> getComponentsByDatatype(ConstComponentDatatype category);
 
-	/**
-	 * Open and load document by form id
-	 * 
-	 * @param form_id
-	 * @throws NullPointerException - form_id is not provided
-	 * @throws Exception
-	 * 
-	 * @return loaded document
-	 */
-	public abstract com.idega.documentmanager.business.Document openForm(String form_id) throws NullPointerException, FormLockException, Exception;
+	public com.idega.documentmanager.business.Document openForm(Long formId);
 	
-	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc) throws NullPointerException, Exception;
-	
-	public abstract com.idega.documentmanager.business.Document openFormAndGenerateId(Document xformsDoc) throws NullPointerException, Exception;
-	
-	public abstract com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception;
+	public com.idega.documentmanager.business.Document openForm(Document xformsDoc);
 	
 	public abstract void setPersistenceManager(PersistenceManager persistence_manager);
 	

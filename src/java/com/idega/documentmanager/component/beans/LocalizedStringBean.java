@@ -8,9 +8,9 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.2 $
  * 
- * Just the wrapper around Map object, representing localized string
+ * Last modified: $Date: 2008/04/10 01:08:18 $ by $Author: civilis $
  */
 public class LocalizedStringBean {
 	
@@ -18,6 +18,11 @@ public class LocalizedStringBean {
 	
 	public LocalizedStringBean() {
 		strings = new HashMap<Locale, String>();
+	}
+	
+	public LocalizedStringBean(String defaultString) {
+		strings = new HashMap<Locale, String>();
+		setString(new Locale("en"), defaultString);
 	}
 	
 	public Set<Locale> getLanguagesKeySet() {
@@ -51,18 +56,18 @@ public class LocalizedStringBean {
 	}
 	public String toString() {
 		
-		StringBuffer to_string = new StringBuffer("LocalizedStringBean:");
+		StringBuffer toString = new StringBuffer("LocalizedStringBean:");
 		
 		
 		for (Iterator<Locale> iter = strings.keySet().iterator(); iter.hasNext();) {
 			Locale locale = iter.next();
 			
-			to_string.append("\nlocale: ")
+			toString.append("\nlocale: ")
 			.append(locale.getLanguage())
 			.append(" value: ")
 			.append(strings.get(locale));
 		}
 		
-		return to_string.toString();
+		return toString.toString();
 	}
 }

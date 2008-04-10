@@ -10,20 +10,20 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 
 import com.idega.data.StringInputStream;
+import com.idega.documentmanager.business.PersistedFormDocument;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.impl.FormDocumentImpl;
 import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.documentmanager.util.InitializationException;
 import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/12/04 14:02:28 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/10 01:08:43 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -47,22 +47,20 @@ public class Form {
 		formDocument.setFormDocument(formDocument);
 	}
 	
-	public static Form createDocument(String formId, LocalizedStringBean formTitle, DMContext context) throws NullPointerException, Exception {
+	public static Form createDocument(LocalizedStringBean formTitle, DMContext context, String formType) {
 
-		if(formId == null)
-			throw new NullPointerException("Form id is not provided");
-		
 		Form form = new Form(context);
 		form.setContext(context);
 		form.formDocument.setLoad(true);
 		
 		context.setXformsXmlDoc(context.getCacheManager().getFormXformsTemplateCopy());
-		form.loadDocumentInternal(formId);
+		form.loadDocumentInternal(null);
 		
 		if(formTitle != null)
 			form.formDocument.setFormTitle(formTitle);
 		
-		form.formDocument.setFormId(formId);
+		form.formDocument.setFormId(null);
+		form.formDocument.setFormType(formType);
 
 		return form;
 	}
@@ -103,17 +101,29 @@ public class Form {
 		return (Document)getContext().getXformsXmlDoc().cloneNode(true);
 	}
 	
-	protected void loadDocumentInternal(String formId) throws Exception {
+	protected void loadDocumentInternal(PersistedFormDocument persistedForm) {
 		
 		Document xformsXmlDoc = getContext().getXformsXmlDoc();
 		
-		formDocument.setFormId(formId != null ? formId : FormManagerUtil.getFormId(xformsXmlDoc));
+		if(persistedForm != null) {
+			formDocument.setFormId(persistedForm.getFormId());
+			formDocument.setFormType(persistedForm.getFormType());
+			
+		} else {
+			
+			try {
+				formDocument.setFormId(new Long(FormManagerUtil.getFormId(xformsXmlDoc)));
+			} catch (Exception e) {
+				formDocument.setFormId(null);
+			}
+		}
+		
 		formDocument.setContainerElement(FormManagerUtil.getComponentsContainerElement(xformsXmlDoc));
 		formDocument.loadContainerComponents();
 		formDocument.setProperties();
 	}
 	
-	public static Form loadDocument(String formId, DMContext context) throws InitializationException, Exception {
+	public static Form loadDocument(Long formId, DMContext context) {
 		
 		if(formId == null)
 			throw new NullPointerException("Form id was not provided");
@@ -122,15 +132,15 @@ public class Form {
 		form.setContext(context);
 		form.formDocument.setLoad(true);
 		
-		Document xformsDoc = form.loadXFormsDocument(formId);
-		context.setXformsXmlDoc(xformsDoc);
-		
-		form.loadDocumentInternal(formId);
+		PersistedFormDocument persistedFormDocument = form.loadPersistedFormDocument(formId);
+
+		context.setXformsXmlDoc(persistedFormDocument.getXformsDocument());
+		form.loadDocumentInternal(persistedFormDocument);
 		
 		return form;
 	}
 	
-	public static Form loadDocument(Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
+	public static Form loadDocument(Document xformsXmlDoc, DMContext context) {
 		
 		Form form = new Form(context);
 		form.formDocument.setLoad(true);
@@ -138,11 +148,13 @@ public class Form {
 		context.setXformsXmlDoc(xformsXmlDoc);
 		
 		form.loadDocumentInternal(null);
+		form.formDocument.setFormId(null);
 		
 		return form;
 	}
 	
-	public static Form loadDocument(String formId, Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
+	/*
+	public static Form loadDocument(Long formId, Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
 		
 		Form form = loadDocument(xformsXmlDoc, context);
 		form.formDocument.setFormId(formId);
@@ -152,27 +164,21 @@ public class Form {
 	
 	public static Form loadDocumentAndGenerateId(Document xformsXmlDoc, DMContext context) throws InitializationException, Exception {
 		
+		if(true)
+			throw new UnsupportedOperationException();
 		Form form = loadDocument(xformsXmlDoc, context);
 		
 		String defaultFormName = form.getDocument().getFormTitle().getString(form.getDefaultLocale());
-		form.formDocument.setFormId(context.getPersistenceManager().generateFormId(defaultFormName));
+		//form.formDocument.setFormId(context.getPersistenceManager().generateFormId(defaultFormName));
 		
 		return form;
 	}
+	*/
 	
-	protected Document loadXFormsDocument(String form_id) throws Exception {
+	protected PersistedFormDocument loadPersistedFormDocument(Long formId) {
 		
 		PersistenceManager persistenceManager = getContext().getPersistenceManager();
-		
-		if(persistenceManager == null)
-			throw new NullPointerException("Persistence manager not set");
-		
-		Document xforms_doc = persistenceManager.loadFormAndLock(form_id);
-		
-		if(xforms_doc == null)
-			throw new NullPointerException("Form document was not found by provided id");
-		
-		return xforms_doc;
+		return persistenceManager.loadForm(formId);
 	}
 	
 	public String getXFormsDocumentSourceCode() throws Exception {

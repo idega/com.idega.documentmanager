@@ -14,9 +14,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/03/30 15:22:16 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/10 01:08:00 $ by $Author: civilis $
  */
 public interface Document extends Container {
 
@@ -46,6 +46,8 @@ public interface Document extends Container {
 	public abstract void setFormSourceCode(String new_source_code) throws Exception;
 	
 	public abstract LocalizedStringBean getFormTitle();
+	
+	public abstract Long getFormId();
 	
 	public abstract void setFormTitle(LocalizedStringBean form_name) throws Exception;
 	

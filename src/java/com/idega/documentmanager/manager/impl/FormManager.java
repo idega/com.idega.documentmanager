@@ -5,11 +5,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.chiba.xml.xslt.TransformerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 
 import com.idega.documentmanager.business.DocumentManager;
-import com.idega.documentmanager.business.FormLockException;
 import com.idega.documentmanager.business.PersistenceManager;
+import com.idega.documentmanager.business.XFormPersistenceType;
 import com.idega.documentmanager.business.component.ConstComponentCategory;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.datatypes.ComponentType;
@@ -25,9 +26,9 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/10 01:09:04 $ by $Author: civilis $
  */
 public class FormManager implements DocumentManager {
 	
@@ -45,10 +46,9 @@ public class FormManager implements DocumentManager {
 	private Document componentsXsd;
 	private Document formXformsTemplate;
 	
-	public com.idega.documentmanager.business.Document createForm(String formId, LocalizedStringBean formName) throws NullPointerException, Exception {
+	public com.idega.documentmanager.business.Document createForm(LocalizedStringBean formName, String formType) {
 		
-		Form form = Form.createDocument(formId, formName, getNewDMContext());
-		
+		Form form = Form.createDocument(formName, getNewDMContext(), formType);
 		return form.getDocument();
 	}
 	
@@ -62,18 +62,19 @@ public class FormManager implements DocumentManager {
 		return context;
 	}
 	
-	public com.idega.documentmanager.business.Document openForm(String formId) throws NullPointerException, FormLockException, Exception {
+	public com.idega.documentmanager.business.Document openForm(Long formId) {
 		
 		Form form = Form.loadDocument(formId, getNewDMContext());
-		return form.getDocument();
+		return form == null ? null : form.getDocument();
 	}
 	
-	public com.idega.documentmanager.business.Document openForm(Document xforms_doc) throws NullPointerException, Exception {
+	public com.idega.documentmanager.business.Document openForm(Document xformsDoc) {
 		
-		Form form = Form.loadDocument(xforms_doc, getNewDMContext());
+		Form form = Form.loadDocument(xformsDoc, getNewDMContext());
 		return form.getDocument();
 	}
 	
+	/*
 	public com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception {
 		
 		Form form = Form.loadDocument(formId, xforms_doc, getNewDMContext());
@@ -85,6 +86,7 @@ public class FormManager implements DocumentManager {
 		Form form = Form.loadDocumentAndGenerateId(xformsDoc, getNewDMContext());
 		return form.getDocument();
 	}
+	*/
 	
 	public FormManager() { }
 	
@@ -161,6 +163,8 @@ public class FormManager implements DocumentManager {
 		return persistenceManager;
 	}
 
+	@Autowired
+	@XFormPersistenceType("slide")
 	public void setPersistenceManager(PersistenceManager persistenceManager) {
 		this.persistenceManager = persistenceManager;
 	}

@@ -7,7 +7,6 @@
 		<property name="cacheManager" ref="dmCacheManager" />
 	</bean>
 	<bean id="xformsDocumentManager" class="com.idega.documentmanager.manager.impl.FormManager" scope="singleton">
-		<property name="persistenceManager" ref="xformsPersistenceManager" />
 		<property name="xformsManagerFactory" ref="xformsManagerFactory" />
 		<property name="htmlManagerFactory" ref="htmlManagerFactory" />
 	</bean>

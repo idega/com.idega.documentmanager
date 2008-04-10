@@ -8,12 +8,13 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
+import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/10/22 20:34:37 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/10 01:08:18 $ by $Author: civilis $
  */
 public interface FormDocument extends FormComponentContainer {
 
@@ -25,8 +26,8 @@ public interface FormDocument extends FormComponentContainer {
 	
 	public abstract void setComponentsXml(Document xml);
 	
-	public abstract String getFormId();
-
+	public abstract Long getFormId();
+	
 	public abstract Locale getDefaultLocale();
 	
 	public abstract Page getConfirmationPage();
@@ -46,4 +47,8 @@ public interface FormDocument extends FormComponentContainer {
 	public abstract Element getSectionsVisualizationInstanceElement();
 	
 	public abstract PropertiesDocument getProperties();
+	
+	public abstract String getFormType();
+	
+	public abstract LocalizedStringBean getFormTitle();
 }
