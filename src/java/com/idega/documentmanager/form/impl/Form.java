@@ -21,9 +21,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/04/10 01:08:43 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -140,6 +140,23 @@ public class Form {
 		return form;
 	}
 	
+	public static Form takeAndLoadDocument(Long formIdToTakeFrom, DMContext context) {
+		
+		if(formIdToTakeFrom == null)
+			throw new NullPointerException("Form id was not provided");
+		
+		Form form = new Form(context);
+		form.setContext(context);
+		form.formDocument.setLoad(true);
+		
+		PersistedFormDocument persistedFormDocument = form.takeAndloadFormDocument(formIdToTakeFrom);
+
+		context.setXformsXmlDoc(persistedFormDocument.getXformsDocument());
+		form.loadDocumentInternal(persistedFormDocument);
+		
+		return form;
+	}
+	
 	public static Form loadDocument(Document xformsXmlDoc, DMContext context) {
 		
 		Form form = new Form(context);
@@ -179,6 +196,12 @@ public class Form {
 		
 		PersistenceManager persistenceManager = getContext().getPersistenceManager();
 		return persistenceManager.loadForm(formId);
+	}
+	
+	protected PersistedFormDocument takeAndloadFormDocument(Long formIdToTakeFrom) {
+		
+		PersistenceManager persistenceManager = getContext().getPersistenceManager();
+		return persistenceManager.takeForm(formIdToTakeFrom);
 	}
 	
 	public String getXFormsDocumentSourceCode() throws Exception {

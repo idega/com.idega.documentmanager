@@ -3,12 +3,7 @@
 
 <beans>
 	<bean id="xformsDocumentManagerFact" class="com.idega.documentmanager.business.DocumentManagerFactory" scope="singleton">
-		<property name="documentManager" ref="xformsDocumentManager" />
 		<property name="cacheManager" ref="dmCacheManager" />
-	</bean>
-	<bean id="xformsDocumentManager" class="com.idega.documentmanager.manager.impl.FormManager" scope="singleton">
-		<property name="xformsManagerFactory" ref="xformsManagerFactory" />
-		<property name="htmlManagerFactory" ref="htmlManagerFactory" />
 	</bean>
 	
 	<bean id="dmCacheManager" class="com.idega.documentmanager.manager.impl.CacheManager" scope="singleton" />

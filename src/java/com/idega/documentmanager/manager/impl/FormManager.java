@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import org.chiba.xml.xslt.TransformerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
 import com.idega.documentmanager.business.DocumentManager;
@@ -26,10 +28,12 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/04/10 01:09:04 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
  */
+@Scope("singleton")
+@Service("xformsDocumentManager")
 public class FormManager implements DocumentManager {
 	
 	private static Logger logger = Logger.getLogger(FormManager.class.getName());
@@ -74,19 +78,11 @@ public class FormManager implements DocumentManager {
 		return form.getDocument();
 	}
 	
-	/*
-	public com.idega.documentmanager.business.Document openForm(Document xforms_doc, String formId) throws NullPointerException, Exception {
+	public com.idega.documentmanager.business.Document takeForm(Long formIdToTakeFrom) {
 		
-		Form form = Form.loadDocument(formId, xforms_doc, getNewDMContext());
+		Form form = Form.takeAndLoadDocument(formIdToTakeFrom, getNewDMContext());
 		return form.getDocument();
 	}
-	
-	public com.idega.documentmanager.business.Document openFormAndGenerateId(Document xformsDoc) throws NullPointerException, Exception {
-		
-		Form form = Form.loadDocumentAndGenerateId(xformsDoc, getNewDMContext());
-		return form.getDocument();
-	}
-	*/
 	
 	public FormManager() { }
 	
@@ -197,6 +193,7 @@ public class FormManager implements DocumentManager {
 		return xformsManagerFactory;
 	}
 
+	@Autowired
 	public void setXformsManagerFactory(XFormsManagerFactory xformsManagerFactory) {
 		this.xformsManagerFactory = xformsManagerFactory;
 	}
@@ -205,6 +202,7 @@ public class FormManager implements DocumentManager {
 		return htmlManagerFactory;
 	}
 
+	@Autowired
 	public void setHtmlManagerFactory(HtmlManagerFactory htmlManagerFactory) {
 		this.htmlManagerFactory = htmlManagerFactory;
 	}

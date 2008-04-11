@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.chiba.xml.xslt.TransformerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 
 import com.idega.documentmanager.IWBundleStarter;
@@ -18,9 +19,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -78,6 +79,8 @@ public class DocumentManagerFactory {
 	public DocumentManager getDocumentManager() {
 		return documentManager;
 	}
+	
+	@Autowired
 	public void setDocumentManager(DocumentManager documentManager) {
 		this.documentManager = documentManager;
 	}

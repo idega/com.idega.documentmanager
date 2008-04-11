@@ -15,29 +15,31 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/04/10 01:08:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
  */
 public interface DocumentManager {
 
-	public com.idega.documentmanager.business.Document createForm(LocalizedStringBean formName, String formType);
+	public abstract com.idega.documentmanager.business.Document createForm(LocalizedStringBean formName, String formType);
 
 	/**
 	 * 
 	 * @return List of available form components types by category
 	 */
-	public List<String> getAvailableFormComponentsTypesList(ConstComponentCategory category);
+	public abstract List<String> getAvailableFormComponentsTypesList(ConstComponentCategory category);
 	
 	/**
 	 * 
 	 * @return List of available form components types by datatype
 	 */
-	public List<ComponentType> getComponentsByDatatype(ConstComponentDatatype category);
+	public abstract List<ComponentType> getComponentsByDatatype(ConstComponentDatatype category);
 
-	public com.idega.documentmanager.business.Document openForm(Long formId);
+	public abstract com.idega.documentmanager.business.Document openForm(Long formId);
 	
-	public com.idega.documentmanager.business.Document openForm(Document xformsDoc);
+	public abstract com.idega.documentmanager.business.Document openForm(Document xformsDoc);
+	
+	public abstract com.idega.documentmanager.business.Document takeForm(Long formIdToTakeFrom);
 	
 	public abstract void setPersistenceManager(PersistenceManager persistence_manager);
 	
