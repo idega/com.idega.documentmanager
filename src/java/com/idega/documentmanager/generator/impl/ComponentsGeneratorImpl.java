@@ -20,7 +20,7 @@ import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.Singleton;
 import com.idega.util.xml.XmlUtil;
 
-import corg.chiba.web.flux.FluxAdapter;
+import org.chiba.web.flux.FluxAdapter;
 
 
 /**
@@ -29,6 +29,8 @@ import corg.chiba.web.flux.FluxAdapter;
  * 
  * Initial components description is kept in xforms document.<br />
  * This class parses all those components to html format components into xml document.
+ * 
+ * Last modified: $Date: 2008/04/16 16:48:35 $ by $Author: anton $
  * 
  */
 public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  {
