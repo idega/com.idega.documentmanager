@@ -14,6 +14,7 @@ public final class ConstComponentCategory {
 	public static final String BUTTONS = "buttons";
 	public static final String NON_DISPLAY = "non-display";
 	public static final String PLAIN = "plain";
+	public static final String AUTOFILL = "autofill";
 	private static List<String> components_categories = new ArrayList<String>();
 	
 	private String components_category;
@@ -23,6 +24,7 @@ public final class ConstComponentCategory {
 		components_categories.add(BUTTONS);
 		components_categories.add(NON_DISPLAY);
 		components_categories.add(PLAIN);
+		components_categories.add(AUTOFILL);
 	}
 	
 	public ConstComponentCategory(String button_type) {
