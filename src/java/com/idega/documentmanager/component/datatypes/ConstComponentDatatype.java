@@ -8,6 +8,7 @@ public class ConstComponentDatatype {
 	public static final String STRING = "string";
 	public static final String LIST = "list";
 	public static final String FILE = "file";
+	public static final String FILES = "files";
 	private static List<String> components_datatypes = new ArrayList<String>();
 	
 	private String datatype;
@@ -16,6 +17,7 @@ public class ConstComponentDatatype {
 		components_datatypes.add(STRING);
 		components_datatypes.add(LIST);
 		components_datatypes.add(FILE);
+		components_datatypes.add(FILES);
 	}
 	
 	public ConstComponentDatatype(String datatype) {
