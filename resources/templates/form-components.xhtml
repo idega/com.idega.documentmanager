@@ -28,23 +28,37 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			     <entry filename="" mediatype=""/>
 			     <entry filename="" mediatype=""/>
             </multiupload>
+            <autofill_first_name />
+            <autofill_last_name />
+            <autofill_personal_id />
+            <autofill_address />
+            <autofill_email />
+            <autofill_phone />
 			<page /> 
 		</data>
 	</xf:instance>	
 	
 	<!-- types hexBinary anyURI base64Binary -->
-    <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="anyURI"/>
-    <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="anyURI"/>
-    <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="string" />
-	<xf:bind id="text" nodeset="text" type="string" />
-	<xf:bind id="textarea" nodeset="textarea" type="string" />
-	<xf:bind id="secret" nodeset="secret" type="string" />
+    <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
+    <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
+    <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
+    
+    <xf:bind id="autofill_first_name" nodeset="autofill_first_name" type="xs:string" />
+    <xf:bind id="autofill_last_name" nodeset="autofill_last_name" type="xs:string" />
+    <xf:bind id="autofill_personal_id" nodeset="autofill_personal_id" type="xs:string" />
+    <xf:bind id="autofill_address" nodeset="autofill_address" type="xs:string" />
+    <xf:bind id="autofill_email" nodeset="autofill_email" type="xs:string" />
+    <xf:bind id="autofill_phone" nodeset="autofill_phone" type="xs:string" />
+    
+	<xf:bind id="text" nodeset="text" type="xs:string" />
+	<xf:bind id="textarea" nodeset="textarea" type="xs:string" />
+	<xf:bind id="secret" nodeset="secret" type="xs:string" />
 	<xf:bind id="multiple_select_minimal" nodeset="multiple_select_minimal"
-		type="string" />
+		type="xs:string" />
 	<xf:bind id="single_select_minimal" nodeset="single_select_minimal"
-		type="string" />
-	<xf:bind id="multiple_select" nodeset="multiple_select" type="string" />
-	<xf:bind id="single_select" nodeset="single_select" type="string" />
+		type="xs:string" />
+	<xf:bind id="multiple_select" nodeset="multiple_select" type="xs:string" />
+	<xf:bind id="single_select" nodeset="single_select" type="xs:string" />
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
@@ -93,6 +107,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<header_text.text lang="en">Header text</header_text.text>
 			<identifier.title lang="en">Identifier number</identifier.title>
 			<identifier.title lang="is">Identifier number</identifier.title>
+			<autofill_first_name.title lang="en">First name</autofill_first_name.title>
+            <autofill_first_name.title lang="is">First name</autofill_first_name.title>
+			
 		</localized_strings>
 	</xf:instance>
 	
@@ -134,6 +151,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_simple_text" accessSupport="r">
 				<datatype>string</datatype>
 				<datatype>list</datatype>
+			</component>
+			<component component_id="fbc_header_text" accessSupport="r">
+				<datatype>string</datatype>
 			</component>
 			<component component_id="fbc_header_text" accessSupport="r">
 				<datatype>string</datatype>
@@ -262,6 +282,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xf:instance id="component_categories" xmlns="">
 		<category name="autofill">
 	        <component component_id="fbc_identifier_number" />
+	        <component component_id="fbc_autofill_first_name" />
+	        <component component_id="fbc_autofill_last_name" />
+	        <component component_id="fbc_autofill_personal_id" />
+	        <component component_id="fbc_autofill_address" />
+	        <component component_id="fbc_autofill_email" />
+	        <component component_id="fbc_autofill_phone" />
+	        
 	    </category>
 	    
 		<category name="basic">
@@ -277,6 +304,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_multi_upload_file"/>
 				
 		</category>
+		
 		<category name="buttons">
 			<component component_id="fbc_button_next" />
 			<component component_id="fbc_button_previous" />
@@ -320,11 +348,18 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 </xf:repeat>
 		
 	</xf:group>
+         <xf:input bind="autofill_first_name" id = "fbc_autofill_first_name" autofillkey="loginSession.user.name">
+           <xf:label
+                ref="instance('localized_strings')/autofill_first_name.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+       
 	    <xf:input bind="identifier_number" id = "fbc_identifier_number">
 	       <xf:label
                 ref="instance('localized_strings')/identifier.title[@lang=instance('localized_strings')/current_language]"
-                model="data_model" />
+                model="data_model" />  
 	    </xf:input>
+	    
 		<xf:input bind="text" id="fbc_text">
 			<xf:label
 				ref="instance('localized_strings')/input.title[@lang=instance('localized_strings')/current_language]"
