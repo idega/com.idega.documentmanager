@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/03/28 11:57:14 $ by $Author: arunas $
+ * Last modified: $Date: 2008/04/24 19:14:33 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -26,7 +26,7 @@ public class FormComponentFactory implements Singleton {
 	private static final String type_select = "type_select";
 	private static final String type_non_display = "type_non_display";
 	private static final String type_plain = "type_plain";
-	private static final String type_upload = "type_upload";
+	private static final String type_upload = "type_upload";	
 	public static final String page_type_tag = FormManagerUtil.case_tag;
 	public static final String page_type = "fbc_page";
 	public static final String confirmation_page_type = "fbc_confirmation_page";
@@ -39,6 +39,19 @@ public class FormComponentFactory implements Singleton {
 		components_tags_classified = new HashMap<String, List<String>>();
 		
 		List<String> types = new ArrayList<String>();
+		
+		types.add("fbc_autofill_name");
+		types.add("fbc_autofill_first_name");
+		types.add("fbc_autofill_last_name");
+		types.add("fbc_autofill_personal_id");
+		types.add("fbc_autofill_address");
+		types.add("fbc_autofill_phones");
+		types.add("fbc_autofill_emails");		
+		types.add("fbc_autofill_country");
+		types.add("fbc_autofill_province");
+		types.add("fbc_autofill_city");
+		types.add("fbc_autofill_commune");
+		types.add("fbc_autofill_postal_code");
 		types.add("fbc_identifier_number");
 		types.add("fbc_text");
 		types.add("fbc_textarea");
@@ -78,7 +91,7 @@ public class FormComponentFactory implements Singleton {
 		types = new ArrayList<String>();
 		types.add("fbc_multi_upload_file");
 		components_tags_classified.put(type_upload, types);
-		
+				
 	}
 	
 	public static FormComponentFactory getInstance() {

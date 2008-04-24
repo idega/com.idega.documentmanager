@@ -15,8 +15,8 @@ import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentButtonArea;
 import com.idega.documentmanager.component.FormComponentContainer;
 import com.idega.documentmanager.component.FormComponentPage;
-import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
+import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.manager.XFormsManager;
 import com.idega.documentmanager.util.FormManagerUtil;
@@ -27,9 +27,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/03/20 10:40:11 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/24 19:14:32 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -40,6 +40,7 @@ public class XFormsManagerImpl implements XFormsManager {
 	
 	private XPathUtil bindsByNodesetXPath;
 	private static final String nodesetVariable = "nodeset";
+	private static final String autofill_attr = "autofillkey";
 	
 	public void loadXFormsComponentByTypeFromComponentsXForm(FormComponent component, String componentType) throws NullPointerException {
 		
@@ -49,14 +50,15 @@ public class XFormsManagerImpl implements XFormsManager {
 		ComponentDataBean xformsComponentDataBean = cacheManager.getCachedXformsComponent(componentType);
 		
 		if(xformsComponentDataBean != null) {
-			xformsComponentDataBean = (ComponentDataBean)xformsComponentDataBean.clone();
+			xformsComponentDataBean = (ComponentDataBean)xformsComponentDataBean.clone();	
 			component.setXformsComponentDataBean(xformsComponentDataBean);
+					
 			return;
 		}
 		
 		loadAndCacheXFormsComponentByTypeFromComponentsXForm(component, componentType);
 	}
-	
+		
 	protected synchronized void loadAndCacheXFormsComponentByTypeFromComponentsXForm(FormComponent component, String componentType) {
 		
 		CacheManager cacheManager = component.getContext().getCacheManager();
@@ -168,6 +170,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
+		
 		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		Element component_element = xformsComponentDataBean.getElement();
 		
@@ -209,7 +212,17 @@ public class XFormsManagerImpl implements XFormsManager {
 				}
 			}
 		}
-		xformsComponentDataBean.setElement(component_element);
+		
+		
+		if (xformsComponentDataBean.getElement().getAttributeNode(autofill_attr) != null) {
+		    
+		    component.getProperties().setAutofillKey(xformsComponentDataBean.getElement().getAttributeNode(autofill_attr).getValue());
+		    component_element.removeAttribute(autofill_attr);
+		    
+		    xformsComponentDataBean.setElement(component_element);
+		    updateAutofillKey(component);
+		    
+		} else xformsComponentDataBean.setElement(component_element);
 	}
 	
 	protected boolean removeTextNodes() {

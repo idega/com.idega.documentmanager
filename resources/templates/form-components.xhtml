@@ -13,7 +13,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xf:instance id="components_instance" xmlns="">
 		<data> 
 			<text /> 
-			<id_number />
+			<id_number>IW2000-01-01-0001</id_number>
 			<email xsi:nil="true"/> 
 			<textarea />
 			<secret />
@@ -28,12 +28,18 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			     <entry filename="" mediatype=""/>
 			     <entry filename="" mediatype=""/>
             </multiupload>
+            <autofill_name />
             <autofill_first_name />
             <autofill_last_name />
             <autofill_personal_id />
             <autofill_address />
-            <autofill_email />
-            <autofill_phone />
+            <autofill_phones />
+            <autofill_emails />       
+            <autofill_country />
+            <autofill_province />
+            <autofill_city />
+            <autofill_commune />
+            <autofill_postal_code />       
 			<page /> 
 		</data>
 	</xf:instance>	
@@ -43,12 +49,18 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
     
+    <xf:bind id="autofill_name" nodeset="autofill_name" type="xs:string" />
     <xf:bind id="autofill_first_name" nodeset="autofill_first_name" type="xs:string" />
     <xf:bind id="autofill_last_name" nodeset="autofill_last_name" type="xs:string" />
     <xf:bind id="autofill_personal_id" nodeset="autofill_personal_id" type="xs:string" />
     <xf:bind id="autofill_address" nodeset="autofill_address" type="xs:string" />
-    <xf:bind id="autofill_email" nodeset="autofill_email" type="xs:string" />
-    <xf:bind id="autofill_phone" nodeset="autofill_phone" type="xs:string" />
+    <xf:bind id="autofill_phones" nodeset="autofill_phones" type="xs:string" />
+    <xf:bind id="autofill_emails" nodeset="autofill_emails" type="xs:string" />
+    <xf:bind id="autofill_country" nodeset="autofill_country" type="xs:string" />
+    <xf:bind id="autofill_province" nodeset="autofill_province" type="xs:string" />
+    <xf:bind id="autofill_city" nodeset="autofill_city" type="xs:string" />
+    <xf:bind id="autofill_commune" nodeset="autofill_commune" type="xs:string" />
+    <xf:bind id="autofill_postal_code" nodeset="autofill_postal_code" type="xs:string" />
     
 	<xf:bind id="text" nodeset="text" type="xs:string" />
 	<xf:bind id="textarea" nodeset="textarea" type="xs:string" />
@@ -107,8 +119,30 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<header_text.text lang="en">Header text</header_text.text>
 			<identifier.title lang="en">Identifier number</identifier.title>
 			<identifier.title lang="is">Identifier number</identifier.title>
+			<autofill_name.title lang="en">Name</autofill_name.title>
+            <autofill_name.title lang="is">Name</autofill_name.title>       
 			<autofill_first_name.title lang="en">First name</autofill_first_name.title>
-            <autofill_first_name.title lang="is">First name</autofill_first_name.title>
+            <autofill_first_name.title lang="is">First name</autofill_first_name.title>       
+            <autofill_last_name.title lang="en">Last name</autofill_last_name.title>
+            <autofill_last_name.title lang="is">Last name</autofill_last_name.title> 
+            <autofill_personal_id.title lang="en">Personal id</autofill_personal_id.title>
+            <autofill_personal_id.title lang="is">Personal id</autofill_personal_id.title>   
+            <autofill_address.title lang="en">Address</autofill_address.title>
+            <autofill_address.title lang="is">Address</autofill_address.title>
+            <autofill_phones.title lang="en">Phones</autofill_phones.title>
+            <autofill_phones.title lang="is">Phones</autofill_phones.title>
+            <autofill_emails.title lang="en">Emails</autofill_emails.title>
+            <autofill_emails.title lang="is">Emails</autofill_emails.title>
+            <autofill_country.title lang="en">Country</autofill_country.title>
+            <autofill_country.title lang="is">Country</autofill_country.title>
+            <autofill_province.title lang="en">Province</autofill_province.title>
+            <autofill_province.title lang="is">Province</autofill_province.title>
+            <autofill_city.title lang="en">City</autofill_city.title>
+            <autofill_city.title lang="is">City</autofill_city.title>
+            <autofill_commune.title lang="en">Commune</autofill_commune.title>
+            <autofill_commune.title lang="is">Commune</autofill_commune.title>
+            <autofill_postal_code.title lang="en">Postal code</autofill_postal_code.title>
+            <autofill_postal_code.title lang="is">Postal code</autofill_postal_code.title>
 			
 		</localized_strings>
 	</xf:instance>
@@ -282,13 +316,18 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xf:instance id="component_categories" xmlns="">
 		<category name="autofill">
 	        <component component_id="fbc_identifier_number" />
+	        <component component_id="fbc_autofill_name" />
 	        <component component_id="fbc_autofill_first_name" />
 	        <component component_id="fbc_autofill_last_name" />
 	        <component component_id="fbc_autofill_personal_id" />
 	        <component component_id="fbc_autofill_address" />
-	        <component component_id="fbc_autofill_email" />
-	        <component component_id="fbc_autofill_phone" />
-	        
+	        <component component_id="fbc_autofill_phones" />
+	       	<component component_id="fbc_autofill_emails" />    	
+	       	<component component_id="fbc_autofill_country" />  
+	       	<component component_id="fbc_autofill_province" />  
+	       	<component component_id="fbc_autofill_city" />
+	       	<component component_id="fbc_autofill_commune" />  
+	       	<component component_id="fbc_autofill_postal_code" />              
 	    </category>
 	    
 		<category name="basic">
@@ -347,13 +386,80 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					</xf:trigger>
                 </xf:repeat>
 		
-	</xf:group>
-         <xf:input bind="autofill_first_name" id = "fbc_autofill_first_name" autofillkey="loginSession.user.name">
+    	</xf:group>
+    	
+    	 <xf:input bind="autofill_name" id = "fbc_autofill_name" autofillkey="loginSession.user.name">
+           <xf:label
+                ref="instance('localized_strings')/autofill_name.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+         <xf:input bind="autofill_first_name" id = "fbc_autofill_first_name" autofillkey="loginSession.user.firstName">
            <xf:label
                 ref="instance('localized_strings')/autofill_first_name.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
         </xf:input>
-       
+        
+        <xf:input bind="autofill_last_name" id = "fbc_autofill_last_name" autofillkey="loginSession.user.lastName">
+           <xf:label
+                ref="instance('localized_strings')/autofill_last_name.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+        <xf:input bind="autofill_personal_id" id = "fbc_autofill_personal_id" autofillkey="loginSession.user.personalID">
+           <xf:label
+                ref="instance('localized_strings')/autofill_personal_id.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+        <xf:input bind="autofill_address" id = "fbc_autofill_address" autofillkey="collection-string-loginSession.user.addresses.streetAddress">
+           <xf:label
+                ref="instance('localized_strings')/autofill_address.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+         <xf:input bind="autofill_emails" id = "fbc_autofill_emails" autofillkey="collection-string-loginSession.user.emails.emailAddress">
+           <xf:label
+                ref="instance('localized_strings')/autofill_emails.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+         <xf:input bind="autofill_phones" id = "fbc_autofill_phones" autofillkey="collection-string-loginSession.user.phones.number">
+           <xf:label
+                ref="instance('localized_strings')/autofill_phones.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+     
+        <xf:input bind="autofill_country" id = "fbc_autofill_country" autofillkey="collection-string-loginSession.user.addresses.country">
+           <xf:label
+                ref="instance('localized_strings')/autofill_country.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+        <xf:input bind="autofill_province" id = "fbc_autofill_province" autofillkey="collection-string-loginSession.user.addresses.province">
+           <xf:label
+                ref="instance('localized_strings')/autofill_province.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+        <xf:input bind="autofill_city" id = "fbc_autofill_city" autofillkey="collection-string-loginSession.user.addresses.city">
+           <xf:label
+                ref="instance('localized_strings')/autofill_city.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+         <xf:input bind="autofill_commune" id = "fbc_autofill_commune" autofillkey="collection-string-loginSession.user.addresses.commune">
+           <xf:label
+                ref="instance('localized_strings')/autofill_commune.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+        
+        <xf:input bind="autofill_postal_code" id = "fbc_autofill_postal_code" autofillkey="collection-string-loginSession.user.addresses.postalCode">
+           <xf:label
+                ref="instance('localized_strings')/autofill_postal_code.title[@lang=instance('localized_strings')/current_language]"
+                model="data_model" /> 
+        </xf:input>
+    
 	    <xf:input bind="identifier_number" id = "fbc_identifier_number">
 	       <xf:label
                 ref="instance('localized_strings')/identifier.title[@lang=instance('localized_strings')/current_language]"
