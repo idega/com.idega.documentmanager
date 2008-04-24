@@ -18,10 +18,10 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * 
- *  Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ *  Last modified: $Date: 2008/04/24 23:49:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LocalizedItemsetBean {
 	
@@ -41,7 +41,6 @@ public class LocalizedItemsetBean {
 	public void setLocalDataSrcElement(Element local_data_src_element_main) {
 		local_data_src_element = DOMUtil.getFirstChildElement(local_data_src_element_main);
 		
-		@SuppressWarnings("unchecked")
 		List<Element> localized_entries_elements = DOMUtil.getChildElements(local_data_src_element);
 		
 		for (Iterator<Element> iter = localized_entries_elements.iterator(); iter.hasNext();) {
@@ -62,9 +61,8 @@ public class LocalizedItemsetBean {
 	public Set<Locale> getItemsetKeySet() {
 		return itemsets.keySet();
 	}
+
 	public void clear() {
-		
-		@SuppressWarnings("unchecked")
 		List<Element> child_elements = DOMUtil.getChildElements(local_data_src_element);
 		
 		for (Iterator<Element> iter = child_elements.iterator(); iter.hasNext();)
@@ -85,8 +83,6 @@ public class LocalizedItemsetBean {
 		Element localized_entry = localized_entries.get(locale);
 		
 		if(localized_entry != null) {
-			
-			@SuppressWarnings("unchecked")
 			List<Element> items_elements = DOMUtil.getChildElements(localized_entry);
 			
 			for (Iterator<Element> iterator = items_elements.iterator(); iterator.hasNext();) {
@@ -130,7 +126,6 @@ public class LocalizedItemsetBean {
 			if(localized_entries.containsKey(locale)) {
 				localized_entries_element = localized_entries.get(locale);
 				
-				@SuppressWarnings("unchecked")
 				List<Element> child_elements = DOMUtil.getChildElements(localized_entries_element);
 				
 				for (Iterator<Element> iter = child_elements.iterator(); iter.hasNext();)

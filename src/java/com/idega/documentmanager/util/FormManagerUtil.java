@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2008/03/26 10:47:45 $ by $Author: arunas $
+ * Last modified: $Date: 2008/04/24 23:49:13 $ by $Author: laddi $
  */
 public class FormManagerUtil {
 	
@@ -366,7 +366,6 @@ public class FormManagerUtil {
 		
 		Element loc_model = getElementByIdFromDocument(doc, head_tag, data_mod);
 		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
-		@SuppressWarnings("unchecked")
 		List<Element> loc_elements = DOMUtil.getChildElements(loc_strings);
 		
 		for (Iterator<Element> iter = loc_elements.iterator(); iter.hasNext();)
@@ -569,7 +568,6 @@ public class FormManagerUtil {
 		Element body_element = (Element)xforms_doc.getElementsByTagName(body_tag).item(0);
 		Element switch_element = (Element)body_element.getElementsByTagName(switch_tag).item(0);
 		
-		@SuppressWarnings("unchecked")
 		List<Element> components_elements = DOMUtil.getChildElements(switch_element);
 		List<String[]> components_tag_names_and_ids = new ArrayList<String[]>();
 		
@@ -669,8 +667,6 @@ public class FormManagerUtil {
 		Element switch_parent = (Element)switch_element.getParentNode();
 		
 		for (int i = 0; i < tags.getLength(); i++) {
-			
-			@SuppressWarnings("unchecked")
 			List<Element> case_children = DOMUtil.getChildElements(tags.item(i));
 			for (Element case_child : case_children) {
 				switch_parent.appendChild(case_child);
@@ -856,7 +852,7 @@ public class FormManagerUtil {
 		elementsContainingAttributeXPath.setVariable(elementNameVariable, elementName);
 		elementsContainingAttributeXPath.setVariable(attributeNameVariable, attributeName);
 		
-		return (NodeList)elementsContainingAttributeXPath.getNodeset(context);
+		return elementsContainingAttributeXPath.getNodeset(context);
 	}
 	
 	public static Map<String, List<ComponentType>> getComponentsTypesByDatatype(Document form_components_doc) {

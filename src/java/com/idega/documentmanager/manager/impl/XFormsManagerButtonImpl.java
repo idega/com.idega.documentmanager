@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/03/13 09:29:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/24 23:49:12 $ by $Author: laddi $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -248,7 +248,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		synchronized (xutil) {
 			xutil.clearVariables();
 			xutil.setVariable(bindIdVariable, bindId);
-			bindedTo = (NodeList)xutil.getNodeset(xform);
+			bindedTo = xutil.getNodeset(xform);
 		}
 		
 		if(bindedTo == null || bindedTo.getLength() == 0) {

@@ -16,9 +16,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/04/02 19:21:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/24 23:49:12 $ by $Author: laddi $
  */
 public class CacheManager implements Singleton {
 	
@@ -149,10 +149,8 @@ public class CacheManager implements Singleton {
 		if(iwma == null)
 			throw new NullPointerException("IWMainApplication not set");
 		
-		@SuppressWarnings("unchecked")
 		Map<String, ComponentDataBean> cachedXformsComponents = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
 		this.cachedXformsComponents = cachedXformsComponents;
-		@SuppressWarnings("unchecked")
 		Map<String, Element> cachedDefaultComponentLocalizations = IWCacheManager2.getInstance(iwma).getCache("cached_default_components_localizations");
 		this.cachedDefaultComponentLocalizations = cachedDefaultComponentLocalizations;
 	}

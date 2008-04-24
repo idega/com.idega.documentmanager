@@ -58,7 +58,6 @@ public class SubmittedDataBean {
 			return;
 		}
 		
-		@SuppressWarnings("unchecked")
 		List<Element> child_elements = DOMUtil.getChildElements(submitted_data_element);
 		
 		int child_count = child_elements.size(); 
