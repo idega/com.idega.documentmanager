@@ -25,12 +25,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                  <entry filename="" mediatype=""/>
             </uploadfile>
 			<multiupload>
-				<entry filename="" mediatype="">
-				<description />
-			    </entry>	     	
-			   <entry filename="" mediatype="">
-				<description />
-			    </entry>	
+			   <entry filename="" mediatype=""/>     	
+			   <entry filename="" mediatype=""/>
+
             </multiupload>
             <multiupload_description>
 				<entry filename="" mediatype="">
@@ -59,8 +56,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
     <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
-    <xf:bind id="multiupload_description" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI">
-    		<xf:bind id="required_description" nodeset="description" required="true()"/>
+    <xf:bind id="multiupload_description" nodeset="multiupload_description/entry[position() != last()]" type="xs:anyURI">
+    		<xf:bind id="required_description" nodeset="description"/>
 	</xf:bind>
     
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
