@@ -1,9 +1,13 @@
 package com.idega.documentmanager.manager.impl;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.idega.documentmanager.business.component.properties.PropertiesComponent;
 import com.idega.documentmanager.business.component.properties.PropertiesMultiUploadDescription;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
@@ -17,9 +21,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
- * Last modified: $Date: 2008/05/10 11:49:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/05/10 19:55:51 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUploadDescription {
@@ -160,6 +164,10 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		case LABEL:
 		    	updateLabel(component);
 		    	break;
+		case CONSTRAINT_REQUIRED:
+			updateConstraintRequired(component);
+			break;
+
 		
 		default:
 			break;
@@ -252,6 +260,31 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		localizedText
 	);
        
+   }
+   
+   @Override
+   protected void updateConstraintRequired(FormComponent component) {
+	
+	ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+	
+	PropertiesComponent props = component.getProperties();
+	
+	Bind bind = xformsComponentDataBean.getBind();
+	
+	if(bind == null) {
+	    	Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Bind element not set in xforms_component data bean. See where component is rendered for cause.");
+		throw new NullPointerException("Bind element is not set");
+	}
+		
+	XPathUtil util = new XPathUtil(".//xf:bind[@id='required_description']");
+	
+	Element bindElement = (Element)util.getNode(bind.getBindElement().getParentNode());
+	
+	if(props.isRequired())
+	    bindElement.setAttribute(FormManagerUtil.required_att, FormManagerUtil.xpath_true);	    
+	else
+	    bindElement.removeAttribute(FormManagerUtil.required_att);
+
    }
     
     public LocalizedStringBean getAddButtonLabel(FormComponent component) {
