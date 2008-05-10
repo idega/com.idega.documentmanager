@@ -2,10 +2,10 @@ package com.idega.documentmanager.component.properties.impl;
 
 /**
  * 
- *  Last modified: $Date: 2008/04/07 10:44:56 $ by $Author: arunas $
+ *  Last modified: $Date: 2008/05/10 11:49:08 $ by $Author: arunas $
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public enum ConstUpdateType {
 	
@@ -26,5 +26,6 @@ public enum ConstUpdateType {
 	BUTTON_REFER_TO_ACTION,
 	DATA_SRC_USED,
 	ADD_BUTTON_LABEL,
-	REMOVE_BUTTON_LABEL;
+	REMOVE_BUTTON_LABEL,
+	DESCRIPTION_BUTTON_LABEL;
 }

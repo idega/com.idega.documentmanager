@@ -25,9 +25,21 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                  <entry filename="" mediatype=""/>
             </uploadfile>
 			<multiupload>
-			     <entry filename="" mediatype=""/>
-			     <entry filename="" mediatype=""/>
+				<entry filename="" mediatype="">
+				<description />
+			    </entry>	     	
+			   <entry filename="" mediatype="">
+				<description />
+			    </entry>	
             </multiupload>
+            <multiupload_description>
+				<entry filename="" mediatype="">
+				<description />
+			    </entry>	     	
+			   <entry filename="" mediatype="">
+				<description />
+			    </entry>	
+            </multiupload_description>
             <autofill_name />
             <autofill_first_name />
             <autofill_last_name />
@@ -47,6 +59,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
     <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
+    <xf:bind id="multiupload_description" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
     
     <xf:bind id="autofill_name" nodeset="autofill_name" type="xs:string" />
@@ -110,6 +123,16 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multi_upload_file.label lang="is">Add One</multi_upload_file.label> 
 			<multi_upload_file.remove lang="en">Remove</multi_upload_file.remove>
 			<multi_upload_file.remove lang="is">Remove</multi_upload_file.remove>
+			
+			<multi_upload_description_file.title lang="en">Multi file upload with description</multi_upload_description_file.title>
+			<multi_upload_description_file.title lang="is">Multi file upload with description</multi_upload_description_file.title> 
+			<multi_upload_description_file.label lang="en">Add One</multi_upload_description_file.label>
+			<multi_upload_description_file.label lang="is">Add One</multi_upload_description_file.label> 
+			<multi_upload_description_file.remove lang="en">Remove</multi_upload_description_file.remove>
+			<multi_upload_description_file.remove lang="is">Remove</multi_upload_description_file.remove>
+			<multi_upload_description_file.text lang="en">File description</multi_upload_description_file.text>
+			<multi_upload_description_file.text lang="is">File description</multi_upload_description_file.text>
+			
 			<page.label lang="en">Section</page.label>
 			<confirmation_page.label lang="en">Confirmation Section</confirmation_page.label>
 			<button_next.label lang="en">Next</button_next.label>
@@ -180,6 +203,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<datatype>file</datatype>
 			</component>
 			<component component_id="fbc_multi_upload_file" accessSupport="w">
+				<datatype>files</datatype>
+			</component>
+			<component component_id="fbc_multi_upload_description_file" accessSupport="w">
 				<datatype>files</datatype>
 			</component>
 			<component component_id="fbc_simple_text" accessSupport="r">
@@ -341,7 +367,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_email" />
 			<component component_id="fbc_upload_file" />
 			<component component_id="fbc_multi_upload_file"/>
-				
+			<component component_id="fbc_multi_upload_description_file"/>
 		</category>
 		
 		<category name="buttons">
@@ -377,9 +403,38 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                     <xf:upload ref=".">
                         <xf:filename ref="@filename"/>
                         <xf:mediatype ref="@mediatype"/>      
-                    </xf:upload>
+                    </xf:upload>	 
                	    <xf:trigger>
                	   	<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
+               	    <xf:action>
+					 	<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
+					</xf:action>
+					</xf:trigger>
+                </xf:repeat>
+		
+    	</xf:group>
+    	
+    	<xf:group appearance="full" bind="multiupload_description" id ="fbc_multi_upload_description_file" name = "fbc_multi_upload_description_file" >
+	     <xf:label ref="instance('localized_strings')/multi_upload_description_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
+		 <xf:trigger>
+                   <xf:label ref="instance('localized_strings')/multi_upload_description_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+                    <xf:action>
+                        <xf:insert nodeset="instance('data-instance')/multiupload/entry" at="last()" position="before"/>
+                    </xf:action>
+         </xf:trigger>
+                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="compact" >
+                  	<xf:input ref="./description">
+                  		 <xf:label
+                			ref="instance('localized_strings')/multi_upload_description_file.text[@lang=instance('localized_strings')/current_language]"
+                			model="data_model" /> 
+                  	</xf:input>	
+                    <xf:upload ref=".">
+                        <xf:filename ref="@filename"/>
+                        <xf:mediatype ref="@mediatype"/>      
+                    </xf:upload>
+                     		 
+               	    <xf:trigger>
+               	   	<xf:label ref="instance('localized_strings')/multi_upload_description_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
                	    <xf:action>
 					 	<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
 					</xf:action>

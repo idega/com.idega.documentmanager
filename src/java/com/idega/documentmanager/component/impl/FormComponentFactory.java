@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/04/24 19:14:33 $ by $Author: arunas $
+ * Last modified: $Date: 2008/05/10 11:49:08 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -26,7 +26,8 @@ public class FormComponentFactory implements Singleton {
 	private static final String type_select = "type_select";
 	private static final String type_non_display = "type_non_display";
 	private static final String type_plain = "type_plain";
-	private static final String type_upload = "type_upload";	
+	private static final String type_upload = "type_upload";
+	private static final String type_upload_description = "type_upload_description";
 	public static final String page_type_tag = FormManagerUtil.case_tag;
 	public static final String page_type = "fbc_page";
 	public static final String confirmation_page_type = "fbc_confirmation_page";
@@ -91,6 +92,11 @@ public class FormComponentFactory implements Singleton {
 		types = new ArrayList<String>();
 		types.add("fbc_multi_upload_file");
 		components_tags_classified.put(type_upload, types);
+		
+		types = new ArrayList<String>();
+		types.add("fbc_multi_upload_description_file");
+		components_tags_classified.put(type_upload_description, types);
+		
 				
 	}
 	
@@ -120,6 +126,8 @@ public class FormComponentFactory implements Singleton {
 	public FormComponent recognizeFormComponent(String component_type) {
 		if(components_tags_classified.get(type_upload).contains(component_type))
 			return new FormComponentMultiUploadImpl();
+		if(components_tags_classified.get(type_upload_description).contains(component_type))
+			return new FormComponentMultiUploadDescriptionImpl();
 		if(components_tags_classified.get(type_select).contains(component_type))
 			return new FormComponentSelectImpl();
 		if(component_type.equals(page_type_thx))
