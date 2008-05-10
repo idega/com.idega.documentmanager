@@ -422,23 +422,28 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                         <xf:insert nodeset="instance('data-instance')/multiupload/entry" at="last()" position="before"/>
                     </xf:action>
          </xf:trigger>
-                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="compact" >
-                  	<xf:input ref="./description">
+                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="group" >
+                  	<xf:group appearance="group">
+                  		<xf:input ref="./description">
                   		 <xf:label
                 			ref="instance('localized_strings')/multi_upload_description_file.text[@lang=instance('localized_strings')/current_language]"
                 			model="data_model" /> 
-                  	</xf:input>	
-                    <xf:upload ref=".">
-                        <xf:filename ref="@filename"/>
-                        <xf:mediatype ref="@mediatype"/>      
-                    </xf:upload>
+                  		</xf:input>	
+                  	</xf:group>
+                  	
+                  	<xf:group appearance="group">
+                    	<xf:upload ref=".">
+                        	<xf:filename ref="@filename"/>
+                        	<xf:mediatype ref="@mediatype"/>      
+                    	</xf:upload>
                      		 
-               	    <xf:trigger>
-               	   	<xf:label ref="instance('localized_strings')/multi_upload_description_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
-               	    <xf:action>
-					 	<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
-					</xf:action>
-					</xf:trigger>
+               	    	<xf:trigger>
+               	   		<xf:label ref="instance('localized_strings')/multi_upload_description_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
+               	    		<xf:action>
+					 			<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
+							</xf:action>
+						</xf:trigger>
+					</xf:group>
                 </xf:repeat>
 		
     	</xf:group>
