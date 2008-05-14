@@ -132,6 +132,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multi_upload_description_file.remove lang="is">Remove</multi_upload_description_file.remove>
 			<multi_upload_description_file.text lang="en">File description</multi_upload_description_file.text>
 			<multi_upload_description_file.text lang="is">File description</multi_upload_description_file.text>
+			<multi_upload_description_file.info lang="en">Please enter file description</multi_upload_description_file.info>
+			<multi_upload_description_file.info lang="is">Please enter file description</multi_upload_description_file.info>
 			
 			<page.label lang="en">Section</page.label>
 			<confirmation_page.label lang="en">Confirmation Section</confirmation_page.label>
@@ -403,7 +405,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                     <xf:upload ref=".">
                         <xf:filename ref="@filename"/>
                         <xf:mediatype ref="@mediatype"/>      
-                    </xf:upload>	 
+                    </xf:upload>
+                    	 
                	    <xf:trigger>
                	   	<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
                	    <xf:action>
@@ -419,27 +422,33 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		 <xf:trigger>
                    <xf:label ref="instance('localized_strings')/multi_upload_description_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
                     <xf:action>
-                        <xf:insert nodeset="instance('data-instance')/multiupload/entry" at="last()" position="before"/>
+                        <xf:insert nodeset="instance('data-instance')/multiupload_description/entry" at="last()" position="before"/>
                     </xf:action>
          </xf:trigger>
-                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="compact" >
-                  	
-                  		<xf:input ref="./description">
+                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="group" >
+                  	<xf:group appearance="group">
+                  		<xf:input ref="./description" incremental="true">
                   		 <xf:label
                 			ref="instance('localized_strings')/multi_upload_description_file.text[@lang=instance('localized_strings')/current_language]"
                 			model="data_model" /> 
                   		</xf:input>	
-                    	<xf:upload ref=".">
+                  		<xf:output value="" ref="instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language]"
+				model="data_model" incremental="true" />
+                  		</xf:group>
+                  		<xf:group appearance="group">         		 
+                  		    <xf:upload ref=".">
                         	<xf:filename ref="@filename"/>
                         	<xf:mediatype ref="@mediatype"/>      
-                    	</xf:upload>              		 
+                    	</xf:upload>     
+                    	                    	
                	    	<xf:trigger>
                	   		<xf:label ref="instance('localized_strings')/multi_upload_description_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
                	    		<xf:action>
-					 			<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
+					 			<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload_description/entry"/>
 							</xf:action>
 						</xf:trigger>
-					
+					</xf:group>
+												
                 </xf:repeat>
 		
     	</xf:group>
