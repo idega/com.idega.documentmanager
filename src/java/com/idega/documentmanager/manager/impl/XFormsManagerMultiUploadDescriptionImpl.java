@@ -21,9 +21,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
- * Last modified: $Date: 2008/05/10 19:55:51 $ by $Author: arunas $
+ * Last modified: $Date: 2008/05/14 10:30:23 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUploadDescription {
@@ -31,6 +31,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
     private static final String INSERT_TAG = "./descendant::xf:insert[@at='last()']";
     private static final String REPEAT_TAG = "./descendant::xf:repeat";
     private static final String DELETE_TAG = "./descendant::xf:delete";
+    private static final String OUTPUT_TAG = "//xf:output[@value]";
     private static final String INSTANCE = "instance('data-instance')/Multi_file_upload_with_description_";
     private static final String BIND = "bind.";
     private static final String REPEAT = "upload_entries_";
@@ -94,6 +95,8 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 
 	ComponentMultiUploadBean xfMultiUploadComponentBean = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
 	
+	
+	
 	XPathUtil util = new XPathUtil(INSERT_TAG);
 	Element nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
 	nodeElement.setAttribute(FormManagerUtil.nodeset_att,constructInsertNodeset(component));
@@ -104,17 +107,21 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	nodeElement.setAttribute(FormManagerUtil.id_att, constructRepeatId(component.getId()));
 
 	util = new XPathUtil(DELETE_TAG);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
+	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
 	nodeElement.setAttribute(FormManagerUtil.nodeset_att,
 		constructInsertNodeset(component));
 	nodeElement.setAttribute(FormManagerUtil.at_att,
 		constructDeleteAt(component.getId()));
 
 	util = new XPathUtil(GROUP_ELEMENT);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
+	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
 	nodeElement.removeAttribute(FormManagerUtil.bind_att);
+	
+	util = new XPathUtil(OUTPUT_TAG);
+	nodeElement = (Element)  util.getNode(xfMultiUploadComponentBean.getElement());
+	nodeElement.setAttribute(FormManagerUtil.value_att, constructOutputValueAt(component.getId()));
+	nodeElement.removeAttribute(FormManagerUtil.ref_s_att);
+	
     }
 
     private String constructInsertNodeset(FormComponent component) {
@@ -146,6 +153,14 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	return buf.toString();
     }
     
+    private String constructOutputValueAt(String component_id) {
+
+	StringBuffer buf = new StringBuffer();
+	buf.append("if(. !='' and ./description ='', instance('localized_strings')/").append(component_id).append(".info[@lang=instance('localized_strings')/current_language], '')");
+	return buf.toString();
+
+    }
+    
     @Override
     public void update(FormComponent component, ConstUpdateType what) {
 		
@@ -167,8 +182,9 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		case CONSTRAINT_REQUIRED:
 			updateConstraintRequired(component);
 			break;
-
-		
+		case ERROR_MSG:
+			updateErrorMsg(component);
+			break;
 		default:
 			break;
 		}
@@ -285,6 +301,22 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	else
 	    bindElement.removeAttribute(FormManagerUtil.required_att);
 
+   }
+   
+   @Override
+   protected void updateErrorMsg(FormComponent component){
+       
+       ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+       
+       PropertiesMultiUploadDescription properties = (PropertiesMultiUploadDescription)component.getProperties();
+       
+       XPathUtil util = new XPathUtil(OUTPUT_TAG);
+       Element output = (Element) util.getNode(xformsComponentDataBean.getElement());
+            
+       FormManagerUtil.putLocalizedText( new StringBuilder(component.getId()).append(".info").toString(), FormManagerUtil.localized_entries, output, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
+       output.removeAttribute(FormManagerUtil.ref_s_att);
+          
+       
    }
     
     public LocalizedStringBean getAddButtonLabel(FormComponent component) {
