@@ -22,14 +22,14 @@ import com.idega.documentmanager.manager.XFormsManager;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
 import com.idega.documentmanager.xform.Nodeset;
-import com.idega.jbpm.def.Variable;
+import com.idega.jbpm.variables.Variable;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/04/24 19:14:32 $ by $Author: arunas $
+ * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	

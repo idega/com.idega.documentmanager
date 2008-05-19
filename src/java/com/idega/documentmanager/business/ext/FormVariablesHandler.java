@@ -6,15 +6,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.jbpm.def.Variable;
+import com.idega.jbpm.variables.Variable;
 import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
  */
 public class FormVariablesHandler {
 

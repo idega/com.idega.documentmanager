@@ -6,13 +6,13 @@ import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
-import com.idega.jbpm.def.Variable;
+import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
  */
 public interface XFormsManager {
 

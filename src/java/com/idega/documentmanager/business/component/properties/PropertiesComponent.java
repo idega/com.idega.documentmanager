@@ -1,15 +1,15 @@
 package com.idega.documentmanager.business.component.properties;
 
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
-import com.idega.jbpm.def.Variable;
+import com.idega.jbpm.variables.Variable;
 
 /**
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
