@@ -14,6 +14,7 @@
                 </data>
             </xf:instance>            
             <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" />
+            <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
         </xf:model>
         <xf:model id="data_model">
 	        <xf:instance id="localized_strings" xmlns="">
@@ -27,6 +28,12 @@
 	         		<page-2.info lang="en">Form submitted, thank You!</page-2.info>
 	         	</localized_strings>
 	        </xf:instance>
+	        
+	        <xf:action ev:event="xforms-ready">
+				<xf:setvalue model="data_model"
+					ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
+			</xf:action>
+			
 	      </xf:model>
         <xs:schema id="fb-schema">
         </xs:schema>
