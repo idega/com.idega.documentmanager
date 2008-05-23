@@ -21,9 +21,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
  */
 public class Form {
 	
@@ -91,7 +91,6 @@ public class Form {
 		return documentChanged;
 	}
 	public Document getComponentsXml() {
-		
 		return componentsXml;
 	}
 	public void setComponentsXml(Document xml) {

@@ -1,13 +1,21 @@
 package com.idega.documentmanager.business;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 import org.w3c.dom.Document;
+
+import com.idega.documentmanager.generator.ComponentsGenerator;
+import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
+import com.idega.documentmanager.util.FormManagerUtil;
 
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2008/04/10 01:08:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
  */
 public class PersistedFormDocument {
 	
@@ -32,5 +40,20 @@ public class PersistedFormDocument {
 	}
 	public void setFormType(String formType) {
 		this.formType = formType;
+	}
+	public void setLocale(Locale locale) {
+		Document doc = getXformsDocument();
+		
+		//ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
+		FormManagerUtil.modifyXFormsDocumentForViewing(doc);
+		FormManagerUtil.setCurrentFormLocale(doc, locale);
+		setXformsDocument(doc);
+			
+//		componentsGenerator.setDocument(doc);
+//		try {
+//			doc = componentsGenerator.generateHtmlComponentsDocument();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 }

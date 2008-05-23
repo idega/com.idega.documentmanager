@@ -1,10 +1,13 @@
 package com.idega.documentmanager.component.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.chiba.xml.dom.DOMUtil;
+import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,18 +21,21 @@ import com.idega.documentmanager.business.component.properties.PropertiesDocumen
 import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
+import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesDocument;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.form.impl.Form;
+import com.idega.documentmanager.generator.ComponentsGenerator;
+import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
 import com.idega.documentmanager.manager.XFormsManagerDocument;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2008/04/10 01:08:32 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -42,6 +48,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private List<String> registeredForLastPageIdPages;
 	private ParametersManager parametersManager;
 	private String formType;
+	private Map<String, Document> differentLocaleDocs;
 	
 	private Form form;
 	
@@ -75,7 +82,38 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		return getForm().isFormDocumentModified();
 	}
 	
-	public Document getComponentsXml() {
+	public Document getComponentsXml(FormComponent component, Locale locale) {
+		if (!this.isFormDocumentModified() && differentLocaleDocs != null) {
+			String localeStr = locale.toString();
+			if(differentLocaleDocs.keySet().contains(localeStr)) {
+				getForm().setComponentsXml(differentLocaleDocs.get(locale.toString()));
+				return getForm().getComponentsXml();
+			}
+		} else {
+			differentLocaleDocs = new HashMap<String, Document>();
+		}
+		
+		Document componentsXml = getForm().getComponentsXml();
+		
+			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
+			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
+			FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
+			FormManagerUtil.setCurrentFormLocale(xformClone, locale);
+			
+			componentsGenerator.setDocument(xformClone);
+			try {
+				componentsXml = componentsGenerator.generateHtmlComponentsDocument();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			differentLocaleDocs.put(locale.toString(), componentsXml);
+			
+			getForm().setComponentsXml(componentsXml);
+			getForm().setFormDocumentModified(false);
+
+		
 		return getForm().getComponentsXml();
 	}
 	

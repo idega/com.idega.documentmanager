@@ -16,9 +16,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/11/15 15:27:32 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
@@ -33,7 +33,7 @@ public class HtmlManagerImpl implements HtmlManager {
 			return localizedRepresentation;
 		
 //		change document locale here
-		localizedRepresentation = FormManagerUtil.getElementById(getXFormsDocumentHtmlRepresentation(component), component.getId());
+		localizedRepresentation = FormManagerUtil.getElementById(getXFormsDocumentHtmlRepresentation(component, locale), component.getId());
 		
 		if(localizedRepresentation == null)
 			throw new NullPointerException("Component html representation couldn't be found in the form html representation document.");
@@ -44,28 +44,25 @@ public class HtmlManagerImpl implements HtmlManager {
 	}
 	
 	public void clearHtmlComponents(FormComponent component) {
-		
 		component.getXformsComponentDataBean().getLocalizedHtmlComponents().clear();
 	}
 	
-	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component) throws Exception {
-		
+	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component, Locale locale) throws Exception {
 		FormDocument formDocument = component.getFormDocument();
+		Document componentsXml = formDocument.getComponentsXml(component, locale);
 		
-		Document componentsXml = formDocument.getComponentsXml();
-		
-		if(componentsXml == null || formDocument.isFormDocumentModified()) {
-			
-			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
-			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
-			FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
-			
-			componentsGenerator.setDocument(xformClone);
-			componentsXml = componentsGenerator.generateHtmlComponentsDocument();
-			
-			formDocument.setComponentsXml(componentsXml);
-			formDocument.setFormDocumentModified(false);
-		}
+//		if(componentsXml == null || formDocument.isFormDocumentModified()) {
+//			
+//			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
+//			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
+//			FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
+//			
+//			componentsGenerator.setDocument(xformClone);
+//			componentsXml = componentsGenerator.generateHtmlComponentsDocument();
+//			
+//			formDocument.setComponentsXml(componentsXml);
+//			formDocument.setFormDocumentModified(false);
+//		}
 		
 		return componentsXml;
 	}

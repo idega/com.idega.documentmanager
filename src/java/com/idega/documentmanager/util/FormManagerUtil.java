@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  *
- * Last modified: $Date: 2008/04/24 23:49:13 $ by $Author: laddi $
+ * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
  */
 public class FormManagerUtil {
 	
@@ -78,6 +78,7 @@ public class FormManagerUtil {
 	public static final String item_value_tag = "itemValue";
 	public static final String localized_entries_tag = "localizedEntries";
 	public static final String default_language_tag = "default_language";
+	public static final String current_language_tag = "current_language";
 	public static final String form_id_tag = "form_id";
 	public static final String submission_tag = "xf:submission";
 	public static final String page_tag = "page";
@@ -386,6 +387,18 @@ public class FormManagerUtil {
 			lang = "en";			
 		
 		return new Locale(lang);
+	}
+	
+	public static void setCurrentFormLocale(Document form_xforms, Locale locale) {
+		
+		Element loc_model = getElementByIdFromDocument(form_xforms, head_tag, data_mod);
+		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
+		NodeList current_language_node_list = loc_strings.getElementsByTagName(current_language_tag);
+		
+		if(current_language_node_list != null && current_language_node_list.getLength() != 0) {
+			String localeStr = locale.toString();
+			setElementsTextNodeValue(current_language_node_list.item(0), localeStr);
+		}		
 	}
 	
 	public static LocalizedStringBean getErrorLabelLocalizedStrings(Element component, Document xforms_doc) {
