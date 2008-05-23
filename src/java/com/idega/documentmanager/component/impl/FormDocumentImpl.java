@@ -33,9 +33,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/23 16:53:11 $ by $Author: anton $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -84,9 +84,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public Document getComponentsXml(FormComponent component, Locale locale) {
 		if (!this.isFormDocumentModified() && differentLocaleDocs != null) {
-			String localeStr = locale.toString();
+			String localeStr = locale.toString().toLowerCase();
 			if(differentLocaleDocs.keySet().contains(localeStr)) {
-				getForm().setComponentsXml(differentLocaleDocs.get(locale.toString()));
+				getForm().setComponentsXml(differentLocaleDocs.get(locale.toString().toLowerCase()));
 				return getForm().getComponentsXml();
 			}
 		} else {
@@ -108,7 +108,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 				return null;
 			}
 			
-			differentLocaleDocs.put(locale.toString(), componentsXml);
+			differentLocaleDocs.put(locale.toString().toLowerCase(), componentsXml);
 			
 			getForm().setComponentsXml(componentsXml);
 			getForm().setFormDocumentModified(false);
