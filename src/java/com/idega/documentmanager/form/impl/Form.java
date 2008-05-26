@@ -21,9 +21,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -33,7 +33,6 @@ public class Form {
 	
 	private Locale defaultDocumentLocale;
 	private Map<String, FormComponent> formComponents;
-	private Document componentsXml;
 	private int lastComponentId = 0;
 	private boolean documentChanged = true;
 	private DocumentBuilder builder;
@@ -89,12 +88,6 @@ public class Form {
 	
 	public boolean isFormDocumentModified() {
 		return documentChanged;
-	}
-	public Document getComponentsXml() {
-		return componentsXml;
-	}
-	public void setComponentsXml(Document xml) {
-		componentsXml = xml;
 	}
 	public Document getFormXFormsDocumentClone() {
 		return (Document)getContext().getXformsXmlDoc().cloneNode(true);
@@ -241,7 +234,6 @@ public class Form {
 		getContext().setXformsXmlDoc(null);
 		defaultDocumentLocale = null;
 		formComponents = null;
-		componentsXml = null;
 		lastComponentId = 0;
 		documentChanged = true;
 		formDocument.clear();

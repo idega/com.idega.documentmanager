@@ -9,36 +9,44 @@ import org.w3c.dom.Element;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
-import com.idega.documentmanager.generator.ComponentsGenerator;
-import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
 import com.idega.documentmanager.manager.HtmlManager;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
 	public Element getHtmlRepresentation(FormComponent component, Locale locale) throws Exception {
 		
 		ComponentDataBean componentDataBean = component.getXformsComponentDataBean();
-		
 		Map<Locale, Element> localizedHtmlRepresentations = componentDataBean.getLocalizedHtmlComponents();
-		Element localizedRepresentation = localizedHtmlRepresentations.get(locale);
 		
-		if(localizedRepresentation != null)
-			return localizedRepresentation;
+		Element localizedRepresentation;
 		
-//		change document locale here
-		localizedRepresentation = FormManagerUtil.getElementById(getXFormsDocumentHtmlRepresentation(component, locale), component.getId());
+		if(!localizedHtmlRepresentations.containsKey(locale)) {
+			
+			Document doc = getXFormsDocumentHtmlRepresentation(component, locale);
+			
+			if(doc != null) {
+			
+				localizedRepresentation = FormManagerUtil.getElementById(doc, component.getId());
+			} else 
+				localizedRepresentation = null;
+			
+			if(localizedRepresentation != null)
+				localizedHtmlRepresentations.put(locale, localizedRepresentation);
+			
+		} else {
+		
+			localizedRepresentation = localizedHtmlRepresentations.get(locale);
+		}
 		
 		if(localizedRepresentation == null)
-			throw new NullPointerException("Component html representation couldn't be found in the form html representation document.");
-		
-		localizedHtmlRepresentations.put(locale, localizedRepresentation);
+			throw new IllegalStateException("Component html representation couldn't be resolved");
 		
 		return localizedRepresentation;
 	}

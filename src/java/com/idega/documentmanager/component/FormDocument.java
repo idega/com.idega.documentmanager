@@ -12,9 +12,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
  */
 public interface FormDocument extends FormComponentContainer {
 
@@ -23,8 +23,6 @@ public interface FormDocument extends FormComponentContainer {
 	public abstract boolean isFormDocumentModified();
 	
 	public abstract Document getComponentsXml(FormComponent component, Locale locale);
-	
-	public abstract void setComponentsXml(Document xml);
 	
 	public abstract Long getFormId();
 	

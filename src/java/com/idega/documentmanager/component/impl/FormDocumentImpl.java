@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.chiba.xml.dom.DOMUtil;
-import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -21,7 +21,6 @@ import com.idega.documentmanager.business.component.properties.PropertiesDocumen
 import com.idega.documentmanager.business.ext.FormVariablesHandler;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
-import com.idega.documentmanager.component.FormDocument;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesDocument;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
@@ -33,9 +32,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  *
- * Last modified: $Date: 2008/05/23 16:53:11 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -48,7 +47,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private List<String> registeredForLastPageIdPages;
 	private ParametersManager parametersManager;
 	private String formType;
-	private Map<String, Document> differentLocaleDocs;
+	private Map<Locale, Document> localizedComponentsDocuments;
 	
 	private Form form;
 	
@@ -76,6 +75,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public void setFormDocumentModified(boolean changed) {
 		getForm().setFormDocumentModified(changed);
+		
+		if (changed)
+			getLocalizedComponentsDocuments().clear();
 	}
 	
 	public boolean isFormDocumentModified() {
@@ -83,42 +85,39 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	}
 	
 	public Document getComponentsXml(FormComponent component, Locale locale) {
-		if (!this.isFormDocumentModified() && differentLocaleDocs != null) {
-			String localeStr = locale.toString().toLowerCase();
-			if(differentLocaleDocs.keySet().contains(localeStr)) {
-				getForm().setComponentsXml(differentLocaleDocs.get(locale.toString().toLowerCase()));
-				return getForm().getComponentsXml();
+		
+		Map<Locale, Document> localizedComponentsDocuments = getLocalizedComponentsDocuments();
+		
+		Document doc;
+		
+		if(!localizedComponentsDocuments.containsKey(locale)) {
+			
+//			TODO: change this to spring bean etc (now relies on impl)
+			try {
+				
+				ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
+				Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
+				FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
+				FormManagerUtil.setCurrentFormLocale(xformClone, locale);
+				
+				componentsGenerator.setDocument(xformClone);
+				
+				doc = componentsGenerator.generateHtmlComponentsDocument();
+				
+				localizedComponentsDocuments.put(locale, doc);
+				getForm().setFormDocumentModified(false);
+				
+			} catch (Exception e) {
+				
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while generating components html document", e);
+				doc = localizedComponentsDocuments.isEmpty() ? null : localizedComponentsDocuments.values().iterator().next();
 			}
+			
 		} else {
-			differentLocaleDocs = new HashMap<String, Document>();
+			doc = localizedComponentsDocuments.get(locale);
 		}
 		
-		Document componentsXml = getForm().getComponentsXml();
-		
-			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
-			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
-			FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
-			FormManagerUtil.setCurrentFormLocale(xformClone, locale);
-			
-			componentsGenerator.setDocument(xformClone);
-			try {
-				componentsXml = componentsGenerator.generateHtmlComponentsDocument();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-			
-			differentLocaleDocs.put(locale.toString().toLowerCase(), componentsXml);
-			
-			getForm().setComponentsXml(componentsXml);
-			getForm().setFormDocumentModified(false);
-
-		
-		return getForm().getComponentsXml();
-	}
-	
-	public void setComponentsXml(Document xml) {
-		getForm().setComponentsXml(xml);
+		return doc;
 	}
 	
 	public Long getFormId() {
@@ -365,6 +364,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public void clear() {
 		
+		getLocalizedComponentsDocuments().clear();
 		setConfirmationPageId(null);
 		setThxPageId(null);
 		setRegisteredForLastPageIdPages(null);
@@ -472,5 +472,13 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 
 	public void setFormType(String formType) {
 		this.formType = formType;
+	}
+
+	public Map<Locale, Document> getLocalizedComponentsDocuments() {
+		
+		if(localizedComponentsDocuments == null)
+			localizedComponentsDocuments = new HashMap<Locale, Document>(4);
+		
+		return localizedComponentsDocuments;
 	}
 }
