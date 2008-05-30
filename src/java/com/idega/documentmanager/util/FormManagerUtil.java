@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  *
- * Last modified: $Date: 2008/05/23 16:53:11 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/30 07:22:08 $ by $Author: anton $
  */
 public class FormManagerUtil {
 	
@@ -142,6 +142,7 @@ public class FormManagerUtil {
 	private static XPathUtil localizedStringElementXPath;
 	private static XPathUtil elementByIdXPath;
 	private static XPathUtil elementsContainingAttributeXPath;
+	private static XPathUtil localizaionSetValueElement;
 	
 	private final static String elementNameVariable = "elementName";
 	private final static String attributeNameVariable = "attributeName";
@@ -390,7 +391,6 @@ public class FormManagerUtil {
 	}
 	
 	public static void setCurrentFormLocale(Document form_xforms, Locale locale) {
-		
 		Element loc_model = getElementByIdFromDocument(form_xforms, head_tag, data_mod);
 		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
 		NodeList current_language_node_list = loc_strings.getElementsByTagName(current_language_tag);
@@ -672,6 +672,12 @@ public class FormManagerUtil {
 		return str == null || CoreConstants.EMPTY.equals(str);
 	}
 	
+	public static void modifyFormForLocalisationInFormbuilder(Document xforms_doc) {
+		Element setvalue_element = getDataModelSetValueElement(xforms_doc);
+
+		setvalue_element.getParentNode().removeChild(setvalue_element);
+	}
+		
 	
 	public static void modifyXFormsDocumentForViewing(Document xforms_doc) {
 		
@@ -866,6 +872,14 @@ public class FormManagerUtil {
 		elementsContainingAttributeXPath.setVariable(attributeNameVariable, attributeName);
 		
 		return elementsContainingAttributeXPath.getNodeset(context);
+	}
+	
+	private static synchronized Element getDataModelSetValueElement(Node context) {
+		
+		if(localizaionSetValueElement == null)
+			localizaionSetValueElement = new XPathUtil(".//xf:setvalue[@model='data_model']");
+		
+		return (Element)localizaionSetValueElement.getNode(context);
 	}
 	
 	public static Map<String, List<ComponentType>> getComponentsTypesByDatatype(Document form_components_doc) {
