@@ -477,7 +477,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 model="data_model" /> 
         </xf:input>
         
-        <xf:input bind="autofill_address" id = "fbc_autofill_address" autofillkey="collection-string-loginSession.user.addresses.streetAddress">
+        <xf:input bind="autofill_address" id = "fbc_autofill_address" autofillkey="loginSession.user.usersMainAddress.streetAddress">
            <xf:label
                 ref="instance('localized_strings')/autofill_address.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
@@ -495,31 +495,31 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 model="data_model" /> 
         </xf:input>
      
-        <xf:input bind="autofill_country" id = "fbc_autofill_country" autofillkey="collection-string-loginSession.user.addresses.country">
+        <xf:input bind="autofill_country" id = "fbc_autofill_country" autofillkey="loginSession.user.usersMainAddress.country">
            <xf:label
                 ref="instance('localized_strings')/autofill_country.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
         </xf:input>
         
-        <xf:input bind="autofill_province" id = "fbc_autofill_province" autofillkey="collection-string-loginSession.user.addresses.province">
+        <xf:input bind="autofill_province" id = "fbc_autofill_province" autofillkey="loginSession.user.usersMainAddress.province">
            <xf:label
                 ref="instance('localized_strings')/autofill_province.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
         </xf:input>
         
-        <xf:input bind="autofill_city" id = "fbc_autofill_city" autofillkey="collection-string-loginSession.user.addresses.city">
+        <xf:input bind="autofill_city" id = "fbc_autofill_city" autofillkey="loginSession.user.usersMainAddress.city">
            <xf:label
                 ref="instance('localized_strings')/autofill_city.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
         </xf:input>
         
-         <xf:input bind="autofill_commune" id = "fbc_autofill_commune" autofillkey="collection-string-loginSession.user.addresses.commune">
+         <xf:input bind="autofill_commune" id = "fbc_autofill_commune" autofillkey="loginSession.user.usersMainAddress.commune.communeName">
            <xf:label
                 ref="instance('localized_strings')/autofill_commune.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
         </xf:input>
         
-        <xf:input bind="autofill_postal_code" id = "fbc_autofill_postal_code" autofillkey="collection-string-loginSession.user.addresses.postalCode">
+        <xf:input bind="autofill_postal_code" id = "fbc_autofill_postal_code" autofillkey="loginSession.user.usersMainAddress.postalCode.postalCode">
            <xf:label
                 ref="instance('localized_strings')/autofill_postal_code.title[@lang=instance('localized_strings')/current_language]"
                 model="data_model" /> 
