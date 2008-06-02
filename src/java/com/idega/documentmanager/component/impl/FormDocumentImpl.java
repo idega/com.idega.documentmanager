@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -32,9 +33,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  *
- * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/02 07:16:04 $ by $Author: anton $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -97,11 +98,13 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 				
 				ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
 				Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
+
 				FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
 				FormManagerUtil.setCurrentFormLocale(xformClone, locale);
+				FormManagerUtil.modifyFormForLocalisationInFormbuilder(xformClone);
 				
 				componentsGenerator.setDocument(xformClone);
-				
+
 				doc = componentsGenerator.generateHtmlComponentsDocument();
 				
 				localizedComponentsDocuments.put(locale, doc);
