@@ -14,6 +14,9 @@
                 </data>
             </xf:instance>            
             <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" />
+            <xf:action ev:event="xforms-submit-done" ev:observer="submit_data_submission">
+				<xf:toggle case="fbc_4"/>
+			</xf:action>
             <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
         </xf:model>
         <xf:model id="data_model">
@@ -53,7 +56,6 @@
 				   	  	<xf:trigger id="fbc_3" name="fbc_button_submit" class="fbc_button_submit">
 					   	  	<xf:label ref="instance('localized_strings')/page-1-submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 					   	  	<xf:send submission="submit_data_submission" />
-                            <xf:toggle ev:event="DOMActivate" case="fbc_4" />
                         </xf:trigger>
 			   	  	</div>
 			   	  </xf:group>
