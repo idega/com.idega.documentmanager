@@ -14,9 +14,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/04/10 13:57:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/05 08:37:51 $ by $Author: arunas $
  */
 public interface Document extends Container {
 
@@ -47,9 +47,13 @@ public interface Document extends Container {
 	
 	public abstract LocalizedStringBean getFormTitle();
 	
+	public abstract LocalizedStringBean getFormErrorMsg();
+	
 	public abstract Long getFormId();
 	
 	public abstract void setFormTitle(LocalizedStringBean form_name) throws Exception;
+	
+	public abstract void setFormErrorMsg(LocalizedStringBean form_error) throws Exception;
 	
 	/**
 	 * using getContainedPagesIdList method get components id list, then use this list to change the order of components,

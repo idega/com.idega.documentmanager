@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  *
- * Last modified: $Date: 2008/05/30 07:22:08 $ by $Author: anton $
+ * Last modified: $Date: 2008/06/05 08:37:51 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -143,6 +143,7 @@ public class FormManagerUtil {
 	private static XPathUtil elementByIdXPath;
 	private static XPathUtil elementsContainingAttributeXPath;
 	private static XPathUtil localizaionSetValueElement;
+	private static XPathUtil formErrorMessageXPath;
 	
 	private final static String elementNameVariable = "elementName";
 	private final static String attributeNameVariable = "attributeName";
@@ -730,7 +731,7 @@ public class FormManagerUtil {
 	}
 	
 	public static void setFormTitle(Document xformsXmlDoc, LocalizedStringBean formTitle) {
-		
+	    
 		Element output = getFormTitleOutputElement(xformsXmlDoc);
 		putLocalizedText(null, null, output, xformsXmlDoc, formTitle);
 	}
@@ -739,6 +740,18 @@ public class FormManagerUtil {
 		
 		Element output = getFormTitleOutputElement(xformsDoc);
 		return getElementLocalizedStrings(output, xformsDoc);
+	}
+
+	public static void setFormErrorMsg(Document xformsXmlDoc, LocalizedStringBean formError) {
+		
+		Element message = getFormErrorMessageElement(xformsXmlDoc);
+		putLocalizedText(null, null, message, xformsXmlDoc, formError);
+	}
+
+	public static LocalizedStringBean getFormErrorMsg(Document xformsDoc) {
+		
+		Element message = getFormErrorMessageElement(xformsDoc);
+		return getElementLocalizedStrings(message, xformsDoc);
 	}
 	
 	public static synchronized Element getFormInstanceModelElement(Document context) {
@@ -827,6 +840,16 @@ public class FormManagerUtil {
 			formTitleOutputElementXPath = new XPathUtil(".//h:title/xf:output");
 		
 		return (Element)formTitleOutputElementXPath.getNode(context);
+	}
+	
+	private static synchronized Element getFormErrorMessageElement(Node context) {
+	    
+		if(formErrorMessageXPath == null)
+		    formErrorMessageXPath = new XPathUtil(".//xf:action[@id='submission-error']/xf:message");
+	   
+		
+		return (Element)formErrorMessageXPath.getNode(context);
+		
 	}
 	
 	public static String getFormId(Document xformsDoc) {

@@ -17,7 +17,7 @@
             <xf:action ev:event="xforms-submit-done" ev:observer="submit_data_submission">
 				<xf:toggle case="fbc_4"/>
 			</xf:action>
-			<xf:action ev:event="xforms-submit-error" ev:observer="submit_data_submission">
+			<xf:action id="submission-error" ev:event="xforms-submit-error" ev:observer="submit_data_submission">
 				<xf:message level="modeless" ref="instance('localized_strings')/page-1-error.label[@lang=instance('localized_strings')/current_language]"/>
 			</xf:action>
             <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>

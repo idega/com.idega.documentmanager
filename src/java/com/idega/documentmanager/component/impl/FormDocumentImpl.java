@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,9 +32,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2008/06/02 07:16:04 $ by $Author: anton $
+ * Last modified: $Date: 2008/06/05 08:37:51 $ by $Author: arunas $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -43,6 +42,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private FormVariablesHandler formVariablesHandler;
 	private String thxPageId;
 	private LocalizedStringBean formTitle;
+	private LocalizedStringBean formErrorMsg;
 	private Long formId;
 	private PropertiesDocument properties;
 	private List<String> registeredForLastPageIdPages;
@@ -190,6 +190,14 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		
 		return formTitle;
 	}
+		
+	public LocalizedStringBean getFormErrorMsg() {
+	    
+	    if (formErrorMsg == null) 
+			formErrorMsg = FormManagerUtil.getFormErrorMsg(getContext().getXformsXmlDoc());
+	    
+	    return formErrorMsg;
+	}
 	
 	protected void clearFormTitle() {
 		formTitle = null;
@@ -206,6 +214,16 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		
 		FormManagerUtil.setFormTitle(getContext().getXformsXmlDoc(), formTitle);
 		this.formTitle = formTitle;
+	}
+	
+	public void setFormErrorMsg(LocalizedStringBean formError) {
+	    
+	    	if(formError == null)
+	    	    throw new NullPointerException("Form error message is not provided.");
+	
+	    	FormManagerUtil.setFormErrorMsg(getContext().getXformsXmlDoc(), formError);
+	    	this.formErrorMsg = formError;
+    
 	}
 	
 	public void rearrangeDocument() {
@@ -484,4 +502,6 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		
 		return localizedComponentsDocuments;
 	}
+
+	
 }
