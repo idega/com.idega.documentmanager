@@ -141,6 +141,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<button_previous.label lang="en">Previous</button_previous.label>
 			<button_submit.label lang="en">Submit</button_submit.label>
 			<simple_text.text lang="en">Paragraph text</simple_text.text>
+			<simple_text.label lang="en"></simple_text.label>
 			<header_text.text lang="en">Header text</header_text.text>
 			<identifier.title lang="en">Identifier number</identifier.title>
 			<identifier.title lang="is_IS">Identifier number</identifier.title>
@@ -604,9 +605,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         </xf:upload>
   	
 		<div id="fbc_button_area" name="fbc_button_area" class="fbc_button_area"></div>
-		<div id="fbc_simple_text" name="fbc_simple_text" class="fbc_simple_text"><xf:output
-						ref="instance('localized_strings')/simple_text.text[@lang=instance('localized_strings')/current_language]"
-						model="data_model" /></div>
+		<div id="fbc_simple_text" name="fbc_simple_text" class="fbc_simple_text">
+			<xf:label ref="instance('localized_strings')/simple_text.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			<xf:output ref="instance('localized_strings')/simple_text.text[@lang=instance('localized_strings')/current_language]" model="data_model" />
+		</div>
 		<div id="fbc_header_text" name="fbc_header_text" class="fbc_header_text"><xf:output
 						ref="instance('localized_strings')/header_text.text[@lang=instance('localized_strings')/current_language]"
 						model="data_model" /></div>
