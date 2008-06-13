@@ -3,7 +3,6 @@ package com.idega.documentmanager.manager.impl;
 import java.util.Locale;
 import java.util.Map;
 
-import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -15,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/06/02 07:16:44 $ by $Author: anton $
+ * Last modified: $Date: 2008/06/13 08:05:10 $ by $Author: anton $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
