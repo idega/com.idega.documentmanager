@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  *
- * Last modified: $Date: 2008/06/05 08:37:51 $ by $Author: arunas $
+ * Last modified: $Date: 2008/06/17 12:17:00 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -369,6 +369,7 @@ public class FormManagerUtil {
 		
 		Element loc_model = getElementByIdFromDocument(doc, head_tag, data_mod);
 		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
+		@SuppressWarnings("unchecked")
 		List<Element> loc_elements = DOMUtil.getChildElements(loc_strings);
 		
 		for (Iterator<Element> iter = loc_elements.iterator(); iter.hasNext();)
@@ -582,6 +583,7 @@ public class FormManagerUtil {
 		Element body_element = (Element)xforms_doc.getElementsByTagName(body_tag).item(0);
 		Element switch_element = (Element)body_element.getElementsByTagName(switch_tag).item(0);
 		
+		@SuppressWarnings("unchecked")
 		List<Element> components_elements = DOMUtil.getChildElements(switch_element);
 		List<String[]> components_tag_names_and_ids = new ArrayList<String[]>();
 		
@@ -687,6 +689,7 @@ public class FormManagerUtil {
 		Element switch_parent = (Element)switch_element.getParentNode();
 		
 		for (int i = 0; i < tags.getLength(); i++) {
+			@SuppressWarnings("unchecked")
 			List<Element> case_children = DOMUtil.getChildElements(tags.item(i));
 			for (Element case_child : case_children) {
 				switch_parent.appendChild(case_child);
@@ -781,7 +784,7 @@ public class FormManagerUtil {
 	private static synchronized Element getFormIdElement(Node context) {
 		
 		if(formIdElementXPath == null)
-			formIdElementXPath = new XPathUtil(".//xf:instance/data/form_id");
+			formIdElementXPath = new XPathUtil(".//data/form_id");
 		
 		return (Element)formIdElementXPath.getNode(context);
 	}
@@ -852,8 +855,9 @@ public class FormManagerUtil {
 		
 	}
 	
-	public static String getFormId(Document xformsDoc) {
-		return getFormIdElement(xformsDoc).getTextContent();
+	public static String getFormId(Node xformsDoc) {
+		Element formIdEl = getFormIdElement(xformsDoc);
+		return formIdEl == null ? null : formIdEl.getTextContent();
 	}
 	
 	public static void setFormId(Document xformsDoc, String formId) {
