@@ -4,14 +4,15 @@ import org.w3c.dom.Element;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/10/06 06:17:49 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:01:30 $ by $Author: civilis $
  */
 public class ComponentDocumentDataBean extends ComponentDataBean {
 
 	private Element autofillAction;
 	private Element formDataModel;
+	private Element formMainDataInstanceElement;
 	private Element sectionsVisualizationInstance;
 	
 	public Element getAutofillAction() {
@@ -68,5 +69,13 @@ public class ComponentDocumentDataBean extends ComponentDataBean {
 	protected ComponentDataBean getDataBeanInstance() {
 		
 		return new ComponentDocumentDataBean();
+	}
+
+	public Element getFormMainDataInstanceElement() {
+		return formMainDataInstanceElement;
+	}
+
+	public void setFormMainDataInstanceElement(Element formMainDataInstanceElement) {
+		this.formMainDataInstanceElement = formMainDataInstanceElement;
 	}
 }
