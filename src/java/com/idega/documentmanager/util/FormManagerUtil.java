@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  *
- * Last modified: $Date: 2008/06/18 08:02:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 09:25:11 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -807,7 +807,7 @@ public class FormManagerUtil {
 		return (Element)formSubmissionInstanceElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getFormSubmissionInstanceDataElement(Document context) {
+	public static synchronized Element getFormSubmissionInstanceDataElement(Node context) {
 		
 		if(formSubmissionInstanceDataElementXPath == null)
 			formSubmissionInstanceDataElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data");

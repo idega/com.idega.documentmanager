@@ -12,9 +12,9 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/06/18 08:01:09 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 09:25:11 $ by $Author: civilis $
  */
 public class ParametersManager {
 	
@@ -22,12 +22,14 @@ public class ParametersManager {
 
 	public void update(Map<String, String> parameters) {
 
-		Element dataInstance = document.getFormMainDataInstanceElement();
-		Element paramsEl = FormManagerUtil.getFormParamsElement(dataInstance);
+//		TODO: move to document api
+		Element dataElement = FormManagerUtil.getFormSubmissionInstanceDataElement(document.getFormDataModelElement());
+		
+		Element paramsEl = FormManagerUtil.getFormParamsElement(dataElement);
 		
 		if(paramsEl == null) {
 
-			paramsEl = FormManagerUtil.createFormParamsElement(dataInstance, true);
+			paramsEl = FormManagerUtil.createFormParamsElement(dataElement, true);
 		}
 		
 		final String params;
@@ -61,7 +63,7 @@ public class ParametersManager {
 		
 		Element dataInstance = document.getFormMainDataInstanceElement();
 		Element paramsEl = FormManagerUtil.getFormParamsElement(dataInstance);
-
+		
 		return paramsEl == null ? new URIUtil(null).getParameters() : new URIUtil(paramsEl.getTextContent()).getParameters();
 	}
 	
