@@ -12,9 +12,9 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/12/04 14:02:28 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:01:09 $ by $Author: civilis $
  */
 public class ParametersManager {
 	
@@ -22,13 +22,23 @@ public class ParametersManager {
 
 	public void update(Map<String, String> parameters) {
 
-		Element submissionElement = document.getSubmissionElement();
-		String action = submissionElement.getAttribute(FormManagerUtil.action_att);
+		Element dataInstance = document.getFormMainDataInstanceElement();
+		Element paramsEl = FormManagerUtil.getFormParamsElement(dataInstance);
 		
-		if(FormManagerUtil.isEmpty(action))
-			return;
+		if(paramsEl == null) {
+
+			paramsEl = FormManagerUtil.createFormParamsElement(dataInstance, true);
+		}
 		
-		URIUtil uriUtil = new URIUtil(action);
+		final String params;
+		
+		if(paramsEl != null) {
+			params = paramsEl.getTextContent();
+		} else {
+			params = null;
+		}
+		
+		URIUtil uriUtil = new URIUtil(params);
 		
 		for (Entry<String, String> param : parameters.entrySet()) {
 		
@@ -38,7 +48,7 @@ public class ParametersManager {
 			}
 		}
 		
-		submissionElement.setAttribute(FormManagerUtil.action_att, uriUtil.getUri());
+		paramsEl.setTextContent(uriUtil.getUri());
 	}
 	
 	public void cleanUpdate(Map<String, String> parameters) {
@@ -49,12 +59,10 @@ public class ParametersManager {
 	
 	public Map<String, String> resolve() {
 		
-		String action = document.getSubmissionElement().getAttribute(FormManagerUtil.action_att);
-		
-		if(FormManagerUtil.isEmpty(action))
-			return null;
-		
-		return new URIUtil(action).getParameters();
+		Element dataInstance = document.getFormMainDataInstanceElement();
+		Element paramsEl = FormManagerUtil.getFormParamsElement(dataInstance);
+
+		return paramsEl == null ? new URIUtil(null).getParameters() : new URIUtil(paramsEl.getTextContent()).getParameters();
 	}
 	
 	public void setFormDocumentComponent(FormDocument document) {
