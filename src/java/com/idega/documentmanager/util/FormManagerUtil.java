@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  *
- * Last modified: $Date: 2008/06/17 12:17:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:02:33 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -121,6 +121,7 @@ public class FormManagerUtil {
 	public static final String datatype_tag = "datatype";
 	public static final String accessSupport_att = "accessSupport";
 	public static final String submission_model = "submission_model";
+	public static final String nodeTypeAtt = "nodeType";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -144,6 +145,7 @@ public class FormManagerUtil {
 	private static XPathUtil elementsContainingAttributeXPath;
 	private static XPathUtil localizaionSetValueElement;
 	private static XPathUtil formErrorMessageXPath;
+	private static XPathUtil formParamsXPath;
 	
 	private final static String elementNameVariable = "elementName";
 	private final static String attributeNameVariable = "attributeName";
@@ -881,6 +883,26 @@ public class FormManagerUtil {
 		elementByIdXPath.setVariable(id_att, id);
 		
 		return (Element)elementByIdXPath.getNode(context);
+	}
+	
+	public static synchronized Element getFormParamsElement(Node context) {
+		
+		if(formParamsXPath == null)
+			formParamsXPath = new XPathUtil(".//*[@nodeType='formParams']");
+		
+		return (Element)formParamsXPath.getNode(context);
+	}
+	
+	public static Element createFormParamsElement(Element context, boolean appendToContext) {
+
+		Element el = context.getOwnerDocument().createElement("params");
+		el.setAttribute(nodeTypeAtt, "formParams");
+		
+		if(appendToContext) {
+			el = (Element)context.appendChild(el);
+		}
+		
+		return el;
 	}
 	
 	public static synchronized NodeList getElementsContainingAttribute(Node context, String elementName, String attributeName) {
