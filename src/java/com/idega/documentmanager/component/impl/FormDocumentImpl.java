@@ -32,9 +32,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  *
- * Last modified: $Date: 2008/06/05 08:37:51 $ by $Author: arunas $
+ * Last modified: $Date: 2008/06/18 08:01:54 $ by $Author: civilis $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -72,6 +72,11 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	
 	public Document getXformsDocument() {
 		return getContext().getXformsXmlDoc();
+	}
+	
+	public void populateSubmissionDataWithXML(Document submission, boolean clean) {
+		
+		getXFormsManager().populateSubmissionDataWithXML(this, submission, clean);
 	}
 	
 	public void setFormDocumentModified(boolean changed) {
@@ -381,6 +386,11 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	public Element getFormDataModelElement() {
 		
 		return getXFormsManager().getFormDataModelElement(this);
+	}
+	
+	public Element getFormMainDataInstanceElement() {
+		
+		return getXFormsManager().getFormMainDataInstanceElement(this);
 	}
 	
 	public void clear() {

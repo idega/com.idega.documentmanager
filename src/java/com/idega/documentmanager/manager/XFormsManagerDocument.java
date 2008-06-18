@@ -1,5 +1,6 @@
 package com.idega.documentmanager.manager;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.component.FormComponent;
@@ -7,9 +8,9 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/06 13:07:12 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:01:54 $ by $Author: civilis $
  */
 public interface XFormsManagerDocument extends XFormsManagerContainer {
 
@@ -19,6 +20,8 @@ public interface XFormsManagerDocument extends XFormsManagerContainer {
 	public abstract Element getAutofillAction(FormComponent component);
 
 	public abstract Element getFormDataModelElement(FormComponent component);
+	
+	public abstract Element getFormMainDataInstanceElement(FormComponent component);
 
 	public abstract Element getSectionsVisualizationInstanceElement(
 			FormComponent component);
@@ -28,4 +31,6 @@ public interface XFormsManagerDocument extends XFormsManagerContainer {
 	public abstract void update(FormComponent component, ConstUpdateType what);
 
 	public abstract String getSubmissionAction(FormComponent component);
+	
+	public abstract void populateSubmissionDataWithXML(FormComponent component, Document submission, boolean clean);
 }

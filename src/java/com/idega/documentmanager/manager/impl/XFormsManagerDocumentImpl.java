@@ -1,8 +1,13 @@
 package com.idega.documentmanager.manager.impl;
 
+import java.util.List;
+
+import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
+import com.idega.documentmanager.business.UnsupportedXFormException;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.ComponentDataBean;
@@ -13,9 +18,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:02:19 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 
@@ -51,19 +56,79 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		return componentDocumentDataBean.getAutofillAction();
 	}
 	
+	public void populateSubmissionDataWithXML(FormComponent component, Document submission, boolean clean) {
+		
+		Element mainDataInstance = getFormMainDataInstanceElement(component);
+		
+		if(clean) {
+
+//			just replacing instance contents with submission
+			@SuppressWarnings("unchecked")
+			List<Element> oldChildren = DOMUtil.getChildElements(mainDataInstance);
+			
+			if(oldChildren != null) {
+				
+				for (Element element : oldChildren) {
+				
+					element.getParentNode().removeChild(element);
+				}
+			}
+			
+			@SuppressWarnings("unchecked")
+			List<Element> newChildren = DOMUtil.getChildElements(submission);
+			
+			if(newChildren != null) {
+				
+				Document dataInstDoc = mainDataInstance.getOwnerDocument();
+			
+				for (Element element : newChildren) {
+					
+					Node node = dataInstDoc.importNode(element, true);
+					mainDataInstance.appendChild(node);
+				}
+			}
+			
+		} else {
+			
+//			would replace only matching instance nodes
+			throw new UnsupportedOperationException("Not supported yet");
+		}
+	}
+	
+	public Element getFormMainDataInstanceElement(FormComponent component) {
+		
+		ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
+		
+		Element mainDataInstance = componentDocumentDataBean.getFormMainDataInstanceElement();
+		
+		if(mainDataInstance == null) {
+		
+			mainDataInstance = FormManagerUtil.getFormSubmissionInstanceElement(component.getContext().getXformsXmlDoc());
+			componentDocumentDataBean.setFormMainDataInstanceElement(mainDataInstance);
+		}
+		
+		if(mainDataInstance == null)
+			throw new UnsupportedXFormException("Main data instance element not found in document");
+		
+		return mainDataInstance;
+	}
+	
 	public Element getFormDataModelElement(FormComponent component) {
 		
 		ComponentDocumentDataBean componentDocumentDataBean = (ComponentDocumentDataBean)component.getXformsComponentDataBean();
 		
-		if(componentDocumentDataBean.getFormDataModel() == null) {
-			
-			componentDocumentDataBean.setFormDataModel(FormManagerUtil.getElementById(component.getContext().getXformsXmlDoc(), FormManagerUtil.submission_model));
-
-			if(componentDocumentDataBean.getFormDataModel() == null)
-				throw new NullPointerException("Submission model element not found by submission model id: "+FormManagerUtil.submission_model);
+		Element dataModel = componentDocumentDataBean.getFormDataModel();
+		
+		if(dataModel == null) {
+		
+			dataModel = FormManagerUtil.getElementById(component.getContext().getXformsXmlDoc(), FormManagerUtil.submission_model);
+			componentDocumentDataBean.setFormDataModel(dataModel);
 		}
 		
-		return componentDocumentDataBean.getFormDataModel();
+		if(dataModel == null)
+			throw new UnsupportedXFormException("Submission model element not found in document");
+		
+		return dataModel;
 	}
 	
 	public Element getSectionsVisualizationInstanceElement(FormComponent component) {
