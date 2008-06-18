@@ -8,13 +8,15 @@ import com.idega.documentmanager.component.FormDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
- * Last modified: $Date: 2008/06/17 12:16:11 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 07:58:08 $ by $Author: civilis $
  */
 public interface PersistenceManager {
 
 	public abstract PersistedFormDocument loadForm(Long formId);
+	
+	public abstract PersistedFormDocument loadPopulatedForm(Long submissionId);
 	
 	public abstract PersistedFormDocument saveForm(FormDocument document) throws IllegalAccessException;
 	
@@ -22,5 +24,12 @@ public interface PersistenceManager {
 	
 	public abstract List<PersistedForm> getStandaloneForms();
 	
-	public abstract void saveSubmittedData(Long formId, InputStream is, String identifier) throws IOException;
+	/**
+	 * @param formId - not null
+	 * @param is - not null
+	 * @param identifier - could be null, would be generated some random identifier
+	 * @return submitted data id
+	 * @throws IOException
+	 */
+	public abstract Long saveSubmittedData(Long formId, InputStream is, String identifier) throws IOException;
 }
