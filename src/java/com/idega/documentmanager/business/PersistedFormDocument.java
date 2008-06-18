@@ -1,21 +1,17 @@
 package com.idega.documentmanager.business;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import org.w3c.dom.Document;
 
-import com.idega.documentmanager.generator.ComponentsGenerator;
-import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
 import com.idega.documentmanager.util.FormManagerUtil;
 
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/05/23 08:41:20 $ by $Author: anton $
+ * Last modified: $Date: 2008/06/18 08:00:10 $ by $Author: civilis $
  */
 public class PersistedFormDocument {
 	

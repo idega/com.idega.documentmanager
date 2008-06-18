@@ -7,7 +7,9 @@ import org.w3c.dom.Element;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.4 $
+ *
+ * Last modified: $Date: 2008/06/18 08:00:37 $ by $Author: civilis $
  */
 public class SubmittedDataBean {
 	
@@ -58,6 +60,7 @@ public class SubmittedDataBean {
 			return;
 		}
 		
+		@SuppressWarnings("unchecked")
 		List<Element> child_elements = DOMUtil.getChildElements(submitted_data_element);
 		
 		int child_count = child_elements.size(); 

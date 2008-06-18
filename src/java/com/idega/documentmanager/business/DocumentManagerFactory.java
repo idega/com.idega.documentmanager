@@ -15,13 +15,14 @@ import com.idega.documentmanager.manager.impl.CacheManager;
 import com.idega.idegaweb.DefaultIWBundle;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
+import com.idega.presentation.IWContext;
 import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:00:37 $ by $Author: civilis $
  */
 public class DocumentManagerFactory {
 	
@@ -48,6 +49,16 @@ public class DocumentManagerFactory {
 		DocumentManager documentManager = getDocumentManager();
 		
 		if(!documentManager.isInited()) {
+			
+			if(iwma == null) {
+
+				IWContext iwc = IWContext.getCurrentInstance();
+				
+				if(iwc != null)
+					iwma = iwc.getIWMainApplication();
+				else
+					iwma = IWMainApplication.getDefaultIWMainApplication();
+			}
 			
 			TransformerService transformerService = (TransformerService)iwma.getAttribute(TransformerService.class.getName());
 			

@@ -1,10 +1,10 @@
 package com.idega.documentmanager.business;
 
 /**
- * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.2 $
  *
+ * Last modified: $Date: 2008/06/18 08:00:12 $ by $Author: civilis $
  */
 public class FormLockException extends Exception {
 
