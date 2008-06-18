@@ -12,9 +12,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/18 08:01:18 $ by $Author: civilis $
  */
 public interface FormDocument extends FormComponentContainer {
 
@@ -39,6 +39,8 @@ public interface FormDocument extends FormComponentContainer {
 	public abstract Element getAutofillModelElement();
 	
 	public abstract Element getFormDataModelElement();
+	
+	public abstract Element getFormMainDataInstanceElement();
 	
 	public abstract Element getSubmissionElement();
 	
