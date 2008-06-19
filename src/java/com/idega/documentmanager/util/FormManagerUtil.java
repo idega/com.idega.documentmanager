@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  *
- * Last modified: $Date: 2008/06/18 09:25:11 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/19 09:47:35 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -335,8 +335,8 @@ public class FormManagerUtil {
 			
 			if(lang_code != null) {
 				
-				String content = getElementsTextNodeValue(key_element);
-				loc_str_bean.setString(new Locale(lang_code), content == null ? "" : content);
+				String content = getElementsTextNodeValue(key_element);	
+				loc_str_bean.setString(new Locale(lang_code), content == null ? CoreConstants.EMPTY : content);
 			}
 		}
 		
