@@ -635,8 +635,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	    </xf:trigger>
 	 	<xf:trigger id="fbc_button_submit" name="fbc_button_submit">
 			<xf:label ref="instance('localized_strings')/button_submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-	  	  	<xf:send submission="submit_data_submission" />
-	        <xf:toggle ev:event="DOMActivate" />
+				<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/enable">false</xf:setvalue>					   	  	
+	  	  		<xf:send ev:event="xforms-readonly" submission="submit_data_submission" />
+	        	<xf:toggle ev:event="DOMActivate" />
 	    </xf:trigger>
 	</xf:group>
 </xf:group>
