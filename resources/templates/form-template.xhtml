@@ -17,7 +17,8 @@
         <xf:instance id="control-instance">
 			<control xmlns="">
 				<enable>true</enable>
-				<submit-trigger/>
+				<required>true</required>
+				<trigger/>
 			</control>
 		</xf:instance>
 	
@@ -27,7 +28,7 @@
         </xf:submission>
     
 			<xf:action id="submission-error" ev:event="xforms-submit-error">
-				<xf:setvalue ev:event="xforms-value-changed" ref="instance('control-instance')/enable">true</xf:setvalue>	
+				<xf:setvalue ev:event="xforms-value-changed" ref="instance('control-instance')/enable" value="true"/>	
 				<xf:message level="modeless" ref="instance('localized_strings')/page-1-error.label[@lang=instance('localized_strings')/current_language]"/>
 			</xf:action>
 			
@@ -70,9 +71,9 @@
 			   	  <xf:group appearance="full">
 			   	  	<xf:label ref="instance('localized_strings')/page-1.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			   	  	<div id="fbc_2" name="fbc_button_area" class="fbc_button_area">
-				   	  	<xf:trigger id="fbc_3" name="fbc_button_submit" class="fbc_button_submit" ref="instance('control-instance')/submit-trigger">
+				   	  	<xf:trigger id="fbc_3" name="fbc_button_submit" class="fbc_button_submit" ref="instance('control-instance')/trigger">
 					   	  	<xf:label ref="instance('localized_strings')/page-1-submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-							<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/enable">false</xf:setvalue>					   	  	
+							<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/enable" value="false"/>					   	  	
          					<xf:send ev:event="xforms-readonly" submission="submit_data_submission"/>			   	  	
                         </xf:trigger>
 			   	  	</div>

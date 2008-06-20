@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/04/24 23:49:12 $ by $Author: laddi $
+ * Last modified: $Date: 2008/06/20 11:54:17 $ by $Author: arunas $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -99,8 +99,13 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 			
 			if(formDocument.getThxPage() == null)
 				throw new NullPointerException("Thanks page not found");
+		
+//			TODO set page Id dynamically on submission toggle
+//			toggle_element.setAttribute(FormManagerUtil.case_att, formDocument.getThxPage().getId());
+//			remove toggle node from submit trigger
+			xformsComponentDataBean.getElement().removeChild(toggle_element);
 			
-			toggle_element.setAttribute(FormManagerUtil.case_att, formDocument.getThxPage().getId());
+			
 		}
 	}
 	
