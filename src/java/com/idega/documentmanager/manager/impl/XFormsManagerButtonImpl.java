@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2008/06/20 11:54:17 $ by $Author: arunas $
+ * Last modified: $Date: 2008/06/20 13:53:57 $ by $Author: arunas $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -106,7 +106,22 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 			xformsComponentDataBean.getElement().removeChild(toggle_element);
 			
 			
+		}else if (component.getType().equals(ConstButtonType.SAVE_FORM_BUTTON.toString())){
+//		    TODO
+		    FormDocument formDocument = component.getFormDocument();
+			
+			formDocument.registerForLastPage(((FormComponentButtonArea)component.getParent()).getCurrentPage().getId());
+			
+			if(formDocument.getThxPage() == null)
+				throw new NullPointerException("Thanks page not found");
+		
+//			TODO set page Id dynamically on save toggle
+//			toggle_element.setAttribute(FormManagerUtil.case_att, formDocument.getThxPage().getId());
+//			remove toggle node from submit trigger
+			xformsComponentDataBean.getElement().removeChild(toggle_element);
+		    
 		}
+		
 	}
 	
 	private static final int next_button = 1;

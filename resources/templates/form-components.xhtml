@@ -140,6 +140,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<button_next.label lang="en">Next</button_next.label>
 			<button_previous.label lang="en">Previous</button_previous.label>
 			<button_submit.label lang="en">Submit</button_submit.label>
+			<button_save.label lang="en">Save</button_save.label>
+			<button_save.label lang="is_is">Save</button_save.label>
 			<simple_text.text lang="en">Paragraph text</simple_text.text>
 			<simple_text.label lang="en"></simple_text.label>
 			<header_text.text lang="en">Header text</header_text.text>
@@ -377,6 +379,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_button_next" />
 			<component component_id="fbc_button_previous" />
 			<component component_id="fbc_button_submit" />
+			<component component_id="fbc_button_save" />
 		</category>
 		<category name="non-display">
 			<component component_id="fbc_button_area" />
@@ -633,11 +636,20 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	        <xf:toggle ev:event="DOMActivate" />
 	        <xf:refresh />
 	    </xf:trigger>
-	 	<xf:trigger id="fbc_button_submit" name="fbc_button_submit" ref="instance('control-instance')/trigger" >
+	 	<xf:trigger id="fbc_button_submit" name="fbc_button_submit" ref="instance('control-instance')/control-trigger" >
 			<xf:label ref="instance('localized_strings')/button_submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-				<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/enable" value="false"/>					   	  	
+				<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/enable" value="'false'"/>					   	  	
 	  	  		<xf:send ev:event="xforms-readonly" submission="submit_data_submission" />
 	        	<xf:toggle ev:event="DOMActivate" />
+	    </xf:trigger>
+	    <xf:trigger id="fbc_button_save" name="fbc_button_save" ref="instance('control-instance')/control-trigger" >    
+			<xf:label ref="instance('localized_strings')/button_save.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+				<xf:action ev:event="DOMActivate">
+					  <xf:setvalue ref="instance('control-instance')/required" value="'false'"/>
+					  <xf:setvalue ref="instance('control-instance')/enable" value="'false'"/>
+				</xf:action>
+				<xf:send ev:event="xforms-readonly" submission="save_data_submission" />
+	        	<xf:toggle ev:event="DOMActivate" />			   	  						
 	    </xf:trigger>
 	</xf:group>
 </xf:group>

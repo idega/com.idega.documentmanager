@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/03/20 13:02:48 $ by $Author: arunas $
+ * Last modified: $Date: 2008/06/20 13:53:57 $ by $Author: arunas $
  */
 public class Bind implements Cloneable {
 
@@ -235,7 +235,7 @@ public class Bind implements Cloneable {
 		this.isRequired = isRequired;
 		
 		if(isRequired)
-			getBindElement().setAttribute(FormManagerUtil.required_att, FormManagerUtil.xpath_true);
+			getBindElement().setAttribute(FormManagerUtil.required_att, "not(instance('control-instance')/required = 'false')");
 		else
 			getBindElement().removeAttribute(FormManagerUtil.required_att);
 	}
