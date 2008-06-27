@@ -30,9 +30,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  *
- * Last modified: $Date: 2008/06/19 09:47:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/27 08:26:45 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -412,9 +412,8 @@ public class FormManagerUtil {
 		if(alerts == null || alerts.getLength() == 0)
 			return new LocalizedStringBean();
 		
-		Element output = (Element)((Element)alerts.item(0)).getElementsByTagName(FormManagerUtil.output_tag).item(0);
-		
-		String ref = output.getAttribute(ref_s_att);
+		Element alert = (Element)alerts.item(0);
+		String ref = alert.getAttribute(ref_s_att);
 		
 		if(!isRefFormCorrect(ref))
 			return new LocalizedStringBean();
