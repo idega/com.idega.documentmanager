@@ -27,9 +27,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/05 15:40:45 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -438,9 +438,9 @@ public class XFormsManagerImpl implements XFormsManager {
 		} else {
 			
 			Element alert = (Element)alerts.item(0);
-			Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
+			//Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
-			FormManagerUtil.putLocalizedText(null, null, output, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
+			FormManagerUtil.putLocalizedText(null, null, alert, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
 		}
 	}
 	
