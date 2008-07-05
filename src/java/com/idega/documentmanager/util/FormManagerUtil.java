@@ -25,14 +25,15 @@ import org.w3c.dom.NodeList;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.util.CoreConstants;
+import com.idega.util.LocaleUtil;
 import com.idega.util.xml.XPathUtil;
 import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  *
- * Last modified: $Date: 2008/06/27 08:26:45 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/05 15:05:12 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -249,7 +250,7 @@ public class FormManagerUtil {
 		List<String> locales = new ArrayList<String>();
 		
 		for (Locale locale : localizedStr.getLanguagesKeySet())
-			locales.add(locale.getLanguage());
+			locales.add(locale.toString());
 		
 		
 //		removing elements that correspond to locale, which we don't need (anymore)
@@ -278,7 +279,7 @@ public class FormManagerUtil {
 					
 					Element localizationTag = (Element)localizationTags.item(i);
 					
-					if(localizationTag.getAttribute(lang_att).equals(locale.getLanguage())) {
+					if(localizationTag.getAttribute(lang_att).equals(locale.toString())) {
 						
 						if(localizedStr.getString(locale) != null)
 							setElementsTextNodeValue(localizationTag, localizedStr.getString(locale));
@@ -293,7 +294,7 @@ public class FormManagerUtil {
 				
 //				create new localization element
 				Element localizationElement = xform.createElement(key);
-				localizationElement.setAttribute(lang_att, locale.getLanguage());
+				localizationElement.setAttribute(lang_att, locale.toString());
 				localizationElement.setTextContent(localizedStr.getString(locale) == null ? CoreConstants.EMPTY : localizedStr.getString(locale));
 				localizationStringsElement.appendChild(localizationElement);
 			}
@@ -319,28 +320,28 @@ public class FormManagerUtil {
 		return ref != null && ref.startsWith(loc_ref_part1) && ref.endsWith(loc_ref_part2) && !ref.contains(CoreConstants.SPACE); 
 	}
 	
-	public static LocalizedStringBean getLocalizedStrings(String key, Document xforms_doc) {
+	public static LocalizedStringBean getLocalizedStrings(String key, Document xformsDoc) {
 
-		Element loc_model = getElementByIdFromDocument(xforms_doc, head_tag, data_mod);
-		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
+		Element locModel = getElementByIdFromDocument(xformsDoc, head_tag, data_mod);
+		Element locStrings = (Element)locModel.getElementsByTagName(loc_tag).item(0);
 		
-		NodeList key_elements = loc_strings.getElementsByTagName(key);
-		LocalizedStringBean loc_str_bean = new LocalizedStringBean();
+		NodeList keyElements = locStrings.getElementsByTagName(key);
+		LocalizedStringBean locStrBean = new LocalizedStringBean();
 		
-		for (int i = 0; i < key_elements.getLength(); i++) {
+		for (int i = 0; i < keyElements.getLength(); i++) {
 			
-			Element key_element = (Element)key_elements.item(i);
+			Element keyElement = (Element)keyElements.item(i);
 			
-			String lang_code = key_element.getAttribute("lang");
+			String langCode = keyElement.getAttribute(lang_att);
 			
-			if(lang_code != null) {
+			if(langCode != null) {
 				
-				String content = getElementsTextNodeValue(key_element);	
-				loc_str_bean.setString(new Locale(lang_code), content == null ? CoreConstants.EMPTY : content);
+				String content = getElementsTextNodeValue(keyElement);	
+				locStrBean.setString(LocaleUtil.getLocale(langCode), content == null ? CoreConstants.EMPTY : content);
 			}
 		}
 		
-		return loc_str_bean;
+		return locStrBean;
 	}
 	
 	public static LocalizedStringBean getLabelLocalizedStrings(Element component, Document xforms_doc) {
@@ -356,6 +357,8 @@ public class FormManagerUtil {
 	}
 	
 	public static LocalizedStringBean getElementLocalizedStrings(Element element, Document xforms_doc) {
+		
+		//DOMUtil.prettyPrintDOM(xforms_doc);
 		
 		String ref = element.getAttribute(FormManagerUtil.ref_s_att);
 		
@@ -378,20 +381,21 @@ public class FormManagerUtil {
 			FormManagerUtil.removeTextNodes(iter.next());
 	}
 	
-	public static Locale getDefaultFormLocale(Document form_xforms) {
+	public static Locale getDefaultFormLocale(Document xformsDoc) {
 		
-		Element loc_model = getElementByIdFromDocument(form_xforms, head_tag, data_mod);
-		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
-		NodeList default_language_node_list = loc_strings.getElementsByTagName(default_language_tag);
+		Element locModel = getElementByIdFromDocument(xformsDoc, head_tag, data_mod);
+		Element locStrings = (Element)locModel.getElementsByTagName(loc_tag).item(0);
+		NodeList defaultLanguages = locStrings.getElementsByTagName(default_language_tag);
 		
-		String lang = null;
-		if(default_language_node_list != null && default_language_node_list.getLength() != 0) {
-			lang = getElementsTextNodeValue(default_language_node_list.item(0));
+		String langCode = null;
+		
+		if(defaultLanguages != null && defaultLanguages.getLength() != 0) {
+			langCode = getElementsTextNodeValue(defaultLanguages.item(0));
 		}		
-		if(lang == null)
-			lang = "en";			
+		if(langCode == null)
+			langCode = "en";			
 		
-		return new Locale(lang);
+		return LocaleUtil.getLocale(langCode);
 	}
 	
 	public static void setCurrentFormLocale(Document form_xforms, Locale locale) {
@@ -400,7 +404,8 @@ public class FormManagerUtil {
 		NodeList current_language_node_list = loc_strings.getElementsByTagName(current_language_tag);
 		
 		if(current_language_node_list != null && current_language_node_list.getLength() != 0) {
-			String localeStr = locale.toString().toLowerCase();
+			//String localeStr = locale.toString().toLowerCase();
+			String localeStr = locale.toString();
 			setElementsTextNodeValue(current_language_node_list.item(0), localeStr);
 		}		
 	}
