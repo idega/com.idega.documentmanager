@@ -141,7 +141,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<button_previous.label lang="en">Previous</button_previous.label>
 			<button_submit.label lang="en">Submit</button_submit.label>
 			<button_save.label lang="en">Save</button_save.label>
-			<button_save.label lang="is_is">Save</button_save.label>
+			<button_save.label lang="is_IS">Save</button_save.label>
 			<simple_text.text lang="en">Paragraph text</simple_text.text>
 			<simple_text.label lang="en"></simple_text.label>
 			<header_text.text lang="en">Header text</header_text.text>
@@ -594,11 +594,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<xf:label
 				ref="instance('localized_strings')/email.title[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
-			<xf:alert>
-				<xf:output
-					ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"
-					model="data_model" />
-			</xf:alert>
+			<xf:alert  ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"/>
 		</xf:input>
 			
         <xf:upload bind="uploadfile" id="fbc_upload_file" > 
