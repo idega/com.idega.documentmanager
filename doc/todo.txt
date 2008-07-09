@@ -1,0 +1,15 @@
+/*
+* List of tasks to change xforms 
+* 
+*/
+
+1. locale-instance:
+	Move form submission_model to data_model 
+	
+2. constraint:
+	change alert component (do not have any output element inside)
+
+3. "double click":
+	 submit trigger problem change
+
+4. save button component	
