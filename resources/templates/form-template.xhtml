@@ -32,7 +32,6 @@
 				<xf:message level="modeless" ref="instance('localized_strings')/page-1-error.label[@lang=instance('localized_strings')/current_language]"/>
 			</xf:action>
 			
-            <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
         </xf:model>
         <xf:model id="data_model">
 	        <xf:instance id="localized_strings" xmlns="">
@@ -53,6 +52,8 @@
 	         		<page-2.info lang="is_IS">Form submitted, thank You!</page-2.info>
 	         	</localized_strings>
 	        </xf:instance>
+	        
+	        <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
 	        
 	        <xf:action ev:event="xforms-ready">
 				<xf:setvalue model="data_model"
