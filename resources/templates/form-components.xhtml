@@ -56,10 +56,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
     <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
-    <xf:bind id="multiupload_description" nodeset="multiupload_description/entry[position() != last()]" type="xs:anyURI">
-    		<xf:bind id="required_description" nodeset="description"/>
-	</xf:bind>
-    
+    <xf:bind id="multiupload_description" nodeset="multiupload_description/entry[position() != last()]" type="xs:anyURI"/>
+      
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
     
     <xf:bind id="autofill_name" nodeset="autofill_name" type="xs:string" />
