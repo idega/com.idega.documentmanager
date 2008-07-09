@@ -16,4 +16,6 @@
 
 5. control-instance moved to control_model
 
-6. component label should be reflected in all his binds etc and when component label changes, all the reflections should change accordingly 
+6. component label should be reflected in all his binds etc and when component label changes, all the reflections should change accordingly
+
+7. save buttons in doc manager 
