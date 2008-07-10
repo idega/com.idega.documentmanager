@@ -31,9 +31,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  *
- * Last modified: $Date: 2008/07/09 15:18:36 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/10 07:21:50 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -118,11 +118,14 @@ public class FormManagerUtil {
 	public static final String required_att = "required";
 	public static final String readonly_att = "readonly";
 	public static final String xpath_true = "true()";
+	public static final String true_string = "true";
+	public static final String false_string = "false";
 	public static final String xpath_false = "false()";
 	public static final String datatype_tag = "datatype";
 	public static final String accessSupport_att = "accessSupport";
 	public static final String submission_model = "submission_model";
 	public static final String nodeTypeAtt = "nodeType";
+	public static final String controlInstanceID = "control-instance";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -882,6 +885,7 @@ public class FormManagerUtil {
 		return (Element)localizedStringElementXPath.getNode(context);
 	}
 	
+//	TODO: fix synchronizations, that's very bad
 	public static synchronized Element getElementById(Node context, String id) {
 		
 		if(elementByIdXPath == null)
