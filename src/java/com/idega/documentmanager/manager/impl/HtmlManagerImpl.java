@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/06/13 08:05:10 $ by $Author: anton $
+ * Last modified: $Date: 2008/07/10 14:21:24 $ by $Author: civilis $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
@@ -59,18 +59,6 @@ public class HtmlManagerImpl implements HtmlManager {
 		FormDocument formDocument = component.getFormDocument();
 		Document componentsXml = formDocument.getComponentsXml(component, locale);
 		
-//		if(componentsXml == null || formDocument.isFormDocumentModified()) {
-//			
-//			ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
-//			Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
-//			FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
-//			
-//			componentsGenerator.setDocument(xformClone);
-//			componentsXml = componentsGenerator.generateHtmlComponentsDocument();
-//			
-//			formDocument.setComponentsXml(componentsXml);
-//			formDocument.setFormDocumentModified(false);
-//		}
 		return componentsXml;
 	}
 }
