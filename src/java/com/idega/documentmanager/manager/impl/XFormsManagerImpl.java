@@ -23,13 +23,14 @@ import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
 import com.idega.documentmanager.xform.Nodeset;
 import com.idega.jbpm.variables.Variable;
+import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/07/05 15:40:45 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/10 07:21:20 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -160,7 +161,7 @@ public class XFormsManagerImpl implements XFormsManager {
 			Bind bind = Bind.locate(componentsXForm, bindId, modelId);
 			
 			if(bind == null)
-				throw new NullPointerException("Binding not found by bind id: "+bindId+(FormManagerUtil.isEmpty(modelId) ? "" : " and modelId: "+modelId));
+				throw new NullPointerException("Binding not found by bind id: "+bindId+(FormManagerUtil.isEmpty(modelId) ? CoreConstants.EMPTY : " and modelId: "+modelId));
 			
 			xformsComponentDataBean.setBind(bind);
 		}
