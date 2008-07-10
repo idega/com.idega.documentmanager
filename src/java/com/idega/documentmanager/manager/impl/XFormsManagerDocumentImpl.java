@@ -1,6 +1,8 @@
 package com.idega.documentmanager.manager.impl;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.chiba.xml.dom.DOMUtil;
 import org.w3c.dom.Document;
@@ -15,14 +17,18 @@ import com.idega.documentmanager.component.beans.ComponentDocumentDataBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.manager.XFormsManagerDocument;
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/06/18 08:02:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/10 07:21:32 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
+	
+	private XPathUtil readonlyXPath = new XPathUtil("./readonly");
+	private XPathUtil controlXPath = new XPathUtil("./control");
 
 	public void setComponentsContainer(FormComponent component, Element element) {
 		
@@ -234,5 +240,52 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		Element submission = FormManagerUtil.getSubmissionElement(component.getContext().getXformsXmlDoc());
 		return submission.getAttribute(FormManagerUtil.action_att);
+	}
+	
+	@Override
+	public boolean isReadonly(FormComponent component) {
+		
+		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		
+		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
+		
+		if(controlInstance != null) {
+
+			Element readonlyElement = readonlyXPath.getNode(controlInstance);
+			
+			if(readonlyElement != null) {
+				
+				return FormManagerUtil.true_string.equals(readonlyElement.getTextContent());
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void setReadonly(FormComponent component, boolean readonly) {
+		
+		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		
+		DOMUtil.prettyPrintDOM(xformsDoc);
+
+		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
+		System.out.println("CONTROL INSTANCE="+controlInstance);
+		
+		if(controlInstance != null) {
+
+			Element readonlyElement = readonlyXPath.getNode(controlInstance);
+			
+			if(readonlyElement == null) {
+				
+				readonlyElement = controlInstance.getOwnerDocument().createElement("readonly");
+				Element controlElement = controlXPath.getNode(controlInstance);
+				readonlyElement = (Element)controlElement.appendChild(readonlyElement);
+				readonlyElement.setTextContent(readonly ? FormManagerUtil.true_string : FormManagerUtil.false_string);
+			}
+			
+		} else {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, "setReadonly called on form, but no control instance found. Ignoring.");
+		}
 	}
 }
