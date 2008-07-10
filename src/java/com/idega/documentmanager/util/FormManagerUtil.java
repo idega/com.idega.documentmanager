@@ -31,9 +31,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  *
- * Last modified: $Date: 2008/07/10 07:21:50 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/10 14:21:53 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -230,10 +230,6 @@ public class FormManagerUtil {
 			
 		} else
 			throw new NullPointerException("Ref and key not specified or ref has incorrect format. Ref: "+ref);
-		
-//  TODO: adds data-model		
-		if(!data_mod.equals(element.getAttribute(model_att)))
-			element.setAttribute(model_att, data_mod);
 		
 		Element localizationStringsElement = FormManagerUtil.getLocalizedStringElement(xform);
 		
