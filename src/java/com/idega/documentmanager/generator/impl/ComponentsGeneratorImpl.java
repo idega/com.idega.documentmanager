@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.chiba.adapter.ui.UIGenerator;
 import org.chiba.adapter.ui.XSLTGenerator;
+import org.chiba.web.flux.FluxAdapter;
 import org.chiba.xml.xforms.exception.XFormsException;
 import org.chiba.xml.xslt.TransformerService;
 import org.w3c.dom.Document;
@@ -20,8 +21,6 @@ import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.Singleton;
 import com.idega.util.xml.XmlUtil;
 
-import org.chiba.web.flux.FluxAdapter;
-
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -30,7 +29,7 @@ import org.chiba.web.flux.FluxAdapter;
  * Initial components description is kept in xforms document.<br />
  * This class parses all those components to html format components into xml document.
  * 
- * Last modified: $Date: 2008/04/16 16:48:35 $ by $Author: anton $
+ * Last modified: $Date: 2008/07/10 14:21:14 $ by $Author: civilis $
  * 
  */
 public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  {
@@ -115,17 +114,6 @@ public class ComponentsGeneratorImpl implements Singleton, ComponentsGenerator  
         Document tempXmlDoc = documentBuilder.newDocument();
         
         gen.setOutput(tempXmlDoc);
-    	gen.generate();
-    	
-    	/*
-    	 * generate final components xml
-    	 */
-    	gen = getFinalXmlComponentsGenerator();
-    	gen.setInput(tempXmlDoc);
-    	
-    	tempXmlDoc = documentBuilder.newDocument();
-    	gen.setOutput(tempXmlDoc);
-    	
     	gen.generate();
     	
     	return tempXmlDoc;
