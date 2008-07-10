@@ -21,9 +21,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/07/10 07:21:32 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/10 15:26:26 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 	
@@ -267,10 +267,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		Document xformsDoc = component.getContext().getXformsXmlDoc();
 		
-		DOMUtil.prettyPrintDOM(xformsDoc);
-
 		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
-		System.out.println("CONTROL INSTANCE="+controlInstance);
 		
 		if(controlInstance != null) {
 
