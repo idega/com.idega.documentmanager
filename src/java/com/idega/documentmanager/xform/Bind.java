@@ -7,13 +7,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/07/10 07:23:20 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/10 14:58:56 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -243,7 +244,7 @@ public class Bind implements Cloneable {
 		
 		if(isRequired == null) {
 			Element bind = getBindElement();
-			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && bind.getAttribute(FormManagerUtil.required_att).equals(FormManagerUtil.xpath_true);
+			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && !CoreConstants.EMPTY.equals(bind.getAttribute(FormManagerUtil.required_att));
 		}
 		
 		return isRequired;
