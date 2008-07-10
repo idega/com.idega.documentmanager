@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/06/20 13:53:57 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/10 07:23:20 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -103,17 +103,16 @@ public class Bind implements Cloneable {
 	 * @return - Bind object, which contains bind relevant data
 	 */
 	public static Bind locate(Document xform, String bindId, String modelId) {
+//		TODO: remove modelId param
 		
 		XPathUtil bindElementXPath = getBindElementXPath();
-		
-		Element model = getModel(xform, modelId);
 		Element bindElement;
 		
 		synchronized (bindElementXPath) {
 			
 			bindElementXPath.clearVariables();
 			bindElementXPath.setVariable(bindIdVariable, bindId);
-			bindElement = (Element)bindElementXPath.getNode(model);
+			bindElement = (Element)bindElementXPath.getNode(xform);
 		}
 		
 		if(bindElement == null)
