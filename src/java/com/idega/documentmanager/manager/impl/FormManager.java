@@ -1,6 +1,7 @@
 package com.idega.documentmanager.manager.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,9 +29,9 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/04/11 01:26:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service("xformsDocumentManager")
@@ -108,10 +109,18 @@ public class FormManager implements DocumentManager {
 			ComponentsGeneratorImpl.init(iwma);
 			ComponentsGeneratorImpl componentsGenerator = ComponentsGeneratorImpl.getInstance();
 			componentsGenerator.setTransformerService(getTransformerService());
-			componentsGenerator.setDocument(getComponentsXforms());
 			
-			Document componentsXml = componentsGenerator.generateBaseComponentsDocument();
-			List<String> componentsTypes = FormManagerUtil.gatherAvailableComponentsTypes(componentsXml);
+			List<String> componentsTypes = null;
+			
+			Map<String, List<String>> categorizied = FormManagerUtil.getCategorizedComponentsTypes(getComponentsXforms());
+			
+			for (List<String> vals : categorizied.values()) {
+
+				if(componentsTypes == null)
+					componentsTypes = vals;
+				else
+					componentsTypes.addAll(vals);
+			}
 			
 			CacheManager cacheManager = getCacheManager();
 			
@@ -120,7 +129,6 @@ public class FormManager implements DocumentManager {
 			cacheManager.setCategorizedComponentTypes(FormManagerUtil.getCategorizedComponentsTypes(getComponentsXforms()));
 			cacheManager.setTypesByDatatype(FormManagerUtil.getComponentsTypesByDatatype(getComponentsXforms()));
 			cacheManager.setComponentsXforms(getComponentsXforms());
-			cacheManager.setComponentsXml(componentsXml);
 			cacheManager.setComponentsXsd(getComponentsXsd());
 			
 			inited = true;

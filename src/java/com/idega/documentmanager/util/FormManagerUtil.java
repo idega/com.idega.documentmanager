@@ -12,8 +12,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.chiba.xml.dom.DOMUtil;
@@ -27,13 +25,12 @@ import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.util.CoreConstants;
 import com.idega.util.LocaleUtil;
 import com.idega.util.xml.XPathUtil;
-import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  *
- * Last modified: $Date: 2008/07/10 14:21:53 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -132,24 +129,25 @@ public class FormManagerUtil {
 	private static final String utf_8_encoding = "UTF-8";
 	
 	private static OutputFormat output_format;
+	private static Pattern non_xml_pattern = Pattern.compile("[a-zA-Z0-9{-}{_}]");
 	
-	private static XPathUtil formInstanceModelElementXPath;
-	private static XPathUtil defaultFormModelElementXPath;
-	private static XPathUtil formModelElementXPath;
-	private static XPathUtil formIdElementXPath;
-	private static XPathUtil formSubmissionInstanceElementXPath;
-	private static XPathUtil parentElementXPath;
-	private static XPathUtil instanceElementXPath;
-	private static XPathUtil submissionElementXPath;
-	private static XPathUtil formTitleOutputElementXPath;
-	private static XPathUtil instanceElementByIdXPath;
-	private static XPathUtil formSubmissionInstanceDataElementXPath;
-	private static XPathUtil localizedStringElementXPath;
-	private static XPathUtil elementByIdXPath;
-	private static XPathUtil elementsContainingAttributeXPath;
-	private static XPathUtil localizaionSetValueElement;
-	private static XPathUtil formErrorMessageXPath;
-	private static XPathUtil formParamsXPath;
+	
+	private static XPathUtil formInstanceModelElementXPath = new XPathUtil(".//xf:model[xf:instance/@id='data-instance']");
+	private static XPathUtil defaultFormModelElementXPath = new XPathUtil(".//xf:model");
+	private static XPathUtil formModelElementXPath = new XPathUtil(".//xf:model[@id=$modelId]");
+	private static XPathUtil formIdElementXPath = new XPathUtil(".//data/form_id");
+	private static XPathUtil formSubmissionInstanceElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']");
+	private static XPathUtil instanceElementXPath = new XPathUtil(".//xf:instance");
+	private static XPathUtil submissionElementXPath = new XPathUtil(".//xf:submission[@id='submit_data_submission']");
+	private static XPathUtil formTitleOutputElementXPath = new XPathUtil(".//h:title/xf:output");
+	private static XPathUtil instanceElementByIdXPath = new XPathUtil(".//xf:instance[@id=$instanceId]");
+	private static XPathUtil formSubmissionInstanceDataElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data");
+	private static XPathUtil localizedStringElementXPath = new XPathUtil(".//xf:instance[@id='localized_strings']/localized_strings");
+	private static XPathUtil elementByIdXPath = new XPathUtil(".//*[@id=$id]");
+	private static XPathUtil elementsContainingAttributeXPath = new XPathUtil(".//*[($elementName = '*' or name(.) = $elementName) and ($attributeName = '*' or attribute::*[name(.) = $attributeName])]");
+	private static XPathUtil localizaionSetValueElement = new XPathUtil(".//xf:setvalue[@model='data_model']");
+	private static XPathUtil formErrorMessageXPath = new XPathUtil(".//xf:action[@id='submission-error']/xf:message");
+	private static XPathUtil formParamsXPath = new XPathUtil(".//*[@nodeType='formParams']");
 	
 	private final static String elementNameVariable = "elementName";
 	private final static String attributeNameVariable = "attributeName";
@@ -633,8 +631,6 @@ public class FormManagerUtil {
 		return writer.toString();
 	}
 	
-	private static Pattern non_xml_pattern; 
-	
 	public static String escapeNonXmlTagSymbols(String string) {
 		
 		StringBuffer result = new StringBuffer();
@@ -642,15 +638,6 @@ public class FormManagerUtil {
 	    StringCharacterIterator iterator = new StringCharacterIterator(string);
 	    
 	    Character character =  iterator.current();
-	    
-	    if(non_xml_pattern == null) {
-	    	synchronized (FormManagerUtil.class) {
-				
-	    		if(non_xml_pattern == null) {
-	    			non_xml_pattern = Pattern.compile("[a-zA-Z0-9{-}{_}]");
-	    		}
-			}
-	    }
 	    
 	    while (character != CharacterIterator.DONE ) {
 	    	
@@ -766,102 +753,59 @@ public class FormManagerUtil {
 		return getElementLocalizedStrings(message, xformsDoc);
 	}
 	
-	public static synchronized Element getFormInstanceModelElement(Document context) {
+	public static Element getFormInstanceModelElement(Document context) {
 		
-		if(formInstanceModelElementXPath == null)
-			formInstanceModelElementXPath = new XPathUtil(".//xf:model[xf:instance/@id='data-instance']");
-		
-		return (Element)formInstanceModelElementXPath.getNode(context);
+		return formInstanceModelElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getDefaultFormModelElement(Document context) {
+	public static Element getDefaultFormModelElement(Document context) {
 		
-		if(defaultFormModelElementXPath == null)
-			defaultFormModelElementXPath = new XPathUtil(".//xf:model");
-		
-		return (Element)defaultFormModelElementXPath.getNode(context);
+		return defaultFormModelElementXPath.getNode(context);
 	}
 	
-	public static synchronized XPathUtil getFormModelElementByIdXPath() {
-		
-		if(formModelElementXPath == null)
-			formModelElementXPath = new XPathUtil(".//xf:model[@id=$modelId]");
+	public static XPathUtil getFormModelElementByIdXPath() {
 		
 		return formModelElementXPath;
 	}
 	
-	private static synchronized Element getFormIdElement(Node context) {
+	private static Element getFormIdElement(Node context) {
 		
-		if(formIdElementXPath == null)
-			formIdElementXPath = new XPathUtil(".//data/form_id");
-		
-		return (Element)formIdElementXPath.getNode(context);
+		return formIdElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getSubmissionElement(Node context) {
+	public static Element getSubmissionElement(Node context) {
 		
-		if(submissionElementXPath == null)
-			submissionElementXPath = new XPathUtil(".//xf:submission[@id='submit_data_submission']");
-		
-		return (Element)submissionElementXPath.getNode(context);
+		return submissionElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getFormSubmissionInstanceElement(Document context) {
+	public static Element getFormSubmissionInstanceElement(Document context) {
 		
-		if(formSubmissionInstanceElementXPath == null)
-			formSubmissionInstanceElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']");
-		
-		return (Element)formSubmissionInstanceElementXPath.getNode(context);
+		return formSubmissionInstanceElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getFormSubmissionInstanceDataElement(Node context) {
+	public static Element getFormSubmissionInstanceDataElement(Node context) {
 		
-		if(formSubmissionInstanceDataElementXPath == null)
-			formSubmissionInstanceDataElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']/data");
-		
-		return (Element)formSubmissionInstanceDataElementXPath.getNode(context);
+		return formSubmissionInstanceDataElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getParentElement(Element context) {
+	public static Element getInstanceElement(Element context) {
 		
-		if(parentElementXPath == null)
-			parentElementXPath = new XPathUtil("..");
-		
-		return (Element)parentElementXPath.getNode(context);
+		return instanceElementXPath.getNode(context);
 	}
 	
-	public static synchronized Element getInstanceElement(Element context) {
-		
-		if(instanceElementXPath == null)
-			instanceElementXPath = new XPathUtil(".//xf:instance");
-		
-		return (Element)instanceElementXPath.getNode(context);
-	}
-	
-	public static synchronized XPathUtil getInstanceElementByIdXPath() {
-		
-		if(instanceElementByIdXPath == null)
-			instanceElementByIdXPath = new XPathUtil(".//xf:instance[@id=$instanceId]");
+	public static XPathUtil getInstanceElementByIdXPath() {
 		
 		return instanceElementByIdXPath;
 	}
 	
-	private static synchronized Element getFormTitleOutputElement(Node context) {
+	private static Element getFormTitleOutputElement(Node context) {
 		
-		if(formTitleOutputElementXPath == null)
-			formTitleOutputElementXPath = new XPathUtil(".//h:title/xf:output");
-		
-		return (Element)formTitleOutputElementXPath.getNode(context);
+		return formTitleOutputElementXPath.getNode(context);
 	}
 	
-	private static synchronized Element getFormErrorMessageElement(Node context) {
+	private static Element getFormErrorMessageElement(Node context) {
 	    
-		if(formErrorMessageXPath == null)
-		    formErrorMessageXPath = new XPathUtil(".//xf:action[@id='submission-error']/xf:message");
-	   
-		
-		return (Element)formErrorMessageXPath.getNode(context);
-		
+		return formErrorMessageXPath.getNode(context);
 	}
 	
 	public static String getFormId(Node xformsDoc) {
@@ -873,32 +817,24 @@ public class FormManagerUtil {
 		getFormIdElement(xformsDoc).setTextContent(formId);
 	}
 	
-	public static synchronized Element getLocalizedStringElement(Node context) {
+	public static Element getLocalizedStringElement(Node context) {
 		
-		if(localizedStringElementXPath == null)
-			localizedStringElementXPath = new XPathUtil(".//xf:instance[@id='localized_strings']/localized_strings");
-		
-		return (Element)localizedStringElementXPath.getNode(context);
+		return localizedStringElementXPath.getNode(context);
 	}
 	
-//	TODO: fix synchronizations, that's very bad
-	public static synchronized Element getElementById(Node context, String id) {
+	public static Element getElementById(Node context, String id) {
 		
-		if(elementByIdXPath == null)
-			elementByIdXPath = new XPathUtil(".//*[@id=$id]");
+		synchronized (elementByIdXPath) {
 		
-		elementByIdXPath.clearVariables();
-		elementByIdXPath.setVariable(id_att, id);
-		
-		return (Element)elementByIdXPath.getNode(context);
+			elementByIdXPath.clearVariables();
+			elementByIdXPath.setVariable(id_att, id);
+			return elementByIdXPath.getNode(context);
+		}
 	}
 	
-	public static synchronized Element getFormParamsElement(Node context) {
+	public static Element getFormParamsElement(Node context) {
 		
-		if(formParamsXPath == null)
-			formParamsXPath = new XPathUtil(".//*[@nodeType='formParams']");
-		
-		return (Element)formParamsXPath.getNode(context);
+		return formParamsXPath.getNode(context);
 	}
 	
 	public static Element createFormParamsElement(Element context, boolean appendToContext) {
@@ -913,7 +849,7 @@ public class FormManagerUtil {
 		return el;
 	}
 	
-	public static synchronized NodeList getElementsContainingAttribute(Node context, String elementName, String attributeName) {
+	public static NodeList getElementsContainingAttribute(Node context, String elementName, String attributeName) {
 		
 		if(isEmpty(elementName))
 			elementName = CoreConstants.STAR;
@@ -921,22 +857,19 @@ public class FormManagerUtil {
 		if(isEmpty(attributeName))
 			attributeName = CoreConstants.STAR;
 		
-		if(elementsContainingAttributeXPath == null)
-			elementsContainingAttributeXPath = new XPathUtil(".//*[($elementName = '*' or name(.) = $elementName) and ($attributeName = '*' or attribute::*[name(.) = $attributeName])]");
-	
-		elementsContainingAttributeXPath.clearVariables();
-		elementsContainingAttributeXPath.setVariable(elementNameVariable, elementName);
-		elementsContainingAttributeXPath.setVariable(attributeNameVariable, attributeName);
+		synchronized (elementsContainingAttributeXPath) {
 		
-		return elementsContainingAttributeXPath.getNodeset(context);
+			elementsContainingAttributeXPath.clearVariables();
+			elementsContainingAttributeXPath.setVariable(elementNameVariable, elementName);
+			elementsContainingAttributeXPath.setVariable(attributeNameVariable, attributeName);
+			
+			return elementsContainingAttributeXPath.getNodeset(context);
+		}
 	}
 	
-	private static synchronized Element getDataModelSetValueElement(Node context) {
+	private static Element getDataModelSetValueElement(Node context) {
 		
-		if(localizaionSetValueElement == null)
-			localizaionSetValueElement = new XPathUtil(".//xf:setvalue[@model='data_model']");
-		
-		return (Element)localizaionSetValueElement.getNode(context);
+		return localizaionSetValueElement.getNode(context);
 	}
 	
 	public static Map<String, List<ComponentType>> getComponentsTypesByDatatype(Document form_components_doc) {
@@ -971,24 +904,5 @@ public class FormManagerUtil {
 		}
 		
 		return types;
-		
-	}
-	
-	
-	public static void main(String[] args) {
-		
-		try {
-			DocumentBuilder db = XmlUtil.getDocumentBuilder();
-			Document doc = db.parse("/Users/civilis/dev/workspace/eplatform-4/com.idega.documentmanager/resources/templates/form-components.xhtml");
-
-			NodeList nodes = getElementsContainingAttribute(doc, null, "nodeset");
-			
-			System.out.println("xx:"+nodes.getLength());
-			//DOMUtil.prettyPrintDOM(nodes.item(0));
-			
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

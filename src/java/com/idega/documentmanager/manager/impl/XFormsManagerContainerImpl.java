@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/04/24 23:49:12 $ by $Author: laddi $
+ * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
  */
 public class XFormsManagerContainerImpl extends XFormsManagerImpl implements XFormsManagerContainer {
 	
@@ -27,6 +27,7 @@ public class XFormsManagerContainerImpl extends XFormsManagerImpl implements XFo
 		if(xformsComponentDataBean.getElement() == null)
 			throw new NullPointerException("Document container element not set");
 		
+		@SuppressWarnings("unchecked")
 		List<Element> components_elements = DOMUtil.getChildElements(xformsComponentDataBean.getElement());
 		List<String[]> components_tag_names_and_ids = new ArrayList<String[]>();
 		

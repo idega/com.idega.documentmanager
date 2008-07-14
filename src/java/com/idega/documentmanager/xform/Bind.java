@@ -12,9 +12,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/07/10 14:58:56 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -61,7 +61,7 @@ public class Bind implements Cloneable {
 				return null;
 			}
 
-			Element model = FormManagerUtil.getParentElement(getBindElement());
+			Element model = (Element)getBindElement().getParentNode();
 			nodeset = Nodeset.locate(model, nodesetPath);
 			
 			if(nodeset == null)

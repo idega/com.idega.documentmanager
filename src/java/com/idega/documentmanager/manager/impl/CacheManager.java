@@ -16,16 +16,15 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/04/24 23:49:12 $ by $Author: laddi $
+ * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
  */
 public class CacheManager implements Singleton {
 	
-	private Document form_xforms_template;
-	private Document components_xforms;
-	private Document components_xsd;
-	private Document components_xml;
+	private Document xformTemplate;
+	private Document componentsXform;
+	private Document componentsXsd;
 	private List<String> all_components_types;
 	private List<String> components_types_to_list;
 	private Map<String, ComponentDataBean> cachedXformsComponents;
@@ -54,16 +53,16 @@ public class CacheManager implements Singleton {
 
 	public Document getFormXformsTemplateCopy() {
 		
-		if(form_xforms_template == null)
+		if(xformTemplate == null)
 			throw new NullPointerException("Form xforms template not initialized");
 		
-		return (Document)form_xforms_template.cloneNode(true);
+		return (Document)xformTemplate.cloneNode(true);
 	}
 
 	public void setFormXformsTemplate(Document form_xforms_template) {
 		
 		if(form_xforms_template != null)
-			this.form_xforms_template = form_xforms_template;
+			this.xformTemplate = form_xforms_template;
 	}
 
 	public List<String> getComponentsTypes() {
@@ -98,27 +97,19 @@ public class CacheManager implements Singleton {
 	}
 
 	public Document getComponentsXforms() {
-		return components_xforms;
+		return componentsXform;
 	}
 
 	public void setComponentsXforms(Document components_xforms) {
-		this.components_xforms = components_xforms;
-	}
-
-	public Document getComponentsXml() {
-		return components_xml;
-	}
-
-	public void setComponentsXml(Document components_xml) {
-		this.components_xml = components_xml;
+		this.componentsXform = components_xforms;
 	}
 
 	public Document getComponentsXsd() {
-		return components_xsd;
+		return componentsXsd;
 	}
 
 	public void setComponentsXsd(Document components_xsd) {
-		this.components_xsd = components_xsd;
+		this.componentsXsd = components_xsd;
 	}
 	
 	public void checkForComponentType(String component_type) throws NullPointerException {
@@ -149,8 +140,10 @@ public class CacheManager implements Singleton {
 		if(iwma == null)
 			throw new NullPointerException("IWMainApplication not set");
 		
+		@SuppressWarnings("unchecked")
 		Map<String, ComponentDataBean> cachedXformsComponents = IWCacheManager2.getInstance(iwma).getCache("cached_xforms_components");
 		this.cachedXformsComponents = cachedXformsComponents;
+		@SuppressWarnings("unchecked")
 		Map<String, Element> cachedDefaultComponentLocalizations = IWCacheManager2.getInstance(iwma).getCache("cached_default_components_localizations");
 		this.cachedDefaultComponentLocalizations = cachedDefaultComponentLocalizations;
 	}
