@@ -18,10 +18,10 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * 
- *  Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
+ *  Last modified: $Date: 2008/07/16 11:13:14 $ by $Author: arunas $
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LocalizedItemsetBean {
 	
@@ -138,7 +138,7 @@ public class LocalizedItemsetBean {
 			} else {
 				
 				localized_entries_element = local_data_src_element.getOwnerDocument().createElement(FormManagerUtil.localized_entries_tag);
-				localized_entries_element.setAttribute(FormManagerUtil.lang_att, locale.getLanguage());
+				localized_entries_element.setAttribute(FormManagerUtil.lang_att, locale.toString());
 				local_data_src_element.appendChild(localized_entries_element);
 			}
 

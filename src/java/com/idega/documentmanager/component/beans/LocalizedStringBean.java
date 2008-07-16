@@ -8,9 +8,9 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
- * Last modified: $Date: 2008/04/10 01:08:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/16 11:13:14 $ by $Author: arunas $
  */
 public class LocalizedStringBean {
 	
@@ -63,7 +63,7 @@ public class LocalizedStringBean {
 			Locale locale = iter.next();
 			
 			toString.append("\nlocale: ")
-			.append(locale.getLanguage())
+			.append(locale.toString())
 			.append(" value: ")
 			.append(strings.get(locale));
 		}
