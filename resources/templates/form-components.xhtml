@@ -25,11 +25,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                  <entry filename="" mediatype=""/>
             </uploadfile>
 			<multiupload>
+			   <group />
 			   <entry filename="" mediatype=""/>     	
 			   <entry filename="" mediatype=""/>
 
             </multiupload>
             <multiupload_description>
+            	<group />
 				<entry filename="" mediatype="">
 				<description />
 			    </entry>	     	
@@ -55,9 +57,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	
 	<!-- types hexBinary anyURI base64Binary -->
     <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
-    <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI"/>
-    <xf:bind id="multiupload_description" nodeset="multiupload_description/entry[position() != last()]" type="xs:anyURI"/>
-      
+    
+    <xf:bind id="multiupload.group" nodeset="multiupload/group">
+		<xf:bind id="multiupload" nodeset="../entry[position() != last()]" type="xs:anyURI"/>
+	</xf:bind>
+
+    <xf:bind id="multiupload_description.group" nodeset="multiupload_description/group">
+		<xf:bind id="multiupload" nodeset="../entry[position() != last()]" type="xs:anyURI"/>
+	</xf:bind>
+	    
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
     
     <xf:bind id="autofill_name" nodeset="autofill_name" type="xs:string" />
@@ -231,18 +239,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<xf:value ref="itemValue" />
 			</xf:itemset> </item> 
 			<item id="alert"> 
-				<xf:alert>
-					<xf:output
-						ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
-						model="data_model" />
-				</xf:alert> 
+				<xf:alert ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"	model="data_model" />
 			</item>
 			<item id="help"> 
-				<xf:help>
-					<xf:output
-						ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
-						model="data_model" />
-				</xf:help> 
+				<xf:help ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			</item>
 			<item id="item_src">
 				<item>
@@ -395,7 +395,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
-	<xf:group appearance="full" bind="multiupload" id ="fbc_multi_upload_file" name = "fbc_multi_upload_file" >
+	<xf:group appearance="full" bind="multiupload.group" id ="fbc_multi_upload_file" name = "fbc_multi_upload_file" >
 	     <xf:label ref="instance('localized_strings')/multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
 		 <xf:trigger>
                    <xf:label ref="instance('localized_strings')/multi_upload_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
@@ -419,7 +419,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		
     	</xf:group>
     	
-    	<xf:group appearance="full" bind="multiupload_description" id ="fbc_multi_upload_description_file" name = "fbc_multi_upload_description_file" >
+    	<xf:group appearance="full" bind="multiupload_description.group" id ="fbc_multi_upload_description_file" name = "fbc_multi_upload_description_file" >
 	     <xf:label ref="instance('localized_strings')/multi_upload_description_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
 		 <xf:trigger>
                    <xf:label ref="instance('localized_strings')/multi_upload_description_file.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
@@ -427,7 +427,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                         <xf:insert nodeset="instance('data-instance')/multiupload_description/entry" at="last()" position="before"/>
                     </xf:action>
          </xf:trigger>
-                  	<xf:repeat id="upload-entries" bind="multiupload_description" appearance="group" >
+                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="group" >
                   	<xf:group appearance="group">
                   		<xf:input ref="./description">
                   		 <xf:label
@@ -435,7 +435,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 			model="data_model" /> 
                   		</xf:input>	
                   		<xf:output value="" ref="instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language]"
-				model="data_model" incremental="true" />
+				model="data_model" />
                   		</xf:group>
                   		<xf:group appearance="group">         		 
                   		    <xf:upload ref=".">

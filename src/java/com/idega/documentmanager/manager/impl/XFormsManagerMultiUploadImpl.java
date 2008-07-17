@@ -17,24 +17,19 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
- * Last modified: $Date: 2008/04/07 10:45:17 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUpload {
 
-    private static final String INSERT_TAG = "./descendant::xf:insert[@at='last()']";
-    private static final String REPEAT_TAG = "./descendant::xf:repeat";
-    private static final String DELETE_TAG = "./descendant::xf:delete";
     private static final String INSTANCE = "instance('data-instance')/Multi_file_upload_";
-    private static final String BIND = "bind.";
     private static final String REPEAT = "upload_entries_";
     private static final String ENTRY = "/entry";
     private static final String AT_START = "index('";
     private static final String AT_END = "')";
-    private static final String GROUP_ELEMENT = "./descendant::xf:group";
-    private static final String LABELS = ".//xf:label[@model]";
+  
     private static final String APPEND_TITLE = ".title";
     private static final String APPEND_REMOVE = ".remove";
     private static final String APPEND_LABEL = ".label";
@@ -42,9 +37,12 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     private static final int TITLE_LABEL = 0;
     private static final int ADD_BUTTON_LABEL = 1;
     private static final int REMOVE_BUTTON_LABEL = 2;
-    
-    
-    final private XPathUtil labelsXPathUT = new XPathUtil(LABELS);
+       
+    final private XPathUtil labelsXPathUT = new XPathUtil(".//xf:label[@model]");
+    final private XPathUtil insertXPUT = new XPathUtil(".//xf:insert[@at='last()']");
+    final private XPathUtil repeatXPUT = new XPathUtil(".//xf:repeat");
+    final private XPathUtil deleteXPUT = new XPathUtil(".//xf:delete");
+    final private XPathUtil bindXPUT = new XPathUtil(".//xf:bind[@id='multiupload']");
 
     @Override
     protected ComponentDataBean newXFormsComponentDataBeanInstance() {
@@ -55,7 +53,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     protected void loadXFormsComponentDataBean(FormComponent component,
 	    Document xform, Element componentElement) {
 	super.loadXFormsComponentDataBean(component, xform, componentElement);
-	    	XPathUtil util = new XPathUtil(".//xf:bind[@id='bind."+componentElement.getAttribute(FormManagerUtil.id_att)+"']");
+	    	XPathUtil util = new XPathUtil(".//xf:bind[@id='bind."+componentElement.getAttribute(FormManagerUtil.id_att)+"']");	  
 		Element bindElement = (Element) util.getNode(xform.getFirstChild());
 		Bind bind = Bind.load(bindElement);
 		if (bind != null){
@@ -83,44 +81,39 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
     public void addComponentToDocument(FormComponent component) {
 
 	super.addComponentToDocument(component);
-
+	
 	ComponentMultiUploadBean xfMultiUploadComponentBean = (ComponentMultiUploadBean) component.getXformsComponentDataBean();
 
-	XPathUtil util = new XPathUtil(INSERT_TAG);
-	Element nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
-	nodeElement.setAttribute(FormManagerUtil.nodeset_att,constructInsertNodeset(component.getId()));
-
-	util = new XPathUtil(REPEAT_TAG);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean.getElement());
-	nodeElement.setAttribute(FormManagerUtil.bind_att,constructRepeatBind(component.getId()));
+	Element nodeElement = (Element) insertXPUT.getNode(xfMultiUploadComponentBean.getElement());
+	nodeElement.setAttribute(FormManagerUtil.nodeset_att,constructInsertNodeset(component));
+	
+	nodeElement = (Element) repeatXPUT.getNode(xfMultiUploadComponentBean.getElement());
+	nodeElement.setAttribute(FormManagerUtil.bind_att, constructBindValue(component.getId()));
 	nodeElement.setAttribute(FormManagerUtil.id_att, constructRepeatId(component.getId()));
 
-	util = new XPathUtil(DELETE_TAG);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
+	nodeElement = bindXPUT.getNode(xfMultiUploadComponentBean.getBind().getBindElement());
+	nodeElement.setAttribute(FormManagerUtil.id_att, constructBindValue(component.getId()));
+	
+	nodeElement = (Element) deleteXPUT.getNode(xfMultiUploadComponentBean.getElement());
 	nodeElement.setAttribute(FormManagerUtil.nodeset_att,
-		constructInsertNodeset(component.getId()));
+		constructInsertNodeset(component));
 	nodeElement.setAttribute(FormManagerUtil.at_att,
 		constructDeleteAt(component.getId()));
-
-	util = new XPathUtil(GROUP_ELEMENT);
-	nodeElement = (Element) util.getNode(xfMultiUploadComponentBean
-		.getElement());
-	nodeElement.removeAttribute(FormManagerUtil.bind_att);
     }
 
-    private String constructInsertNodeset(String component_id) {
+    private String constructInsertNodeset(FormComponent component) {
 
 	StringBuffer buf = new StringBuffer();
-	buf.append(INSTANCE).append(component_id).append(ENTRY);
+	
+	buf.append(INSTANCE).append(component.getId()).append(ENTRY);
 	return buf.toString();
 
     }
 
-    private String constructRepeatBind(String component_id) {
+    private String constructBindValue(String component_id) {
 
 	StringBuffer buf = new StringBuffer();
-	buf.append(BIND).append(component_id);
+	buf.append("upload_").append(component_id);
 	return buf.toString();
 
     }

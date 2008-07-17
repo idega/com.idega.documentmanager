@@ -12,9 +12,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
  */
 public class Bind implements Cloneable {
 
@@ -263,7 +263,7 @@ public class Bind implements Cloneable {
 		this.readonly = readonly;
 		
 		if(readonly)
-			getBindElement().setAttribute(FormManagerUtil.readonly_att, FormManagerUtil.xpath_true);
+			getBindElement().setAttribute(FormManagerUtil.readonly_att, "instance('control-instance')/readonly = 'true'");
 		else
 			getBindElement().removeAttribute(FormManagerUtil.readonly_att);
 	}

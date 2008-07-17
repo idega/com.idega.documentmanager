@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  *
- * Last modified: $Date: 2008/07/10 14:37:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -431,15 +431,15 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			alert = (Element)xform.importNode(alert, true);
 			element.appendChild(alert);
-			//Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
-			
+		
+			DOMUtil.prettyPrintDOM(alert);
 			String localizedKey = new StringBuilder(component.getId()).append(".error").toString();
 			
 			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, alert, xform, properties.getErrorMsg());
 		} else {
 			
 			Element alert = (Element)alerts.item(0);
-			//Element output = (Element)alert.getElementsByTagName(FormManagerUtil.output_tag).item(0);
+			
 			
 			FormManagerUtil.putLocalizedText(null, null, alert, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
 		}
@@ -462,19 +462,17 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			help = (Element)xform.importNode(help, true);
 			element.appendChild(help);
-			Element output = (Element)help.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
 			String localizedKey = new StringBuilder(component.getId()).append(".help").toString();
 			
-			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, output, xform, properties.getHelpText());
+			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, help, xform, properties.getHelpText());
 			
 		} else {
 			
 			Element help = (Element)helps.item(0);
-			Element output = (Element)help.getElementsByTagName(FormManagerUtil.output_tag).item(0);
 			
 			FormManagerUtil.putLocalizedText(
-					null, null, output, component.getContext().getXformsXmlDoc(), properties.getHelpText());
+					null, null, help, component.getContext().getXformsXmlDoc(), properties.getHelpText());
 		}
 	}
 	

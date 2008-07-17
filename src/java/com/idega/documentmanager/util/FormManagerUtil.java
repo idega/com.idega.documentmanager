@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  *
- * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -206,7 +206,7 @@ public class FormManagerUtil {
 	 * @throws NullPointerException - something necessary not provided
 	 */
 	public static void putLocalizedText(String key, String oldKey, Element element, Document xform, LocalizedStringBean localizedStr) throws NullPointerException {
-		
+	
 		String ref = element.getAttribute(ref_s_att);
 		
 		if(FormManagerUtil.isEmpty(ref) && FormManagerUtil.isEmpty(key))
@@ -433,9 +433,8 @@ public class FormManagerUtil {
 		if(helps == null || helps.getLength() == 0)
 			return new LocalizedStringBean();
 		
-		Element output = (Element)((Element)helps.item(0)).getElementsByTagName(FormManagerUtil.output_tag).item(0);
-		
-		String ref = output.getAttribute(ref_s_att);
+		Element help = (Element)helps.item(0);
+		String ref = help.getAttribute(ref_s_att);
 		
 		if(!isRefFormCorrect(ref))
 			return new LocalizedStringBean();
