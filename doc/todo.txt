@@ -5,13 +5,13 @@
 
 1. locale-instance:
 	Move form submission_model to data_model 
-	
+	(done)
 2. constraint:
 	change alert component (do not have any output element inside)
-
+	(done)
 3. "double click":
 	 submit trigger problem change
-
+	(done)
 4. save button component	
 
 6. component label should be reflected in all his binds etc and when component label changes, all the reflections should change accordingly
