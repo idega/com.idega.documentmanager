@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/18 12:16:08 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -432,7 +432,6 @@ public class XFormsManagerImpl implements XFormsManager {
 			alert = (Element)xform.importNode(alert, true);
 			element.appendChild(alert);
 		
-			DOMUtil.prettyPrintDOM(alert);
 			String localizedKey = new StringBuilder(component.getId()).append(".error").toString();
 			
 			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, alert, xform, properties.getErrorMsg());
