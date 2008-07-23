@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  *
- * Last modified: $Date: 2008/07/18 12:16:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -372,7 +372,8 @@ public class XFormsManagerImpl implements XFormsManager {
 		case READ_ONLY:
 			updateReadonly(component);
 			break;
-
+		case VALIDATION:
+		    	updateValidationText(component);
 		default:
 			break;
 		}
@@ -453,6 +454,9 @@ public class XFormsManagerImpl implements XFormsManager {
 		Element element = xformsComponentDataBean.getElement();
 		NodeList helps = element.getElementsByTagName(FormManagerUtil.help_tag);
 		
+		XPathUtil outputXPUT= new XPathUtil(".//xf:output[@helptype='helptext']");
+
+		
 		if(helps == null || helps.getLength() == 0) {
 			
 			Element help = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "help");
@@ -462,16 +466,76 @@ public class XFormsManagerImpl implements XFormsManager {
 			help = (Element)xform.importNode(help, true);
 			element.appendChild(help);
 			
+			Element output = (Element) outputXPUT.getNode(help); 
+			
 			String localizedKey = new StringBuilder(component.getId()).append(".help").toString();
 			
-			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, help, xform, properties.getHelpText());
+			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, output, xform, properties.getHelpText());
+			
+		} else {
+			
+			Element help = (Element)helps.item(0);
+		
+			Element output = (Element) outputXPUT.getNode(help);
+		
+			FormManagerUtil.putLocalizedText(
+					null, null, output, component.getContext().getXformsXmlDoc(), properties.getHelpText());
+		}
+	}
+	
+	protected void updateValidationText(FormComponent component) {
+		
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		
+		PropertiesComponent properties = component.getProperties();
+		
+		Element element = xformsComponentDataBean.getElement();
+		NodeList helps = element.getElementsByTagName(FormManagerUtil.help_tag);
+		
+		Element helpFormDoc = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "help");
+		
+		XPathUtil outputXPUT= new XPathUtil(".//xf:output[@helptype='validationtext']");
+		
+		String localizedKey = new StringBuilder(component.getId()).append(".info").toString();
+		
+		
+		if(helps == null || helps.getLength() == 0) {
+			
+			Document xform = component.getContext().getXformsXmlDoc();
+			
+			helpFormDoc = (Element)xform.importNode(helpFormDoc, true);
+			element.appendChild(helpFormDoc);
+			
+			Element output = (Element) outputXPUT.getNode(helpFormDoc);
+				
+			FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, output, xform, properties.getValidationText());
+			
+			Bind bind = xformsComponentDataBean.getBind();
+
+//			TODO validation type
+			String value =  new StringBuffer("if(instance('control-instance')/validation_event='submit' and instance('data-instance')/")
+				.append(bind.getNodeset().getPath())
+				.append(" ='' , ")
+				.append(output.getAttribute(FormManagerUtil.ref_s_att))
+				.append(", '')")
+				.toString();
+			
+			output.setAttribute(FormManagerUtil.value_att, value);
+			output.removeAttribute(FormManagerUtil.ref_s_att);
 			
 		} else {
 			
 			Element help = (Element)helps.item(0);
 			
-			FormManagerUtil.putLocalizedText(
-					null, null, help, component.getContext().getXformsXmlDoc(), properties.getHelpText());
+			Element output = (Element) outputXPUT.getNode(help);
+			
+			Element outputFromDoc= (Element)helpFormDoc.getElementsByTagName(FormManagerUtil.output_tag).item(0);
+
+			output.setAttribute(FormManagerUtil.ref_s_att, outputFromDoc.getAttribute(FormManagerUtil.ref_s_att));
+
+			FormManagerUtil.putLocalizedText(localizedKey, null, output, component.getContext().getXformsXmlDoc(), properties.getValidationText());
+			output.removeAttribute(FormManagerUtil.ref_s_att);
+			  
 		}
 	}
 	
@@ -867,6 +931,11 @@ public class XFormsManagerImpl implements XFormsManager {
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
 		return FormManagerUtil.getHelpTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
+	}
+	public LocalizedStringBean getValidationText(FormComponent component) {
+		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+		
+		return FormManagerUtil.getValidationTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
 	}
 	
 	public Variable getVariable(FormComponent component) {

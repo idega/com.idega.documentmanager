@@ -10,9 +10,9 @@ import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/23 06:36:40 $ by $Author: arunas $
  */
 public interface XFormsManager {
 
@@ -40,6 +40,8 @@ public interface XFormsManager {
 	
 	public abstract LocalizedStringBean getHelpText(FormComponent component);
 	
+	public abstract LocalizedStringBean getValidationText(FormComponent component);
+
 	public abstract void loadConfirmationElement(FormComponent component, FormComponentPage confirmation_page);
 	
 	public abstract String getAutofillKey(FormComponent component);

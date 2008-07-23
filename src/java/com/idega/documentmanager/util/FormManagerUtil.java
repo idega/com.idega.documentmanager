@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  *
- * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -434,7 +434,40 @@ public class FormManagerUtil {
 			return new LocalizedStringBean();
 		
 		Element help = (Element)helps.item(0);
-		String ref = help.getAttribute(ref_s_att);
+		
+		XPathUtil outputXPUT= new XPathUtil(".//xf:output[@helptype='helptext']");
+
+		Element output = (Element) outputXPUT.getNode(help);
+		    
+		if (output == null || !output.hasAttribute(FormManagerUtil.ref_s_att))
+		    return new LocalizedStringBean();
+			
+		String  ref = output.getAttribute(ref_s_att);
+				
+		if(!isRefFormCorrect(ref))
+			return new LocalizedStringBean();
+		
+		String key = getKeyFromRef(ref);
+		
+		return getLocalizedStrings(key, xforms_doc);
+	}
+
+	public static LocalizedStringBean getValidationTextLocalizedStrings(Element component, Document xforms_doc) {
+
+	    	NodeList helps = component.getElementsByTagName(FormManagerUtil.help_tag);
+		
+		if(helps == null || helps.getLength() == 0)
+		    return new LocalizedStringBean();
+
+		Element help = (Element)helps.item(0);
+		
+		XPathUtil outputXPUT= new XPathUtil(".//xf:output[@helptype='validationtext']");
+		Element output = (Element) outputXPUT.getNode(help);
+		    
+		if (output == null || !output.hasAttribute(FormManagerUtil.ref_s_att))
+			return new LocalizedStringBean();
+			
+		String  ref = output.getAttribute(ref_s_att);
 		
 		if(!isRefFormCorrect(ref))
 			return new LocalizedStringBean();

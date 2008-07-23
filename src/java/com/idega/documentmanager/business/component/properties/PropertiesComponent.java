@@ -7,9 +7,9 @@ import com.idega.jbpm.variables.Variable;
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
  */
 public interface PropertiesComponent {
 	
@@ -36,6 +36,10 @@ public interface PropertiesComponent {
 	public abstract LocalizedStringBean getHelpText();
 	
 	public abstract void setHelpText(LocalizedStringBean help_text);
+	
+	public abstract void setValidationText(LocalizedStringBean validation_text);
+	
+	public abstract LocalizedStringBean getValidationText();
 	
 	public abstract Variable getVariable();
 		

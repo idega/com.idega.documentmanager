@@ -21,9 +21,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/04/02 15:11:58 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -122,6 +122,7 @@ public class FormComponentImpl implements FormComponent, Component {
 		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
 		properties.setPlainVariable(getXFormsManager().getVariable(this));
 		properties.setPlainReadonly(getXFormsManager().isReadonly(this));
+		properties.setPlainValidationText(getXFormsManager().getValidationText(this));
 	}
 	
 	protected void changeBindNames() {
@@ -283,7 +284,10 @@ public class FormComponentImpl implements FormComponent, Component {
 		case CONSTRAINT_REQUIRED:
 			formDocument.setFormDocumentModified(true);
 			break;
-			
+		case VALIDATION:
+		    	getHtmlManager().clearHtmlComponents(this);
+			formDocument.setFormDocumentModified(true);
+			break;
 		case P3P_TYPE:
 			break;
 			

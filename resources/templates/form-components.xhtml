@@ -242,8 +242,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<xf:alert ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"	model="data_model" />
 			</item>
 			<item id="help"> 
-				<xf:help ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			</item>
+				<xf:help>
+  					<xf:output helptype="validationtext" class="fbc_required_text" ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"
+					   model="data_model" value="if(instance('control-instance')/validation_event='submit' and instance('data-instance')/Nodeset ='' , instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language], '')"/>
+					 <xf:output helptype="helptext" ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]" model="data_model" />
+				</xf:help>
+			</item>	
 			<item id="item_src">
 				<item>
 					<itemLabel></itemLabel>
