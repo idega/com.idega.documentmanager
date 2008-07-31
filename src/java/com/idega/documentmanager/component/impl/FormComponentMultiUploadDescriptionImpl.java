@@ -11,9 +11,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.util.CoreConstants;
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/05/21 13:18:18 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/31 09:58:08 $ by $Author: arunas $
  */
 public class FormComponentMultiUploadDescriptionImpl extends FormComponentImpl implements ComponentMultiUploadDescription{
 	
@@ -64,6 +64,7 @@ public class FormComponentMultiUploadDescriptionImpl extends FormComponentImpl i
 		properties.setPlainRemoveButtonLabel(getXFormsManager().getRemoveButtonLabel(this));
 		properties.setPlainAddButtonLabel(getXFormsManager().getAddButtonLabel(this));
 		properties.setPlainDescriptionButtonLabel(getXFormsManager().getDescriptionButtonLabel(this));
+		properties.setPlainUploadingFileDescription(getXFormsManager().getUploadingFileDescription(this));
 	}
 	
 	@Override
@@ -88,8 +89,11 @@ public class FormComponentMultiUploadDescriptionImpl extends FormComponentImpl i
 		case LABEL:
 			getHtmlManager().clearHtmlComponents(this);
 			getFormDocument().setFormDocumentModified(true);
-			break;	
-			
+			break;
+		case UPLOADING_FILE_DESC:
+		    	getHtmlManager().clearHtmlComponents(this);
+			getFormDocument().setFormDocumentModified(true);
+			break;
 
 		default:
 			break;

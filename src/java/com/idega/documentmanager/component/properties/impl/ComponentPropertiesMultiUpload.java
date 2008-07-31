@@ -7,6 +7,7 @@ public class ComponentPropertiesMultiUpload extends ComponentProperties implemen
     
     private LocalizedStringBean addButtonLabel;
     private LocalizedStringBean removeButtonLabel;
+    private LocalizedStringBean uploadingFileDesc;
     
     public LocalizedStringBean getAddButtonLabel() {
 	return addButtonLabel;
@@ -35,6 +36,18 @@ public class ComponentPropertiesMultiUpload extends ComponentProperties implemen
 	this.addButtonLabel = addButtonLabel;
     }
     
+    public LocalizedStringBean getUploadingFileDescription() {
+	return uploadingFileDesc;
+    }
+
+    public void setUploadingFileDescription(LocalizedStringBean uploadingFileDesc) {
+	this.uploadingFileDesc = uploadingFileDesc;
+	component.update(ConstUpdateType.UPLOADING_FILE_DESC);
+    }
+    
+    public void setPlainUploadingFileDescription(LocalizedStringBean uploadingFileDesc) {
+	this.uploadingFileDesc = uploadingFileDesc;
+    }
     
   
 

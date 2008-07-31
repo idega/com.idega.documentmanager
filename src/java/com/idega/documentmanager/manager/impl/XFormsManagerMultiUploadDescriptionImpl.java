@@ -17,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
- * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/31 09:58:08 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUploadDescription {
@@ -35,11 +35,13 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
     private static final String APPEND_REMOVE = ".remove";
     private static final String APPEND_LABEL = ".label";
     private static final String APPEND_DESCRIPTION = ".text";
+    private static final String APPEND_NAME =".name";
     
     private static final int TITLE_LABEL = 0;
     private static final int ADD_BUTTON_LABEL = 1;
     private static final int DESCRIPTION_BUTTON_LABEL = 2;
-    private static final int REMOVE_BUTTON_LABEL = 3;
+    private static final int UPLOADING_FILE_DESC = 3;
+    private static final int REMOVE_BUTTON_LABEL = 4;
     
     
     final private XPathUtil labelsXPathUT = new XPathUtil(".//xf:label[@model]");
@@ -173,6 +175,9 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		case ERROR_MSG:
 			updateErrorMsg(component);
 			break;
+		case UPLOADING_FILE_DESC:
+		    	updateUploadingFileDescription(component);
+		    	break;
 		default:
 			break;
 		}
@@ -226,6 +231,24 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		localizedText
 	);
    } 
+   
+   protected void updateUploadingFileDescription(FormComponent component) {
+       	PropertiesMultiUploadDescription properties = (PropertiesMultiUploadDescription)component.getProperties();
+	LocalizedStringBean localizedText = properties.getUploadingFileDescription();
+	NodeList labels = getLabelNodeList(component);
+	
+	if(labels == null || labels.getLength() == 0)
+		return;
+	
+	Element label = (Element)labels.item(UPLOADING_FILE_DESC);
+	String ref = label.getAttribute(FormManagerUtil.ref_s_att);
+	
+	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_NAME).toString(), null, 
+		label,
+		component.getContext().getXformsXmlDoc(),
+		localizedText
+	);
+   }
    
    protected void updateDescriptionButtonLabel(FormComponent component) {
 	
@@ -304,6 +327,13 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 		return null;
 	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(DESCRIPTION_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
 
+    }
+    
+    public LocalizedStringBean getUploadingFileDescription(FormComponent component) {
+	NodeList labels = getLabelNodeList(component);
+	if(labels == null || labels.getLength() == 0)
+		return null;
+	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(UPLOADING_FILE_DESC), component.getContext().getXformsXmlDoc());
     }
     
 

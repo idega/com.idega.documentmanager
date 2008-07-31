@@ -12,5 +12,9 @@ public interface PropertiesMultiUpload extends PropertiesComponent{
 
     public abstract void setAddButtonLabel(LocalizedStringBean addButtonLabel);
     
+    public abstract LocalizedStringBean getUploadingFileDescription();
+
+    public abstract void setUploadingFileDescription(LocalizedStringBean addButtonLabel);
+    
     
 }

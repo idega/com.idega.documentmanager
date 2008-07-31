@@ -4,15 +4,16 @@ import com.idega.documentmanager.business.component.properties.PropertiesMultiUp
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
- * Last modified: $Date: 2008/05/10 11:49:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/31 09:58:08 $ by $Author: arunas $
  */
 public class ComponentPropertiesMultiUploadDescription extends ComponentProperties implements PropertiesMultiUploadDescription{
     
     private LocalizedStringBean addButtonLabel;
     private LocalizedStringBean removeButtonLabel;
     private LocalizedStringBean descriptionLabel;
+    private LocalizedStringBean uploadingFileDesc;
     
     public LocalizedStringBean getAddButtonLabel() {
 	return addButtonLabel;
@@ -54,6 +55,19 @@ public class ComponentPropertiesMultiUploadDescription extends ComponentProperti
 	this.descriptionLabel = descriptionButtonLabel;
 	component.update(ConstUpdateType.DESCRIPTION_BUTTON_LABEL);
 	
+    }
+    
+    public LocalizedStringBean getUploadingFileDescription() {
+	return uploadingFileDesc;
+    }
+
+    public void setUploadingFileDescription(LocalizedStringBean uploadingFileDesc) {
+	this.uploadingFileDesc = uploadingFileDesc;
+	component.update(ConstUpdateType.UPLOADING_FILE_DESC);
+    }
+    
+    public void setPlainUploadingFileDescription(LocalizedStringBean uploadingFileDesc) {
+	this.uploadingFileDesc = uploadingFileDesc;
     }
   
 
