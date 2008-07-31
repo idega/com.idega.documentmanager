@@ -17,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
- * Last modified: $Date: 2008/07/31 09:58:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/07/31 13:21:16 $ by $Author: arunas $
  */
 public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUploadDescription {
@@ -306,18 +306,30 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
     
     public LocalizedStringBean getAddButtonLabel(FormComponent component) {
 	NodeList labels = getLabelNodeList(component);
-	if(labels == null || labels.getLength() == 0)
+	if(labels == null || labels.getLength() == 0 || labels.item(ADD_BUTTON_LABEL) == null)
 		return null;
-	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(ADD_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
+	
+	Element label = (Element)labels.item(ADD_BUTTON_LABEL);
+	
+	if (label == null)
+	    return null;
+	
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
 
     public LocalizedStringBean getRemoveButtonLabel(FormComponent component) {
 	
 	NodeList labels = getLabelNodeList(component);
+
 	if(labels == null || labels.getLength() == 0)
 		return null;
-	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(REMOVE_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
-
+	
+	Element label = (Element)labels.item(REMOVE_BUTTON_LABEL);
+	
+	if (label == null)
+	    return null;
+	
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
     public LocalizedStringBean getDescriptionButtonLabel(FormComponent component) {
@@ -325,15 +337,25 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	NodeList labels = getLabelNodeList(component);
 	if(labels == null || labels.getLength() == 0)
 		return null;
-	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(DESCRIPTION_BUTTON_LABEL), component.getContext().getXformsXmlDoc());
-
+	Element label = (Element)labels.item(DESCRIPTION_BUTTON_LABEL);
+	
+	if (label == null)
+	    return null;
+	
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
     public LocalizedStringBean getUploadingFileDescription(FormComponent component) {
 	NodeList labels = getLabelNodeList(component);
 	if(labels == null || labels.getLength() == 0)
 		return null;
-	return FormManagerUtil.getElementLocalizedStrings((Element)labels.item(UPLOADING_FILE_DESC), component.getContext().getXformsXmlDoc());
+	
+	Element label = (Element)labels.item(UPLOADING_FILE_DESC);
+	
+	if (label == null)
+	    return null;
+	
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
 
