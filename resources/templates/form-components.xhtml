@@ -129,6 +129,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multi_upload_file.label lang="is_IS">Add One</multi_upload_file.label> 
 			<multi_upload_file.remove lang="en">Remove</multi_upload_file.remove>
 			<multi_upload_file.remove lang="is_IS">Remove</multi_upload_file.remove>
+			<multi_upload_file.name lang="en">Uploaded file name</multi_upload_file.name>
+			<multi_upload_file.name lang="is_IS">Uplaoded file name</multi_upload_file.name>
 			
 			<multi_upload_description_file.title lang="en">Multi file upload with description</multi_upload_description_file.title>
 			<multi_upload_description_file.title lang="is_IS">Multi file upload with description</multi_upload_description_file.title> 
@@ -140,6 +142,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multi_upload_description_file.text lang="is_IS">File description</multi_upload_description_file.text>
 			<multi_upload_description_file.info lang="en">Please enter file description</multi_upload_description_file.info>
 			<multi_upload_description_file.info lang="is_IS">Please enter file description</multi_upload_description_file.info>
+			<multi_upload_description_file.name lang="en">Uploaded file name</multi_upload_description_file.name>
+			<multi_upload_description_file.name lang="is_IS">Uplaoded file name</multi_upload_description_file.name>
 			
 			<page.label lang="en">Section</page.label>
 			<confirmation_page.label lang="en">Confirmation Section</confirmation_page.label>
@@ -407,18 +411,24 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                         <xf:insert nodeset="instance('data-instance')/multiupload/entry" at="last()" position="before"/>
                     </xf:action>
          </xf:trigger>
-                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="full" >
+                  	<xf:repeat id="upload-entries" bind="multiupload" appearance="group" >
+                  	 <xf:group appearance="group">
+						<xf:output ref="@filename">
+							<xf:label model="data_model" ref="instance('localized_strings')/multi_upload_description_file.name[@lang=instance('localized_strings')/current_language]" />
+						</xf:output>
+					</xf:group>
+					<xf:group appearance="group">
                     <xf:upload ref=".">
                         <xf:filename ref="@filename"/>
                         <xf:mediatype ref="@mediatype"/>      
-                    </xf:upload>
-                    	 
+                    </xf:upload>           	 
                	    <xf:trigger>
-               	   	<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
-               	    <xf:action>
-					 	<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
-					</xf:action>
-					</xf:trigger>
+               	   		<xf:label ref="instance('localized_strings')/multi_upload_file.remove[@lang=instance('localized_strings')/current_language]" model="data_model" />
+               	    	<xf:action>
+					 		<xf:delete at="index('upload-entries')" nodeset="instance('data-instance')/multiupload/entry"/>
+						</xf:action>
+						</xf:trigger>
+					</xf:group>
                 </xf:repeat>
 		
     	</xf:group>
@@ -438,9 +448,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 			ref="instance('localized_strings')/multi_upload_description_file.text[@lang=instance('localized_strings')/current_language]"
                 			model="data_model" /> 
                   		</xf:input>	
-                  		<xf:output value="" ref="instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language]"
-				model="data_model" />
+                  		<xf:output value="if(. !='' and ./description ='', instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language], '')"
+                  		 ref="instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language]"
+							model="data_model" />
                   		</xf:group>
+                  	 <xf:group appearance="group">
+						<xf:output ref="@filename">
+							<xf:label model="data_model" ref="instance('localized_strings')/multi_upload_description_file.name[@lang=instance('localized_strings')/current_language]" />
+						</xf:output>
+					</xf:group>
                   		<xf:group appearance="group">         		 
                   		    <xf:upload ref=".">
                         	<xf:filename ref="@filename"/>
