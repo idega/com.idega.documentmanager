@@ -416,8 +416,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 						<xf:output ref="@filename">
 							<xf:label model="data_model" ref="instance('localized_strings')/multi_upload_description_file.name[@lang=instance('localized_strings')/current_language]" />
 						</xf:output>
-					</xf:group>
-					<xf:group appearance="group">
+				
                     <xf:upload ref=".">
                         <xf:filename ref="@filename"/>
                         <xf:mediatype ref="@mediatype"/>      
@@ -451,13 +450,11 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   		<xf:output value="if(. !='' and ./description ='', instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language], '')"
                   		 ref="instance('localized_strings')/multi_upload_description_file.info[@lang=instance('localized_strings')/current_language]"
 							model="data_model" />
-                  		</xf:group>
-                  	 <xf:group appearance="group">
+                  	
 						<xf:output ref="@filename">
 							<xf:label model="data_model" ref="instance('localized_strings')/multi_upload_description_file.name[@lang=instance('localized_strings')/current_language]" />
 						</xf:output>
-					</xf:group>
-                  		<xf:group appearance="group">         		 
+				  		 
                   		    <xf:upload ref=".">
                         	<xf:filename ref="@filename"/>
                         	<xf:mediatype ref="@mediatype"/>      
