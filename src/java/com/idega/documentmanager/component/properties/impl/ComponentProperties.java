@@ -8,9 +8,9 @@ import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/11 09:19:15 $ by $Author: arunas $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
@@ -20,6 +20,7 @@ public class ComponentProperties implements PropertiesComponent {
 	private LocalizedStringBean errorMsg;
 	private LocalizedStringBean helpText;
 	private LocalizedStringBean validationText;
+	private LocalizedStringBean componentText;
 	private String p3ptype;
 	private String autofillKey;
 	private Variable variable;
@@ -75,8 +76,10 @@ public class ComponentProperties implements PropertiesComponent {
 		.append(helpText)
 		.append("\nreadonly: ")
 		.append(readonly)
-		.append("\nvalidationText")
+		.append("\nvalidationText: ")
 		.append(validationText)
+		.append("\ncomponentText: ")
+		.append(componentText)
 		.toString();
 	}
 
@@ -150,6 +153,18 @@ public class ComponentProperties implements PropertiesComponent {
 	
 	public void setPlainValidationText(LocalizedStringBean validationText) {
 	    this.validationText = validationText;
+	}
+	
+	public LocalizedStringBean getText() {
+		return componentText;
+	}
+	public void setText(LocalizedStringBean comptext) {
+	    this.componentText = comptext;
+	    component.update(ConstUpdateType.COMPONENT_TEXT);
+	}
+	public void setPlainText(LocalizedStringBean comptext) {
+	    this.componentText = comptext;
+	
 	}
 	
 }

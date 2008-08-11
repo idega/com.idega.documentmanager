@@ -12,6 +12,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<xf:instance id="components_instance" xmlns="">
 		<data> 
+			<text_output/>
 			<text /> 
 			<id_number nodeType="formIdentifier">IW2000-01-01-0001</id_number>
 			<email xsi:nil="true"/> 
@@ -93,6 +94,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
+	<xf:bind id="text_output" nodeset="text_output" type="xs:string" />
 
 </xf:model>
 <xf:model id="data_model">
@@ -181,7 +183,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <autofill_commune.title lang="is_IS">Commune</autofill_commune.title>
             <autofill_postal_code.title lang="en">Postal code</autofill_postal_code.title>
             <autofill_postal_code.title lang="is_IS">Postal code</autofill_postal_code.title>
-			
+            <text_output.title lang="en">Text output</text_output.title>
+			<text_output.title lang="is_IS">Text output</text_output.title>
 		</localized_strings>
 	</xf:instance>
 	
@@ -231,6 +234,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<datatype>string</datatype>
 			</component>
 			<component component_id="fbc_header_text" accessSupport="r">
+				<datatype>string</datatype>
+			</component>
+			<component component_id="fbc_text_output" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
 		</componentDataTypes>
@@ -369,6 +375,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	    
 		<category name="basic">
 			<component component_id="fbc_text" />
+			<component component_id="fbc_text_output" />
 			<component component_id="fbc_textarea" />
 			<component component_id="fbc_secret" />
 			<component component_id="fbc_multiple_select_minimal" />
@@ -611,6 +618,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				model="data_model" />
 			<xf:alert  ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"/>
 		</xf:input>
+		
+		<xf:output bind="text_output" id="fbc_text_output">
+			<xf:label model="data_model" ref="instance('localized_strings')/text_output.title[@lang=instance('localized_strings')/current_language]"/>				
+		</xf:output>
 			
         <xf:upload bind="uploadfile" id="fbc_upload_file" > 
 			<xf:label ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />

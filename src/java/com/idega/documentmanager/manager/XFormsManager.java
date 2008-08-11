@@ -10,9 +10,9 @@ import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/07/23 06:36:40 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/11 09:19:14 $ by $Author: arunas $
  */
 public interface XFormsManager {
 
@@ -39,6 +39,8 @@ public interface XFormsManager {
 	public abstract LocalizedStringBean getErrorLabelLocalizedStrings(FormComponent component);
 	
 	public abstract LocalizedStringBean getHelpText(FormComponent component);
+	
+	public abstract LocalizedStringBean getText(FormComponent component);
 	
 	public abstract LocalizedStringBean getValidationText(FormComponent component);
 

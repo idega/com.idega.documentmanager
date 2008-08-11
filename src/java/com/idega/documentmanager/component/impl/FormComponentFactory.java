@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/05/10 11:49:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/11 09:19:15 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -55,6 +55,7 @@ public class FormComponentFactory implements Singleton {
 		types.add("fbc_autofill_postal_code");
 		types.add("fbc_identifier_number");
 		types.add("fbc_text");
+		types.add("fbc_text_output");
 		types.add("fbc_textarea");
 		types.add("fbc_secret");
 		types.add("fbc_email");

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.chiba.xml.dom.DOMUtil;
+import org.dom4j.dom.DOMProcessingInstruction;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,9 +29,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  *
- * Last modified: $Date: 2008/07/23 06:36:42 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/11 09:19:15 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -450,6 +451,11 @@ public class FormManagerUtil {
 		String key = getKeyFromRef(ref);
 		
 		return getLocalizedStrings(key, xforms_doc);
+	}
+
+	public static LocalizedStringBean getTextLocalizedStrings(Element component, Document xforms_doc) {
+	    return new LocalizedStringBean();
+
 	}
 
 	public static LocalizedStringBean getValidationTextLocalizedStrings(Element component, Document xforms_doc) {
