@@ -12,7 +12,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<xf:instance id="components_instance" xmlns="">
 		<data> 
-			<text_output/>
 			<text /> 
 			<id_number nodeType="formIdentifier">IW2000-01-01-0001</id_number>
 			<email xsi:nil="true"/> 
@@ -94,7 +93,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
-	<xf:bind id="text_output" nodeset="text_output" type="xs:string" />
 
 </xf:model>
 <xf:model id="data_model">
@@ -185,6 +183,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <autofill_postal_code.title lang="is_IS">Postal code</autofill_postal_code.title>
             <text_output.title lang="en">Text output</text_output.title>
 			<text_output.title lang="is_IS">Text output</text_output.title>
+			<text_output.text lang="en">Message</text_output.text>
+			<text_output.text lang="is_IS">Message</text_output.text>
 		</localized_strings>
 	</xf:instance>
 	
@@ -233,10 +233,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_header_text" accessSupport="r">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbc_header_text" accessSupport="r">
-				<datatype>string</datatype>
-			</component>
-			<component component_id="fbc_text_output" accessSupport="rw">
+			<component component_id="fbc_text_output" accessSupport="r">
 				<datatype>string</datatype>
 			</component>
 		</componentDataTypes>
@@ -375,7 +372,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	    
 		<category name="basic">
 			<component component_id="fbc_text" />
-			<component component_id="fbc_text_output" />
 			<component component_id="fbc_textarea" />
 			<component component_id="fbc_secret" />
 			<component component_id="fbc_multiple_select_minimal" />
@@ -401,6 +397,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		</category>
 		<category name="plain">
 			<component component_id="fbc_simple_text" />
+			<component component_id="fbc_text_output" />
 			<component component_id="fbc_header_text" />
 			<component component_id="fbc_separator" />
 		</category>
@@ -619,7 +616,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<xf:alert  ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"/>
 		</xf:input>
 		
-		<xf:output bind="text_output" id="fbc_text_output">
+		<xf:output name="fbc_text_output" id="fbc_text_output" ref="instance('localized_strings')/text_output.text[@lang=instance('localized_strings')/current_language]" model="data_model" >
 			<xf:label model="data_model" ref="instance('localized_strings')/text_output.title[@lang=instance('localized_strings')/current_language]"/>				
 		</xf:output>
 			

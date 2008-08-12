@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  *
- * Last modified: $Date: 2008/08/11 09:19:15 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/12 06:07:41 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -353,11 +353,6 @@ public class XFormsManagerImpl implements XFormsManager {
 			updateHelpText(component);
 			break;
 			
-		case COMPONENT_TEXT:
-			updateText(component);
-			break;	
-			
-			
 		case CONSTRAINT_REQUIRED:
 			updateConstraintRequired(component);
 			break;
@@ -448,22 +443,6 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			FormManagerUtil.putLocalizedText(null, null, alert, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
 		}
-	}
-	
-	protected void updateText(FormComponent component) {
-		
-		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
-		
-		PropertiesComponent properties = component.getProperties();
-		
-		Element element = xformsComponentDataBean.getElement();
-
-		element.removeAttribute(FormManagerUtil.bind_att);
-		
-		String localizedKey = new StringBuilder(component.getId()).append(".text").toString();
-		
-		FormManagerUtil.putLocalizedText(localizedKey, FormManagerUtil.localized_entries, element,  component.getContext().getXformsXmlDoc(), properties.getText());
-		
 	}
 	
 	protected void updateHelpText(FormComponent component) {
@@ -880,14 +859,6 @@ public class XFormsManagerImpl implements XFormsManager {
 			
 			String src = FormManagerUtil.context_att_pref+autofillKey;
 			
-//			TODO better .......
-			Element elem =  xformsComponentDataBean.getElement();
-			if (elem.hasAttribute(FormManagerUtil.ref_s_att)) {
-			    elem.removeAttribute(FormManagerUtil.ref_s_att);
-			    String bindId = xformsComponentDataBean.getBind().getId();
-			    elem.setAttribute(FormManagerUtil.bind_att, bindId);
-			}
-			
 			if(xformsComponentDataBean.getKeyExtInstance() != null) {
 				
 				xformsComponentDataBean.getKeyExtInstance().setAttribute(FormManagerUtil.src_att, src);
@@ -962,11 +933,6 @@ public class XFormsManagerImpl implements XFormsManager {
 		return FormManagerUtil.getHelpTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
 	}
 	
-	public LocalizedStringBean getText(FormComponent component) {
-		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
-		
-		return FormManagerUtil.getTextLocalizedStrings(xformsComponentDataBean.getElement(), component.getContext().getXformsXmlDoc());
-	}
 	public LocalizedStringBean getValidationText(FormComponent component) {
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		

@@ -13,12 +13,13 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.manager.XFormsManagerPlain;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
+import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/11/15 09:24:15 $ by $Author: civilis $
+ * Last modified: $Date: 2008/08/12 06:07:41 $ by $Author: arunas $
  */
 public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsManagerPlain {
 
@@ -74,13 +75,19 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 	}
 	
 	public LocalizedStringBean getText(FormComponent component) {
+				
+		Element output = component.getXformsComponentDataBean().getElement();
 		
-		NodeList outputs = FormManagerUtil.getElementsContainingAttribute(component.getXformsComponentDataBean().getElement(), FormManagerUtil.output_tag, FormManagerUtil.ref_s_att);
+		if (!output.hasAttribute(FormManagerUtil.ref_s_att)) {
+		    
+		    XPathUtil outputXPUT = new XPathUtil(".//xf:output");
+		    output = (Element) outputXPUT.getNode(output);
+			  
+		    if (output == null)
+			    return null;
+		}
 		
-		if(outputs == null || outputs.getLength() == 0)
-			return null;
-		
-		return FormManagerUtil.getElementLocalizedStrings((Element)outputs.item(0), component.getContext().getXformsXmlDoc());
+		return FormManagerUtil.getElementLocalizedStrings((Element)output, component.getContext().getXformsXmlDoc());
 	}
 	
 	@Override

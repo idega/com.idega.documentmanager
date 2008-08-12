@@ -2,10 +2,10 @@ package com.idega.documentmanager.component.properties.impl;
 
 /**
  * 
- *  Last modified: $Date: 2008/08/11 09:19:15 $ by $Author: arunas $
+ *  Last modified: $Date: 2008/08/12 06:07:39 $ by $Author: arunas $
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public enum ConstUpdateType {
 	
@@ -29,6 +29,5 @@ public enum ConstUpdateType {
 	REMOVE_BUTTON_LABEL,
 	DESCRIPTION_BUTTON_LABEL,
 	UPLOADING_FILE_DESC,
-	COMPONENT_TEXT,
 	VALIDATION;
 }
