@@ -8,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/04 17:09:43 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/12 12:02:30 $ by $Author: arunas $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -49,6 +49,10 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 		getXFormsManager().update(this, what);
 		
 		switch (what) {
+		case LABEL:
+		    	getHtmlManager().clearHtmlComponents(this);
+			getFormDocument().setFormDocumentModified(true);
+			break;
 		case TEXT:
 		    	getHtmlManager().clearHtmlComponents(this);
 			getFormDocument().setFormDocumentModified(true);

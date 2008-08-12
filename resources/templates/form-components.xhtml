@@ -233,7 +233,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_header_text" accessSupport="r">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbc_text_output" accessSupport="r">
+			<component component_id="fbc_static_output" accessSupport="r">
 				<datatype>string</datatype>
 			</component>
 		</componentDataTypes>
@@ -397,7 +397,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		</category>
 		<category name="plain">
 			<component component_id="fbc_simple_text" />
-			<component component_id="fbc_text_output" />
+			<component component_id="fbc_static_output" />
 			<component component_id="fbc_header_text" />
 			<component component_id="fbc_separator" />
 		</category>
@@ -616,7 +616,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<xf:alert  ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"/>
 		</xf:input>
 		
-		<div name="fbc_text_output" id="fbc_text_output">
+		<div name="fbc_static_output" id="fbc_static_output">
 		<xf:output ref="instance('localized_strings')/text_output.text[@lang=instance('localized_strings')/current_language]" model="data_model" >
 			<xf:label model="data_model" ref="instance('localized_strings')/text_output.title[@lang=instance('localized_strings')/current_language]"/>				
 		</xf:output>

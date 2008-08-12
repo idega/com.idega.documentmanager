@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/08/12 06:07:40 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/12 12:02:30 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -82,7 +82,7 @@ public class FormComponentFactory implements Singleton {
 		components_tags_classified.put(type_select, types);
 		
 		types = new ArrayList<String>();
-		types.add("fbc_text_output");
+		types.add("fbc_static_output");
 		types.add("fbc_simple_text");
 		types.add("fbc_header_text");
 		types.add("fbc_separator");
