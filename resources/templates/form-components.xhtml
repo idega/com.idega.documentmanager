@@ -616,9 +616,11 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<xf:alert  ref="instance('localized_strings')/email.error[@lang=instance('localized_strings')/current_language]"/>
 		</xf:input>
 		
-		<xf:output name="fbc_text_output" id="fbc_text_output" ref="instance('localized_strings')/text_output.text[@lang=instance('localized_strings')/current_language]" model="data_model" >
+		<div name="fbc_text_output" id="fbc_text_output">
+		<xf:output ref="instance('localized_strings')/text_output.text[@lang=instance('localized_strings')/current_language]" model="data_model" >
 			<xf:label model="data_model" ref="instance('localized_strings')/text_output.title[@lang=instance('localized_strings')/current_language]"/>				
 		</xf:output>
+		</div>
 			
         <xf:upload bind="uploadfile" id="fbc_upload_file" > 
 			<xf:label ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
