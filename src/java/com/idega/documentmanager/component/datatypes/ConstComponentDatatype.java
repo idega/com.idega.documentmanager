@@ -3,6 +3,12 @@ package com.idega.documentmanager.component.datatypes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
+ * @version $Revision: 1.3 $
+ *
+ * Last modified: $Date: 2008/08/28 11:58:33 $ by $Author: civilis $
+ */
 public class ConstComponentDatatype {
 	
 	public static final String STRING = "string";

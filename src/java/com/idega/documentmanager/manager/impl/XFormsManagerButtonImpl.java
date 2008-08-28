@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/06/20 13:53:57 $ by $Author: arunas $
+ * Last modified: $Date: 2008/08/28 11:58:33 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -325,7 +325,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 				if(nodeset == null)
 					nodeset = Nodeset.create(modelElement, actionTaken);
 				
-				nodeset.setMapping("string:"+actionTaken);
+				nodeset.setMapping("string_"+actionTaken);
 					
 //				create
 				bind = Bind.create(xform, actionTaken, null, nodeset);

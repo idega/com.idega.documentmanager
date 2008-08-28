@@ -12,15 +12,15 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/05/19 15:27:05 $ by $Author: civilis $
+ * Last modified: $Date: 2008/08/28 11:58:33 $ by $Author: civilis $
  */
 public class FormVariablesHandler {
 
 	private Document xform;
 	private Node variablesContainer;
-	private static XPathUtil mappingsXPath = new XPathUtil(".//@mapping[contains(., concat(':', $variableName))]");
+	private static XPathUtil mappingsXPath = new XPathUtil(".//@mapping[contains(., concat('_', $variableName))]");
 	private static XPathUtil mappingElementXPath = new XPathUtil(".//node()[@mapping = $variableMapping]");
 	private final String variableNameParameter = "variableName";
 	private final String variableMappingParameter = "variableMapping";
@@ -44,7 +44,7 @@ public class FormVariablesHandler {
 	/**
 	 * return variable mapped in the variables container provided
 	 * 
-	 * @param variableName - variable name to lookup. Without data type. I.e. if variable is mapped as string:actionTaken, only actionTaken should be provided here.
+	 * @param variableName - variable name to lookup. Without data type. I.e. if variable is mapped as string_actionTaken, only actionTaken should be provided here.
 	 * @return
 	 * 
 	 * @throws UnsupportedOperationException - if data type found in the variable mapping is unsupported by process engine.
