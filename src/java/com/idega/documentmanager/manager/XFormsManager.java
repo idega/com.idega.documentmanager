@@ -2,17 +2,17 @@ package com.idega.documentmanager.manager;
 
 import org.w3c.dom.Element;
 
+import com.idega.block.process.variables.Variable;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
-import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/08/12 06:07:39 $ by $Author: arunas $
+ * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
  */
 public interface XFormsManager {
 

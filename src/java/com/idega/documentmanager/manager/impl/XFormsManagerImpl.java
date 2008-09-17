@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.idega.block.process.variables.Variable;
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentButtonArea;
@@ -22,15 +23,14 @@ import com.idega.documentmanager.manager.XFormsManager;
 import com.idega.documentmanager.util.FormManagerUtil;
 import com.idega.documentmanager.xform.Bind;
 import com.idega.documentmanager.xform.Nodeset;
-import com.idega.jbpm.variables.Variable;
 import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  *
- * Last modified: $Date: 2008/08/12 06:07:41 $ by $Author: arunas $
+ * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	

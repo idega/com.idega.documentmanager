@@ -1,16 +1,16 @@
 package com.idega.documentmanager.component.properties.impl;
 
+import com.idega.block.process.variables.Variable;
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.jbpm.variables.Variable;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/08/12 06:07:39 $ by $Author: arunas $
+ * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
