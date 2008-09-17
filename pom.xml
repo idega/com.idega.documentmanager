@@ -40,8 +40,8 @@
       <artifactId>org.chiba.web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.idega.block.addon</groupId>
-      <artifactId>org.jboss.jbpm</artifactId>
+      <groupId>com.idega.block.platform</groupId>
+      <artifactId>com.idega.block.process</artifactId>
     </dependency>
   </dependencies>
 </project>
