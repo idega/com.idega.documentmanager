@@ -1,5 +1,6 @@
 package com.idega.documentmanager.form.impl;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -8,8 +9,8 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
-import com.idega.data.StringInputStream;
 import com.idega.documentmanager.business.PersistedFormDocument;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.component.FormComponent;
@@ -21,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2008/05/26 16:34:35 $ by $Author: civilis $
+ * Last modified: $Date: 2008/09/28 17:03:49 $ by $Author: civilis $
  */
 public class Form {
 	
@@ -208,7 +209,8 @@ public class Form {
 		clear();
 		formDocument.setLoad(true);
 		
-		Document xformsXmlDoc = builder.parse(new StringInputStream(srcXml));
+		ByteArrayInputStream bais = new ByteArrayInputStream(srcXml.getBytes());
+		Document xformsXmlDoc = builder.parse(new InputSource(bais));
 		getContext().setXformsXmlDoc(xformsXmlDoc);
 		loadDocumentInternal(null);
 	}
