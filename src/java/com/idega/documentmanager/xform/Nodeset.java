@@ -9,9 +9,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/03/20 13:02:48 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/02 13:54:02 $ by $Author: civilis $
  */
 public class Nodeset implements Cloneable {
 
@@ -70,8 +70,14 @@ public class Nodeset implements Cloneable {
 			
 			nodesetElementXPath.clearVariables();
 			
-			nodesetElementXPath.setVariable(nodesetPathVariable, 
-					nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(0, nodesetPath.indexOf(CoreConstants.SLASH)) : nodesetPath);
+//			TODO: use chiba to locate those nodesets (modelitem)
+			if(nodesetPath.startsWith("instance")) {
+				nodesetPath = nodesetPath.substring(nodesetPath.indexOf(CoreConstants.SLASH)+1);
+			}
+			
+			String nodesetElementName = nodesetPath.contains(CoreConstants.SLASH) ? nodesetPath.substring(0, nodesetPath.indexOf(CoreConstants.SLASH)) : nodesetPath;
+			
+			nodesetElementXPath.setVariable(nodesetPathVariable, nodesetElementName);
 			nodesetElement = (Element)nodesetElementXPath.getNode(instance);
 		}
 		
