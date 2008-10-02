@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  *
- * Last modified: $Date: 2008/08/12 06:07:40 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/02 08:55:14 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -693,7 +693,12 @@ public class FormManagerUtil {
 	public static Element getComponentsContainerElement(Document xform) {
 
 		Element bodyElement = (Element)xform.getElementsByTagName(body_tag).item(0);
-		return (Element)bodyElement.getElementsByTagName(switch_tag).item(0);
+		Element compElement = (Element)bodyElement.getElementsByTagName(switch_tag).item(0);
+		if (compElement == null) {
+			compElement = (Element)bodyElement.getElementsByTagName("idega:switch").item(0);
+		}
+		
+		return compElement;
 	}
 	
 	public static boolean isEmpty(String str) {
