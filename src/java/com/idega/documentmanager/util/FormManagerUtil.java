@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  *
- * Last modified: $Date: 2008/10/02 08:55:14 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -123,6 +123,8 @@ public class FormManagerUtil {
 	public static final String submission_model = "submission_model";
 	public static final String nodeTypeAtt = "nodeType";
 	public static final String controlInstanceID = "control-instance";
+	public static final String idega_switch_tag = "idega:switch";
+	public static final String idega_case_tag = "idega:case";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -695,7 +697,7 @@ public class FormManagerUtil {
 		Element bodyElement = (Element)xform.getElementsByTagName(body_tag).item(0);
 		Element compElement = (Element)bodyElement.getElementsByTagName(switch_tag).item(0);
 		if (compElement == null) {
-			compElement = (Element)bodyElement.getElementsByTagName("idega:switch").item(0);
+			compElement = (Element)bodyElement.getElementsByTagName(FormManagerUtil.idega_switch_tag).item(0);
 		}
 		
 		return compElement;

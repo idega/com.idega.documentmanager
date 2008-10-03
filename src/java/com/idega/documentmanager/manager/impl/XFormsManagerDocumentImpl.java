@@ -21,13 +21,15 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/07/10 15:26:26 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 	
-	private XPathUtil readonlyXPath = new XPathUtil("./readonly");
+	private XPathUtil readonlyXPath = new XPathUtil(".//readonly");
+	private XPathUtil generatePdfXPath = new XPathUtil(".//generatePdf");
+
 	private XPathUtil controlXPath = new XPathUtil("./control");
 
 	public void setComponentsContainer(FormComponent component, Element element) {
@@ -279,10 +281,58 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 				Element controlElement = controlXPath.getNode(controlInstance);
 				readonlyElement = (Element)controlElement.appendChild(readonlyElement);
 				readonlyElement.setTextContent(readonly ? FormManagerUtil.true_string : FormManagerUtil.false_string);
-			}
+			}else 
+				readonlyElement.setTextContent(readonly ? FormManagerUtil.true_string : FormManagerUtil.false_string);
+			
 			
 		} else {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "setReadonly called on form, but no control instance found. Ignoring.");
 		}
+	}
+	
+	@Override
+	public void setPdfForm(FormComponent component, boolean generatePdf) {
+		
+		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		
+		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
+
+		if(controlInstance != null) {
+
+			Element generatePdfElement = generatePdfXPath.getNode(controlInstance);
+			if(generatePdfElement == null) {
+				
+				generatePdfElement = controlInstance.getOwnerDocument().createElement("generatePdf");
+				Element controlElement = controlXPath.getNode(controlInstance);
+				generatePdfElement = (Element)controlElement.appendChild(generatePdfElement);
+				generatePdfElement.setTextContent(generatePdf ? FormManagerUtil.true_string : FormManagerUtil.false_string);
+
+			}else 
+				generatePdfElement.setTextContent(generatePdf ? FormManagerUtil.true_string : FormManagerUtil.false_string);
+			
+		} else {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, "setPdfForm called on form, but no control instance found. Ignoring.");
+		}
+		
+	}
+	
+	@Override
+	public boolean isPdfForm(FormComponent component) {
+		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		
+		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
+		
+		if(controlInstance != null) {
+
+			Element generatePdfElement = generatePdfXPath.getNode(controlInstance);
+			
+			if(generatePdfElement != null) {
+				
+				return FormManagerUtil.true_string.equals(generatePdfElement.getTextContent());
+			}
+		}
+		
+		return false;
+		
 	}
 }

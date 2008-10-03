@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/10/02 08:55:14 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -133,7 +133,7 @@ public class FormComponentFactory implements Singleton {
 			return new FormComponentSelectImpl();
 		if(component_type.equals(page_type_thx))
 			return new FormComponentThankYouPageImpl();
-		if(component_type.equals(page_type_tag)|| component_type.equals("idega:case")  || component_type.equals(page_type) || component_type.equals(confirmation_page_type))
+		if(component_type.equals(page_type_tag)|| component_type.equals(FormManagerUtil.idega_case_tag)  || component_type.equals(page_type) || component_type.equals(confirmation_page_type))
 			return new FormComponentPageImpl();
 		if(component_type.equals(fbc_button_area))
 			return new FormComponentButtonAreaImpl();

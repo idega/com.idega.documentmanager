@@ -32,9 +32,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  *
- * Last modified: $Date: 2008/07/10 07:20:51 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -523,4 +523,17 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 
 		getXFormsManager().setReadonly(this, readonly);
 	}
+	
+	@Override
+	public void setPdfForm(boolean generatePdf) {
+
+		getXFormsManager().setPdfForm(this, generatePdf);
+	}
+	
+	@Override
+	public boolean isPdfForm() {
+
+		return getXFormsManager().isPdfForm(this);
+	}
+
 }

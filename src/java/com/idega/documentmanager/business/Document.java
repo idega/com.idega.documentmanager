@@ -14,9 +14,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/06/18 07:59:47 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public interface Document extends Container {
 
@@ -85,6 +85,8 @@ public interface Document extends Container {
 	public abstract FormVariablesHandler getFormVariablesHandler();
 	
 	public abstract void setReadonly(boolean readonly);
+	
+	public abstract void setPdfForm(boolean generatePdf);
 	
 	public abstract void setFormType(String formType);
 	

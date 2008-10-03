@@ -10,9 +10,9 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public interface XFormsManager {
 
@@ -53,4 +53,9 @@ public interface XFormsManager {
 	public abstract boolean isReadonly(FormComponent component);
 	
 	public void setReadonly(FormComponent component, boolean readonly);
+	
+	public abstract boolean isPdfForm(FormComponent component); 
+
+	public void setPdfForm(FormComponent component, boolean generatePdf); 
+		
 }

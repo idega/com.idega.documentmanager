@@ -7,9 +7,9 @@ import com.idega.documentmanager.context.DMContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/04/02 15:12:06 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public interface FormComponent {
 
@@ -58,4 +58,8 @@ public interface FormComponent {
 	public abstract void setReadonly(boolean readonly);
 	
 	public abstract boolean isReadonly();
+	
+	public abstract void setPdfForm(boolean generatePdf);
+	
+	public abstract boolean isPdfForm();
 }

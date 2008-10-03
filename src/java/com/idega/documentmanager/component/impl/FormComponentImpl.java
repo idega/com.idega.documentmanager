@@ -21,9 +21,9 @@ import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/08/12 06:07:39 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
@@ -330,5 +330,13 @@ public class FormComponentImpl implements FormComponent, Component {
 	
 	public boolean isReadonly() {
 		return getXFormsManager().isReadonly(this);
+	}
+	
+	public void setPdfForm(boolean generatePdf) {
+		getXFormsManager().setPdfForm(this, generatePdf);
+	}
+	
+	public boolean isPdfForm() {
+		return getXFormsManager().isPdfForm(this);
 	}
 }

@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  *
- * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -408,8 +408,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		if(bind != null)
 			bind.setReadonly(readonly);
 	}
-	
-	
+		
 	protected void updateReadonly(FormComponent component) {
 		
 		setReadonly(component, component.getProperties().isReadonly());
@@ -1072,5 +1071,15 @@ public class XFormsManagerImpl implements XFormsManager {
 		bindsByNodesetXPath.setVariable(nodesetVariable, nodeset);
 		
 		return bindsByNodesetXPath.getNodeset(context);
+	}
+	// TODO 
+	public boolean isPdfForm(FormComponent component) {
+	
+		return false;
+	}
+	// TODO
+	public void setPdfForm(FormComponent component, boolean generatePdf) {
+		
+		
 	}
 }
