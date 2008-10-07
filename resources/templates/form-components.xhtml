@@ -4,6 +4,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:xf="http://www.w3.org/2002/xforms" 
 xmlns:ev="http://www.w3.org/2001/xml-events" 
 xmlns="http://www.w3.org/1999/xhtml"
+xmlns:idega="http://idega.com/xforms"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <head>
 <title>formbuilder components</title>
@@ -264,8 +265,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<xf:label ref="itemLabel" />
 				<xf:value ref="itemValue" />
 			</xf:itemset> </item> 
-			<item id="alert"> 
-				<xf:alert ref="instance('localized_strings')/localizedEntries[@lang=instance('localized_strings')/current_language]"	model="data_model" />
+			<item id="alert">
+			    <xf:alert ref="instance('error-instance')/error[@for='$id']"/> 
 			</item>
 			<item id="help"> 
 				<xf:help>
