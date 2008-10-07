@@ -1,6 +1,7 @@
 package com.idega.documentmanager.component.properties.impl;
 
 import com.idega.block.process.variables.Variable;
+import com.idega.chiba.web.xml.xforms.validation.ErrorType;
 import com.idega.documentmanager.business.component.properties.PropertiesComponent;
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
@@ -8,9 +9,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/07 13:06:35 $ by $Author: civilis $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
@@ -25,6 +26,14 @@ public class ComponentProperties implements PropertiesComponent {
 	private Variable variable;
 	
 	protected FormComponent component;
+	
+	public LocalizedStringBean getErrorMsg(ErrorType errorType) {
+		return errorMsg;
+	}
+	public void setErrorMsg(ErrorType errorType, LocalizedStringBean error_msg) {
+		this.errorMsg = error_msg;
+		component.update(ConstUpdateType.ERROR_MSG);
+	}
 	
 	public LocalizedStringBean getErrorMsg() {
 		return errorMsg;

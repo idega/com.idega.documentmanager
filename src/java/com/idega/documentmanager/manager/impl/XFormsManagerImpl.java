@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  *
- * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/07 13:08:17 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -417,7 +417,6 @@ public class XFormsManagerImpl implements XFormsManager {
 	protected void updateErrorMsg(FormComponent component) {
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
-		
 		PropertiesComponent properties = component.getProperties();
 		
 		Element element = xformsComponentDataBean.getElement();
@@ -425,7 +424,7 @@ public class XFormsManagerImpl implements XFormsManager {
 		
 		if(alerts == null || alerts.getLength() == 0) {
 			
-			Element alert = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "alert");
+			Element alert = FormManagerUtil.getItemElementById(component.getContext().getComponentsXforms(), "alert");
 			
 			Document xform = component.getContext().getXformsXmlDoc();
 			
@@ -438,8 +437,6 @@ public class XFormsManagerImpl implements XFormsManager {
 		} else {
 			
 			Element alert = (Element)alerts.item(0);
-			
-			
 			FormManagerUtil.putLocalizedText(null, null, alert, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
 		}
 	}

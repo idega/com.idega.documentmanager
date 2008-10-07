@@ -1,21 +1,26 @@
 package com.idega.documentmanager.business.component.properties;
 
 import com.idega.block.process.variables.Variable;
+import com.idega.chiba.web.xml.xforms.validation.ErrorType;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 
 /**
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/09/17 13:11:40 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/07 13:06:35 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
+	public abstract LocalizedStringBean getErrorMsg(ErrorType errorType);
+	
 	public abstract LocalizedStringBean getErrorMsg();
 
-	public abstract void setErrorMsg(LocalizedStringBean error_msg);
+	public abstract void setErrorMsg(ErrorType errorType, LocalizedStringBean errorMsg);
+	
+	public abstract void setErrorMsg(LocalizedStringBean errorMsg);
 
 	public abstract LocalizedStringBean getLabel();
 
