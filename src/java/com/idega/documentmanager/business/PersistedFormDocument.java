@@ -1,17 +1,13 @@
 package com.idega.documentmanager.business;
 
-import java.util.Locale;
-
 import org.w3c.dom.Document;
-
-import com.idega.documentmanager.util.FormManagerUtil;
 
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/06/18 08:00:10 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/07 13:06:14 $ by $Author: civilis $
  */
 public class PersistedFormDocument {
 	
@@ -37,6 +33,7 @@ public class PersistedFormDocument {
 	public void setFormType(String formType) {
 		this.formType = formType;
 	}
+	/*
 	public void setLocale(Locale locale) {
 		Document doc = getXformsDocument();
 		
@@ -52,4 +49,5 @@ public class PersistedFormDocument {
 //			e.printStackTrace();
 //		}
 	}
+	*/
 }
