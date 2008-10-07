@@ -22,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/09/28 17:03:49 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/07 07:03:15 $ by $Author: anton $
  */
 public class Form {
 	
@@ -209,7 +209,7 @@ public class Form {
 		clear();
 		formDocument.setLoad(true);
 		
-		ByteArrayInputStream bais = new ByteArrayInputStream(srcXml.getBytes());
+		ByteArrayInputStream bais = new ByteArrayInputStream(srcXml.getBytes("UTF-8"));
 		Document xformsXmlDoc = builder.parse(new InputSource(bais));
 		getContext().setXformsXmlDoc(xformsXmlDoc);
 		loadDocumentInternal(null);
