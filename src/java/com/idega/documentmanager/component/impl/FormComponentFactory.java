@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  *
- * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/07 12:58:35 $ by $Author: civilis $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -28,7 +28,7 @@ public class FormComponentFactory implements Singleton {
 	private static final String type_plain = "type_plain";
 	private static final String type_upload = "type_upload";
 	private static final String type_upload_description = "type_upload_description";
-	public static final String page_type_tag = FormManagerUtil.case_tag;
+	public static final String page_type_tag = FormManagerUtil.idegans_case_tag;
 	public static final String page_type = "fbc_page";
 	public static final String confirmation_page_type = "fbc_confirmation_page";
 	public static final String button_type = FormManagerUtil.trigger_tag;
@@ -133,7 +133,7 @@ public class FormComponentFactory implements Singleton {
 			return new FormComponentSelectImpl();
 		if(component_type.equals(page_type_thx))
 			return new FormComponentThankYouPageImpl();
-		if(component_type.equals(page_type_tag)|| component_type.equals(FormManagerUtil.idega_case_tag)  || component_type.equals(page_type) || component_type.equals(confirmation_page_type))
+		if(component_type.equals(page_type_tag) || component_type.equals("xf:case")  || component_type.equals(page_type) || component_type.equals(confirmation_page_type))
 			return new FormComponentPageImpl();
 		if(component_type.equals(fbc_button_area))
 			return new FormComponentButtonAreaImpl();
