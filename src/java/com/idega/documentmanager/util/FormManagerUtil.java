@@ -1,5 +1,6 @@
 package com.idega.documentmanager.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -24,13 +27,15 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.util.CoreConstants;
 import com.idega.util.LocaleUtil;
+import com.idega.util.xml.Prefix;
 import com.idega.util.xml.XPathUtil;
+import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  *
- * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/07 13:09:25 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -63,9 +68,11 @@ public class FormManagerUtil {
 	public static final String form_id = "form_id";
 	public static final String title_tag = "title";
 	public static final String nodeset_att = "nodeset";
-	public static final String switch_tag = "xf:switch";
 	public static final String group_tag = "xf:group";
-	public static final String case_tag = "xf:case";
+//	public static final String switch_tag = "xf:switch";
+//	public static final String case_tag = "xf:case";
+	public static final String idegans_switch_tag = "idega:switch";
+	public static final String idegans_case_tag = "idega:case";
 	public static final String submit_tag = "xf:submit";
 	public static final String itemset_tag = "xf:itemset";
 	public static final String item_tag = "xf:item";
@@ -110,6 +117,7 @@ public class FormManagerUtil {
 	public static final String DOMActivate_att_val = "DOMActivate";
 	public static final String xforms_namespace_uri = "http://www.w3.org/2002/xforms";
 	public static final String event_namespace_uri = "http://www.w3.org/2001/xml-events";
+	public static final String idega_namespace = "http://idega.com/xforms";
 	public static final String mapping_att = "mapping";
 	public static final String action_att = "action";
 	public static final String required_att = "required";
@@ -123,8 +131,6 @@ public class FormManagerUtil {
 	public static final String submission_model = "submission_model";
 	public static final String nodeTypeAtt = "nodeType";
 	public static final String controlInstanceID = "control-instance";
-	public static final String idega_switch_tag = "idega:switch";
-	public static final String idega_case_tag = "idega:case";
 	
 	private static final String line_sep = "line.separator";
 	private static final String xml_mediatype = "text/html";
@@ -616,6 +622,7 @@ public class FormManagerUtil {
 		}
 	}
 	
+	/*
 	public static List<String[]> getComponentsTagNamesAndIds(Document xforms_doc) {
 		
 		Element body_element = (Element)xforms_doc.getElementsByTagName(body_tag).item(0);
@@ -637,6 +644,7 @@ public class FormManagerUtil {
 		
 		return components_tag_names_and_ids;
 	}
+	*/
 	
 	private static OutputFormat getOutputFormat() {
 		
@@ -692,15 +700,44 @@ public class FormManagerUtil {
 		return Integer.parseInt(id.substring(CTID.length()));
 	}
 	
+	private static XPathUtil componentsContainerElementXPath 
+		= new XPathUtil(".//h:body//idega:switch", new Prefix("idega", idega_namespace));
+	
 	public static Element getComponentsContainerElement(Document xform) {
 
+		Element container = componentsContainerElementXPath.getNode(xform);
+		
+		if(container == null) {
+			XPathUtil xu = new XPathUtil(".//h:body//xf:switch");
+			container = xu.getNode(xform);
+		}
+		
+		return container;
+		/*
 		Element bodyElement = (Element)xform.getElementsByTagName(body_tag).item(0);
 		Element compElement = (Element)bodyElement.getElementsByTagName(switch_tag).item(0);
 		if (compElement == null) {
-			compElement = (Element)bodyElement.getElementsByTagName(FormManagerUtil.idega_switch_tag).item(0);
+			compElement = (Element)bodyElement.getElementsByTagName("idega:switch").item(0);
 		}
 		
 		return compElement;
+		*/
+	}
+	
+	public static void main(String[] args) {
+
+		try {
+			
+			DocumentBuilder db = XmlUtil.getDocumentBuilder();
+			Document d = db.parse(new File("/Users/civilis/dev/workspace/eplatform-4-bpm/is.idega.idegaweb.egov.impra/resources/processes/EntrepreneurSupport/forms/entrepreneurSupport.xhtml"));
+			
+			Element e = getComponentsContainerElement(d);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static boolean isEmpty(String str) {
@@ -713,11 +750,14 @@ public class FormManagerUtil {
 		setvalue_element.getParentNode().removeChild(setvalue_element);
 	}
 		
-	
 	public static void modifyXFormsDocumentForViewing(Document xforms_doc) {
 		
-		NodeList tags = xforms_doc.getElementsByTagName(case_tag);
-		Element switch_element = (Element)xforms_doc.getElementsByTagName(switch_tag).item(0);
+//		TODO: use better way. probably just xforms property, as it is done when viewing form in pdf mode
+//		the idea here seems that all pages need to be visible (as with pdf)
+		
+		NodeList tags = xforms_doc.getElementsByTagName(idegans_case_tag);
+		Element switch_element = (Element)xforms_doc.getElementsByTagName(idegans_switch_tag).item(0);
+		
 		Element switch_parent = (Element)switch_element.getParentNode();
 		
 		for (int i = 0; i < tags.getLength(); i++) {
