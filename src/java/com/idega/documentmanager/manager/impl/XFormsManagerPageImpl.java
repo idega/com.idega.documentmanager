@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/11/07 15:02:29 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/07 13:07:22 $ by $Author: civilis $
  */
 public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements XFormsManagerPage {
 
@@ -42,9 +42,9 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		Element group_element = xformsComponentDataBean.getElement();
 		
 		String component_id = group_element.getAttribute(FormManagerUtil.id_att);
-		Element case_element = group_element.getOwnerDocument().createElementNS(group_element.getNamespaceURI(), FormManagerUtil.case_tag);
+		Element case_element = group_element.getOwnerDocument().createElementNS(FormManagerUtil.idega_namespace, FormManagerUtil.idegans_case_tag);
 		String name = group_element.getAttribute(FormManagerUtil.name_att);
-		if(name != null && !name.equals("")) {
+		if(name != null && name.length() != 0) {
 			
 			group_element.removeAttribute(FormManagerUtil.name_att);
 			case_element.setAttribute(FormManagerUtil.name_att, name);
