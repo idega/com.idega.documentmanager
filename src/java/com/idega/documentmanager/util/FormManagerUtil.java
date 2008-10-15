@@ -23,6 +23,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.idega.chiba.web.xml.xforms.util.XFormsUtil;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.datatypes.ComponentType;
 import com.idega.util.CoreConstants;
@@ -33,9 +34,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  *
- * Last modified: $Date: 2008/10/07 13:09:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/15 13:58:02 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -58,7 +59,7 @@ public class FormManagerUtil {
 	public static final String output_tag = "xf:output";
 	public static final String ref_s_att = "ref";
 	public static final String lang_att = "lang";
-	public static final String CTID = "fbc_";
+	public static final String CTID = XFormsUtil.CTID;
 	public static final String localized_entries = "localizedEntries";
 	public static final String body_tag = "body";
 	public static final String bind_att = "bind";
@@ -143,7 +144,6 @@ public class FormManagerUtil {
 	private static XPathUtil formInstanceModelElementXPath = new XPathUtil(".//xf:model[xf:instance/@id='data-instance']");
 	private static XPathUtil defaultFormModelElementXPath = new XPathUtil(".//xf:model");
 	private static XPathUtil formModelElementXPath = new XPathUtil(".//xf:model[@id=$modelId]");
-	private static XPathUtil formIdElementXPath = new XPathUtil(".//data/form_id");
 	private static XPathUtil formSubmissionInstanceElementXPath = new XPathUtil(".//xf:instance[@id='data-instance']");
 	private static XPathUtil instanceElementXPath = new XPathUtil(".//xf:instance");
 	private static XPathUtil submissionElementXPath = new XPathUtil(".//xf:submission[@id='submit_data_submission']");
@@ -847,11 +847,6 @@ public class FormManagerUtil {
 		return formModelElementXPath;
 	}
 	
-	private static Element getFormIdElement(Node context) {
-		
-		return formIdElementXPath.getNode(context);
-	}
-	
 	public static Element getSubmissionElement(Node context) {
 		
 		return submissionElementXPath.getNode(context);
@@ -888,12 +883,11 @@ public class FormManagerUtil {
 	}
 	
 	public static String getFormId(Node xformsDoc) {
-		Element formIdEl = getFormIdElement(xformsDoc);
-		return formIdEl == null ? null : formIdEl.getTextContent();
+		return XFormsUtil.getFormId(xformsDoc);
 	}
 	
 	public static void setFormId(Document xformsDoc, String formId) {
-		getFormIdElement(xformsDoc).setTextContent(formId);
+		XFormsUtil.setFormId(xformsDoc, formId);
 	}
 	
 	public static Element getLocalizedStringElement(Node context) {
