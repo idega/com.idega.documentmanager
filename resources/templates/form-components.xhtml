@@ -107,6 +107,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xf:bind id="email" nodeset="email" type="fb_email" />
 	<xf:bind id="page" nodeset="page" />
 	<xf:bind id="output_text" nodeset="output_text" />
+	
+	<xf:bind id="bind-controlsButton" nodeset="instance('control-instance')/controlsButton" relevant="instance('control-instance')/generatePdf != 'true'" />
 
 </xf:model>
 <xf:model id="data_model">
@@ -751,25 +753,45 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				ref="instance('localized_strings')/confirmation_page-label[@lang=instance('localized_strings')/current_language]"
 				model="data_model" />
 		</xf:group>
-		<xf:trigger id="fbc_button_next" type="fbc_button_next">
+		
+		<xf:trigger id="fbc_button_next" type="fbc_button_next" bind="bind-controlsButton">
 		  	<xf:label ref="instance('localized_strings')/next_button-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 	        <xf:toggle ev:event="DOMActivate" />
-	        <xf:refresh />
 	    </xf:trigger>
-	    <xf:trigger id="fbc_button_previous" type="fbc_button_previous">
+	    <xf:trigger id="fbc_button_previous" type="fbc_button_previous" bind="bind.controlsButton">
 			<xf:label ref="instance('localized_strings')/previous_button-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 	        <xf:toggle ev:event="DOMActivate" />
-	        <xf:refresh />
 	    </xf:trigger>
-	 	<xf:trigger id="fbc_button_submit" type="fbc_button_submit">
-			<xf:label ref="instance('localized_strings')/submit_button-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-					<xf:action ev:event="DOMActivate" if="instance('control-instance')/enable='true'">
-								<xf:setvalue ref="instance('control-instance')/enable" value="'false'"/>
-								<xf:setvalue ref="instance('control-instance')/validation_event" value="'submit'"/>								
-								<xf:send submission="submit_data_submission"/>			
-					</xf:action>
-	        	<xf:toggle ev:event="DOMActivate" />
-	    </xf:trigger>
+	    
+	    <xf:trigger class="fbc_button_submit" id="fbc_button_submit" type="fbc_button_submit" bind="bind.submissionButton">
+            <xf:label model="data_model" ref="instance('localized_strings')/submit_button-label[@lang=instance('localized_strings')/current_language]"/>
+            <xf:action ev:event="DOMActivate">
+                <xf:setvalue ref="instance('control-instance')/submission" value="'true'"/>
+                <idega:dispatch name="idega-validate" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                <xf:dispatch name="xforms-recalculate" target="data_model"/>
+                <xf:dispatch name="xforms-revalidate" target="data_model"/>
+                <xf:dispatch name="xforms-refresh" target="data_model"/>
+                <xf:action if="count-non-empty(instance('error-instance')/error)=0">
+                    <xf:send submission="submit_data_submission"/>
+                </xf:action>
+                <xf:message if="count-non-empty(instance('error-instance')/error)!=0" level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
+            </xf:action>
+        </xf:trigger>
+        
+        <xf:trigger bind="bind.submissionButton" class="fbc_button_submit">
+            <xf:label model="data_model" ref="instance('localized_strings')/save_button-label[@lang=instance('localized_strings')/current_language]"/>
+            <xf:action ev:event="DOMActivate">
+                <xf:setvalue model="submission_model" ref="instance('saveForm-instance')/savePhase">true</xf:setvalue>
+                <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                <xf:dispatch name="xforms-recalculate" target="data_model"/>
+                <xf:dispatch name="xforms-revalidate" target="data_model"/>
+                <xf:dispatch name="xforms-refresh" target="data_model"/>
+                <idega:saveForm action="save" formId="instance('data-instance')/form_id" instanceId="data-instance" linkLocation="instance('saveForm-instance')/link" model="submission_model" submissionId="instance('data-instance')/saveFormData/submissionId" submissionIdentifier="instance('data-instance')/*[@nodeType='formIdentifier']"/>
+                <idega:toggle />
+            </xf:action>
+        </xf:trigger>
+	 	
 	    <xf:trigger id="fbc_button_save" type="fbc_button_save">    
 			<xf:label ref="instance('localized_strings')/save_button-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 				<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/required" value="'false'"/>

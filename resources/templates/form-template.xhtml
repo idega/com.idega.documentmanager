@@ -34,7 +34,7 @@
 			<xf:bind id="errorsGroup" nodeset="instance('error-instance')/error" relevant="instance('control-instance')/submission = 'true' and count-non-empty(instance('error-instance')/error)!=0"/>
 	        <xf:bind id="errors" nodeset="instance('error-instance')/error[. != '']"/>
 	        
-	        <xf:bind id="bind.submissionButton" nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'" />
+	        <xf:bind id="bind-submissionButton" nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'" />
 		
 	        <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" >
 	        	<idega:toggle ev:event="xforms-submit-done" case="fbc_4"/>
@@ -94,7 +94,7 @@
 			   	  <xf:group appearance="full">
 			   	  	<xf:label ref="instance('localized_strings')/page-1-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			   	  	<div class="fbc_button_area" id="fbc_2" type="fbc_button_area">
-                        <xf:trigger class="fbc_button_submit" id="fbc_3" type="fbc_button_submit" bind="bind.submissionButton">
+                        <xf:trigger class="fbc_button_submit" id="fbc_3" type="fbc_button_submit" bind="bind-submissionButton">
                             <xf:label model="data_model" ref="instance('localized_strings')/page-1-submit_button-label[@lang=instance('localized_strings')/current_language]"/>
                             <xf:action ev:event="DOMActivate">
                                 <xf:setvalue ref="instance('control-instance')/submission" value="'true'"/>
