@@ -22,16 +22,20 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multiple_select_minimal />
 			<single_select_minimal />
 			<multiple_select />
-			<single_select /> 
-			<uploadfile>
+			<single_select />
+			<upload>
                  <entry filename="" mediatype=""/>
-            </uploadfile>
+            </upload>
 			<multiupload>
 			   <group />
-			   <entry filename="" mediatype=""/>     	
-			   <entry filename="" mediatype=""/>
-
+			   <entry filename="" mediatype="">
+                    <description/>
+			   </entry>     	
+			   <entry filename="" mediatype="">
+                    <description/>
+               </entry>
             </multiupload>
+            <!--  
             <multiupload_description>
             	<group />
 				<entry filename="" mediatype="">
@@ -41,6 +45,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<description />
 			    </entry>	
             </multiupload_description>
+            -->
             <autofill_name />
             <autofill_first_name />
             <autofill_last_name />
@@ -58,8 +63,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</xf:instance>	
 	
 	<!-- types hexBinary anyURI base64Binary -->
-    <xf:bind id="uploadfile" nodeset="uploadfile/entry" type="xs:anyURI"/>
+    <xf:bind id="upload" nodeset="upload/entry" type="xs:anyURI"/>
     
+    <xf:bind id="multiupload" nodeset="multiupload/entry[position() != last()]" type="xs:anyURI">
+        <xf:bind id="multiupload-group" nodeset="../group" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'"/>
+    </xf:bind>
+    
+    <!--  
     <xf:bind id="multiupload.group" nodeset="multiupload/group">
 		<xf:bind id="multiupload" nodeset="../entry[position() != last()]" type="xs:anyURI"/>
 	</xf:bind>
@@ -67,6 +77,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xf:bind id="multiupload_description.group" nodeset="multiupload_description/group">
 		<xf:bind id="multiupload" nodeset="../entry[position() != last()]" type="xs:anyURI"/>
 	</xf:bind>
+	-->
 	    
     <xf:bind id="identifier_number" nodeset="id_number" readonly="true()" type="xs:string" />
     
@@ -124,8 +135,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<rich_textarea.title lang="is_IS">Textareitur (með stílsniði)</rich_textarea.title>
 			<input.title lang="en">Simple text input</input.title>
 			<input.title lang="is_IS">Textareitur</input.title>
-			<upload_file.title lang="en">File upload</upload_file.title>
-			<upload_file.title lang="is_IS">Hlaða inn skjali</upload_file.title>
+			
+			<!--  
 			<multi_upload_file.title lang="en">Multi file upload</multi_upload_file.title>
 			<multi_upload_file.title lang="is_IS">Hlaða inn skjölum</multi_upload_file.title> 
 			<multi_upload_file.label lang="en">Add One</multi_upload_file.label>
@@ -147,6 +158,25 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<multi_upload_description_file.info lang="is_IS">Vinsamlega skráðu inn skráarlýsingu</multi_upload_description_file.info>
 			<multi_upload_description_file.name lang="en">Uploaded file name</multi_upload_description_file.name>
 			<multi_upload_description_file.name lang="is_IS">Skráarnafn</multi_upload_description_file.name>
+			-->
+			
+            <upload-label lang="is_IS">Hlaða inn skjali</upload-label>
+            <upload-label lang="en">File upload</upload-label>
+			
+			<multiupload-title lang="is_IS">Viðhengi</multiupload-title>
+            <multiupload-title lang="en">Attachements</multiupload-title>
+            <multiupload-insert_trigger-label lang="is_IS">Bæta við viðhengi</multiupload-insert_trigger-label>
+            <multiupload-insert_trigger-label lang="en">Add attachement</multiupload-insert_trigger-label> 
+            <multiupload-remove_trigger-label lang="is_IS">Fjarlægja viðhengi</multiupload-remove_trigger-label>
+            <multiupload-remove_trigger-label lang="en">Remove</multiupload-remove_trigger-label>
+            <multiupload-description-label lang="is_IS">Lýsandi nafn skjals</multiupload-description-label>
+            <multiupload-description-label lang="en">Descriptive name</multiupload-description-label> 
+            <multiupload-custom lang="is_IS">Það þarf að setja lýsandi nafn á skjalið</multiupload-custom>
+            <multiupload-custom lang="en">Uploaded file description can not be empty</multiupload-custom>
+            <multiupload-filename-label lang="is_IS">Skráarnafn</multiupload-filename-label>
+            <multiupload-filename-label lang="en">Uploaded file name</multiupload-filename-label>
+			
+			
 			
 			<page.label lang="en">Section</page.label>
 			<page.label lang="is_IS">Svæði</page.label>
@@ -234,13 +264,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<component component_id="fbc_email" accessSupport="rw">
 				<datatype>string</datatype>
 			</component>
-			<component component_id="fbc_upload_file" accessSupport="w">
+			<component component_id="fbc_upload" accessSupport="w">
 				<datatype>file</datatype>
 			</component>
-			<component component_id="fbc_multi_upload_file" accessSupport="w">
-				<datatype>files</datatype>
-			</component>
-			<component component_id="fbc_multi_upload_description_file" accessSupport="w">
+			<component component_id="fbc_multiupload" accessSupport="w">
 				<datatype>files</datatype>
 			</component>
 			<component component_id="fbc_simple_text" accessSupport="r">
@@ -429,6 +456,59 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <body>
 <xf:group appearance="full">
 	<xf:group appearance="full">
+	
+	<xf:upload bind="upload" id="fbc_upload"> 
+            <xf:label ref="instance('localized_strings')/upload-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+            <xf:filename ref="@filename"/>
+            <xf:mediatype ref="@mediatype"/>
+    </xf:upload>
+	
+	<xf:group appearance="full" bind="multiupload-group" id="fbc_multiupload" type="fbc_multiupload">
+        <idega:dispatch ev:event="idega-xforms-ready" name="idega-validate" target="//*[@id='fbc_multiupload']//xf:upload" stopOnError="true"/>
+        
+        <xf:label model="data_model" ref="instance('localized_strings')/multiupload-title[@lang=instance('localized_strings')/current_language]"/>
+        <xf:trigger>
+            <xf:label model="data_model" ref="instance('localized_strings')/multiupload-insert_trigger-label[@lang=instance('localized_strings')/current_language]"/>
+            <xf:action>
+                <xf:insert at="last()" nodeset="instance('data-instance')/multiupload/entry" position="before"/>
+            </xf:action>
+        </xf:trigger>
+        
+        <xf:repeat appearance="group" bind="multiupload" id="multiupload_entries">
+            <xf:group>
+                <xf:input ref="./description">
+                    <xf:label model="data_model" ref="instance('localized_strings')/multiupload-description-label[@lang=instance('localized_strings')/current_language]"/>
+                    <idega:dispatch ev:event="xforms-value-changed" name="idega-validate" target="//*[@id='fbc_multiupload']//xf:upload" stopOnError="true"/>
+                </xf:input>
+                
+                <xf:group ref=".[. !='' and ./description ='']" appearance="minimal" class="error">
+                    <xf:output value="instance('error-instance')/error[@for='fbc_multiupload']"/>
+                </xf:group>
+                
+                <xf:output ref="@filename">
+                    <xf:label model="data_model" ref="instance('localized_strings')/multiupload-filename-label[@lang=instance('localized_strings')/current_language]"/>
+                </xf:output>
+                
+                <xf:upload ref=".">
+                    <xf:filename ref="@filename"/>
+                    <xf:mediatype ref="@mediatype"/>
+                    <idega:dispatch ev:event="xforms-value-changed" name="idega-validate" target="//*[@id='fbc_multiupload']//xf:upload" stopOnError="true"/>
+                    <idega:validator ev:event="idega-validate" validateif="(.!='' and ./description !='') or (.='' and ./description ='')" componentId="fbc_multiupload">
+                        <idega:message errorType="custom" model="data_model" value="instance('localized_strings')/multiupload-custom[@lang=instance('localized_strings')/current_language]"/>
+                    </idega:validator>
+                </xf:upload>
+                
+                <xf:trigger>
+                    <xf:label model="data_model" ref="instance('localized_strings')/multiupload-remove_trigger-label[@lang=instance('localized_strings')/current_language]"/>
+                    <xf:action>
+                        <xf:delete at="index('multiupload_entries')" nodeset="instance('data-instance')/multiupload/entry"/>
+                    </xf:action>
+                </xf:trigger>
+            </xf:group> 
+        </xf:repeat>
+    </xf:group>
+
+<!--  	
 	<xf:group appearance="full" bind="multiupload.group" id ="fbc_multi_upload_file" name = "fbc_multi_upload_file" >
 	     <xf:label ref="instance('localized_strings')/multi_upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
 		 <xf:trigger>
@@ -497,6 +577,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 </xf:repeat>
 		
     	</xf:group>
+    	-->
     	
     	 <xf:input bind="autofill_name" id = "fbc_autofill_name" autofillkey="loginSession.user.name">
            <xf:label
@@ -648,12 +729,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<xf:label model="data_model" ref="instance('localized_strings')/text_output.title[@lang=instance('localized_strings')/current_language]"/>				
 		</xf:output>
 			
-        <xf:upload bind="uploadfile" id="fbc_upload_file" > 
-			<xf:label ref="instance('localized_strings')/upload_file.title[@lang=instance('localized_strings')/current_language]" model="data_model" />
-            <xf:filename ref="@filename"/>
-        	<xf:mediatype ref="@mediatype"/>
-        </xf:upload>
-  	
 		<div id="fbc_button_area" name="fbc_button_area" class="fbc_button_area"></div>
 		<div id="fbc_simple_text" name="fbc_simple_text" class="fbc_simple_text">
 			<xf:label ref="instance('localized_strings')/simple_text.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
