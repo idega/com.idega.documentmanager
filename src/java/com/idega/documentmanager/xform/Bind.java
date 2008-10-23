@@ -7,14 +7,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2008/07/17 11:54:43 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -26,6 +25,7 @@ public class Bind implements Cloneable {
 	private Element bindElement;
 	private Nodeset nodeset;
 	private String type;
+	private String constraint;
 	private String p3pType;
 	private Boolean isRequired;
 	private Boolean readonly;
@@ -93,6 +93,23 @@ public class Bind implements Cloneable {
 			getBindElement().removeAttribute(FormManagerUtil.type_att);
 		else
 			getBindElement().setAttribute(FormManagerUtil.type_att, type);
+	}
+	
+	public String getConstraint() {
+		
+		if(constraint == null)
+			constraint = getBindElement().getAttribute(FormManagerUtil.constraint_att);
+		
+		return constraint;
+	}
+	public void setConstraint(String constraint) {
+		
+		this.constraint = constraint;
+		
+		if(constraint == null)
+			getBindElement().removeAttribute(FormManagerUtil.constraint_att);
+		else
+			getBindElement().setAttribute(FormManagerUtil.constraint_att, constraint);
 	}
 	
 	/**
@@ -235,7 +252,7 @@ public class Bind implements Cloneable {
 		this.isRequired = isRequired;
 		
 		if(isRequired)
-			getBindElement().setAttribute(FormManagerUtil.required_att, "not(instance('control-instance')/required = 'false')");
+			getBindElement().setAttribute(FormManagerUtil.required_att, "instance('control-instance')/required = 'true'");
 		else
 			getBindElement().removeAttribute(FormManagerUtil.required_att);
 	}
@@ -244,7 +261,7 @@ public class Bind implements Cloneable {
 		
 		if(isRequired == null) {
 			Element bind = getBindElement();
-			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && !CoreConstants.EMPTY.equals(bind.getAttribute(FormManagerUtil.required_att));
+			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && bind.getAttribute(FormManagerUtil.required_att).length() != 0;
 		}
 		
 		return isRequired;
@@ -254,7 +271,7 @@ public class Bind implements Cloneable {
 		
 		if(readonly == null) {
 			Element bind = getBindElement();
-			readonly = bind.hasAttribute(FormManagerUtil.readonly_att) && bind.getAttribute(FormManagerUtil.readonly_att).equals(FormManagerUtil.xpath_true);
+			readonly = bind.hasAttribute(FormManagerUtil.readonly_att) && bind.getAttribute(FormManagerUtil.readonly_att).length() != 0;
 		}
 		
 		return readonly;

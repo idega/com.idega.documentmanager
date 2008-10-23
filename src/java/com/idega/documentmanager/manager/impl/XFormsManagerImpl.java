@@ -28,9 +28,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  *
- * Last modified: $Date: 2008/10/07 13:08:17 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
  */
 public class XFormsManagerImpl implements XFormsManager {
 	
@@ -335,6 +335,21 @@ public class XFormsManagerImpl implements XFormsManager {
 		}
 		
 		bind.setIsRequired(props.isRequired());
+		
+		checkUpdateComponentValidation(component);
+	}
+	
+	protected void checkUpdateComponentValidation(FormComponent component) {
+		
+		PropertiesComponent props = component.getProperties();
+		
+		if(props.isHasValidationConstraints()) {
+			
+			
+			
+		} else {
+			
+		}
 	}
 	
 	public void update(FormComponent component, ConstUpdateType what) {

@@ -34,9 +34,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  *
- * Last modified: $Date: 2008/10/15 13:58:02 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -48,6 +48,7 @@ public class FormManagerUtil {
 	public static final String id_att = "id";
 	public static final String at_att = "at";
 	public static final String type_att = "type";
+	public static final String constraint_att = "constraint";
 	public static final String slash = "/";
 	public static final String fb_ = "fb_";
 	public static final String loc_ref_part1 = "instance('localized_strings')/";
