@@ -7,10 +7,12 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,9 +36,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  *
- * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormManagerUtil {
 	
@@ -725,15 +727,45 @@ public class FormManagerUtil {
 		*/
 	}
 	
+	private static Pattern componentIdPattern = Pattern.compile("fbc_[\\d]*");
+	private static XPathUtil allComponentsIdsXPath 
+	= new XPathUtil(".//@id[starts-with(., 'fbc_')]");
+
+	public static Set<String> getAllComponentsIds(Document xform) {
+	
+		NodeList idsAttributes = allComponentsIdsXPath.getNodeset(xform);
+		
+		HashSet<String> ids = new HashSet<String>(idsAttributes.getLength());
+		
+		for (int i = 0; i < idsAttributes.getLength(); i++) {
+			
+			String idValue = idsAttributes.item(i).getNodeValue();
+			
+			if(componentIdPattern.matcher(idValue).matches()) {
+			
+				ids.add(idValue);
+			}
+		}
+		
+		return ids;
+	}
+	
 	public static void main(String[] args) {
 
 		try {
-			
 			DocumentBuilder db = XmlUtil.getDocumentBuilder();
 			Document d = db.parse(new File("/Users/civilis/dev/workspace/eplatform-4-bpm/is.idega.idegaweb.egov.impra/resources/processes/EntrepreneurSupport/forms/entrepreneurSupport.xhtml"));
 			
-			Element e = getComponentsContainerElement(d);
+			System.out.println("all ids ="+getAllComponentsIds(d));
 			
+//			XPathUtil xu = new XPathUtil(".//@id[starts-with(., 'fbc_')]");
+//			
+//			NodeList nodes = xu.getNodeset(d);
+//			
+//			for (int i = 0; i < nodes.getLength(); i++) {
+//				
+//				System.out.println("node = "+nodes.item(i));
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

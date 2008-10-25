@@ -8,9 +8,9 @@ import com.idega.documentmanager.component.beans.LocalizedStringBean;
  * <i><b>Note: </b></i>for changes to take effect, u need to use setter methods for every property change
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public interface PropertiesComponent {
 	
@@ -52,9 +52,9 @@ public interface PropertiesComponent {
 	
 	public abstract void setVariable(String variableStringRepresentation);
 	
-	public abstract boolean isReadonly();
+//	public abstract boolean isReadonly();
 	
-	public abstract void setReadonly(boolean readonly);
+//	public abstract void setReadonly(boolean readonly);
 	
 	public abstract boolean isHasValidationConstraints();
 }

@@ -17,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/08/12 06:07:41 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
  */
 public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsManagerPlain {
 
@@ -69,7 +69,7 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 		
 		FormManagerUtil.putLocalizedText(localizationKey, null, 
 				output,
-				component.getContext().getXformsXmlDoc(),
+				component.getFormDocument().getXformsDocument(),
 				localizedText
 		);
 	}
@@ -87,7 +87,7 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 			    return null;
 		}
 		
-		return FormManagerUtil.getElementLocalizedStrings((Element)output, component.getContext().getXformsXmlDoc());
+		return FormManagerUtil.getElementLocalizedStrings((Element)output, component.getFormDocument().getXformsDocument());
 	}
 	
 	@Override
@@ -137,7 +137,7 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 			Element label = xformsComponentDataBean.getElement().getOwnerDocument().createElementNS(component.getFormDocument().getFormDataModelElement().getNamespaceURI(), FormManagerUtil.label_tag);
 			output.appendChild(label);
 			
-			bind = Bind.create(component.getContext().getXformsXmlDoc(), "bind."+component.getId(), null, null);
+			bind = Bind.create(component.getFormDocument().getXformsDocument(), "bind."+component.getId(), null, null);
 			output.setAttribute(FormManagerUtil.bind_att, bind.getId());
 			xformsComponentDataBean.setBind(bind);
 		}
@@ -164,7 +164,7 @@ public class XFormsManagerPlainImpl extends XFormsManagerImpl implements XFormsM
 		
 		FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(".label").toString(), null, 
 				label,
-				component.getContext().getXformsXmlDoc(),
+				component.getFormDocument().getXformsDocument(),
 				locStr
 		);
 	}

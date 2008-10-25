@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/10/07 13:07:22 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
  */
 public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements XFormsManagerPage {
 
@@ -84,7 +84,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 	
 	private void removeSectionVisualization(FormComponent component) {
 		
-		Element section = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, component.getId()+"_section");
+		Element section = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, component.getId()+"_section");
 		
 		if(section != null)
 			section.getParentNode().removeChild(section);
@@ -98,7 +98,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		
 		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
 		
-		Document xforms_doc = component.getContext().getXformsXmlDoc();
+		Document xforms_doc = component.getFormDocument().getXformsDocument();
 		
 		Element element_to_move = (Element)xformsComponentDataBean.getElement().getParentNode();
 		Element element_to_insert_before = null;
@@ -131,19 +131,19 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 			return;
 		
 		Element instance = formDocument.getSectionsVisualizationInstanceElement();
-		Element section = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, component.getId()+"_section");
+		Element section = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, component.getId()+"_section");
 		
 		if(section == null) {
 			
 			section = FormManagerUtil.getItemElementById(CacheManager.getInstance().getComponentsXforms(), FormManagerUtil.section_item);
-			section = (Element)component.getContext().getXformsXmlDoc().importNode(section, true);
+			section = (Element)component.getFormDocument().getXformsDocument().importNode(section, true);
 			section.setAttribute(FormManagerUtil.id_att, component.getId()+"_section");
 			Element id_el = (Element)section.getElementsByTagName(FormManagerUtil.id_att).item(0);
 			FormManagerUtil.setElementsTextNodeValue(id_el, component.getId());
 		} else
 			section.getParentNode().removeChild(section);
 
-		int seq_idx = component.getParent().getContainedComponentsIdList().indexOf(component.getId())+1;
+		int seq_idx = component.getParent().getContainedComponentsIds().indexOf(component.getId())+1;
 		
 		if(seq_idx == 1)
 			section.setAttribute("selected", "true");
@@ -173,7 +173,7 @@ public class XFormsManagerPageImpl extends XFormsManagerContainerImpl implements
 		
 		
 		if(relevant_page != null) {
-			Element relevant_section = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.head_tag, relevant_page.getId()+"_section");
+			Element relevant_section = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.head_tag, relevant_page.getId()+"_section");
 			
 			if(relevant_section == null)
 				return false;

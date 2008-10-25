@@ -10,24 +10,43 @@ import com.idega.documentmanager.manager.XFormsManagerButton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/12/06 20:31:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormComponentButtonImpl extends FormComponentImpl implements Button, FormComponentButton {
 	
 	@Override
 	public XFormsManagerButton getXFormsManager() {
-		return getContext().getXformsManagerFactory().getXformsManagerButton();
+		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerButton();
+	}
+	
+//	@Override
+//	public void render() {
+//		boolean load = this.load;
+//		super.render();
+//		FormComponentButtonArea buttonArea = (FormComponentButtonArea)parent;
+//		if(!load)
+//			setSiblingsAndParentPages(buttonArea.getPreviousPage(), buttonArea.getNextPage());
+//		((FormComponentButtonArea)parent).setButtonMapping(getType(), getId());
+//	}
+	
+	@Override
+	public void create() {
+		super.create();
+		
+		setSiblingsAndParentPages(getParent().getPreviousPage(), getParent().getNextPage());
+		((FormComponentButtonArea)parent).setButtonMapping(getType(), getId());
 	}
 	
 	@Override
-	public void render() {
-		boolean load = this.load;
-		super.render();
-		FormComponentButtonArea buttonArea = (FormComponentButtonArea)parent;
-		if(!load)
-			setSiblingsAndParentPages(buttonArea.getPreviousPage(), buttonArea.getNextPage());
+	public FormComponentButtonArea getParent() {
+		return (FormComponentButtonArea)super.getParent();
+	}
+	
+	@Override
+	public void load() {
+		super.load();
 		((FormComponentButtonArea)parent).setButtonMapping(getType(), getId());
 	}
 	
@@ -69,6 +88,7 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 		super.remove();
 	}
 	
+	/*
 	@Override
 	public void setReadonly(boolean readonly) {
 
@@ -77,4 +97,5 @@ public class FormComponentButtonImpl extends FormComponentImpl implements Button
 		if(getXFormsManager().isSubmitButton(this))
 			getXFormsManager().setReadonly(this, readonly);
 	}
+	*/
 }

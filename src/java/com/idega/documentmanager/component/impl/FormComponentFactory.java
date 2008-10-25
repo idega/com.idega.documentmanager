@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2008/10/24 11:35:57 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -116,10 +116,10 @@ public class FormComponentFactory implements Singleton {
 		return me;
 	}
 	
-	public FormComponent getFormComponentByType(String component_type) {
+	public FormComponent getFormComponentByType(String componentType) {
 		
-		FormComponent component = recognizeFormComponent(component_type);
-		component.setType(component_type);
+		FormComponent component = recognizeFormComponent(componentType);
+		component.setType(componentType);
 		
 		return component;
 	}

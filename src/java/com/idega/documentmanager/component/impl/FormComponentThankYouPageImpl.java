@@ -7,9 +7,9 @@ import com.idega.documentmanager.manager.XFormsManagerThankYouPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/10/06 07:05:40 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormComponentThankYouPageImpl extends FormComponentPageImpl implements PageThankYou {
 	
@@ -27,7 +27,7 @@ public class FormComponentThankYouPageImpl extends FormComponentPageImpl impleme
 	
 	@Override
 	public XFormsManagerThankYouPage getXFormsManager() {
-		return getContext().getXformsManagerFactory().getXformsManagerThankYouPage();
+		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerThankYouPage();
 	}
 	
 	@Override

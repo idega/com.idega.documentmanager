@@ -11,9 +11,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/10/23 13:27:22 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class Bind implements Cloneable {
 
@@ -179,6 +179,7 @@ public class Bind implements Cloneable {
 		return bind;
 	}
 	
+//	TODO: use not bindId, but component id. and create bindId here
 	public static Bind create(Document xform, String bindId, String modelId, Nodeset nodeset) {
 		
 		Bind bind = locate(xform, bindId, modelId);

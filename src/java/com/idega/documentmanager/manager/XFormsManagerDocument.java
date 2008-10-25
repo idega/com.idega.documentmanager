@@ -8,9 +8,9 @@ import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/06/18 08:01:54 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public interface XFormsManagerDocument extends XFormsManagerContainer {
 
@@ -33,4 +33,12 @@ public interface XFormsManagerDocument extends XFormsManagerContainer {
 	public abstract String getSubmissionAction(FormComponent component);
 	
 	public abstract void populateSubmissionDataWithXML(FormComponent component, Document submission, boolean clean);
+	
+	public abstract void setReadonly(FormComponent component, boolean readonly);
+	
+	public abstract boolean isReadonly(FormComponent component);
+	
+	public abstract boolean isPdfForm(FormComponent component); 
+
+	public void setPdfForm(FormComponent component, boolean generatePdf);
 }

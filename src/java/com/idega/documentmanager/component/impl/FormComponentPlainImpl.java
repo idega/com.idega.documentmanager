@@ -8,9 +8,9 @@ import com.idega.documentmanager.manager.XFormsManagerPlain;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/08/12 12:02:30 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormComponentPlainImpl extends FormComponentImpl implements ComponentPlain {
 
@@ -40,7 +40,7 @@ public class FormComponentPlainImpl extends FormComponentImpl implements Compone
 	@Override
 	public XFormsManagerPlain getXFormsManager() {
 		
-		return getContext().getXformsManagerFactory().getXformsManagerPlain();
+		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerPlain();
 	}
 	
 	@Override

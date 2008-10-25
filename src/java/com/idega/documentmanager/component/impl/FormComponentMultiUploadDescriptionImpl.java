@@ -1,28 +1,26 @@
 package com.idega.documentmanager.component.impl;
 
-import org.w3c.dom.Element;
-
 import com.idega.documentmanager.business.component.ComponentMultiUploadDescription;
 import com.idega.documentmanager.business.component.properties.PropertiesMultiUploadDescription;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesMultiUploadDescription;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
 import com.idega.documentmanager.manager.XFormsManagerMultiUploadDescription;
-import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.util.CoreConstants;
+
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/07/31 09:58:08 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
  */
 public class FormComponentMultiUploadDescriptionImpl extends FormComponentImpl implements ComponentMultiUploadDescription{
 	
 	@Override
 	public XFormsManagerMultiUploadDescription getXFormsManager() {
 		
-		return getContext().getXformsManagerFactory().getXformsManagerMultiUploadDescription();
+		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerMultiUploadDescription();
 	}
 	
+	/*
 	@Override
 	public void setReadonly(boolean readonly) {
 		
@@ -43,6 +41,7 @@ public class FormComponentMultiUploadDescriptionImpl extends FormComponentImpl i
 		    
 		}
 	}
+	*/
 	
 	@Override
 	public PropertiesMultiUploadDescription getProperties(){

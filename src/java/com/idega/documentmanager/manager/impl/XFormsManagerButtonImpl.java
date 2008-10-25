@@ -24,9 +24,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  *
- * Last modified: $Date: 2008/08/28 11:58:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
  */
 public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XFormsManagerButton {
 	
@@ -148,7 +148,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 					removeSetValues(component);
 				} else {
 					
-					Element setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+					Element setval = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
 					
 					if(setval == null) {
 						
@@ -157,7 +157,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 					}
 					setval.setAttribute(FormManagerUtil.ref_s_att, "instance('"+FormManagerUtil.sections_visualization_instance_id+"')/section[id='"+component.getParent().getParentPage().getId()+"']/@selected");
 					
-					setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+					setval = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
 					
 					if(setval == null) {
 						
@@ -174,12 +174,12 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 	
 	private void removeSetValues(FormComponent component) {
 		
-		Element setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
+		Element setval = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_cur);
 		
 		if(setval != null)
 			setval.getParentNode().removeChild(setval);
 		
-		setval = FormManagerUtil.getElementByIdFromDocument(component.getContext().getXformsXmlDoc(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
+		setval = FormManagerUtil.getElementByIdFromDocument(component.getFormDocument().getXformsDocument(), FormManagerUtil.body_tag, component.getId()+FormManagerUtil.set_section_vis_rel);
 		
 		if(setval != null)
 			setval.getParentNode().removeChild(setval);
@@ -187,7 +187,7 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 	
 	private Element createSetValue(FormComponent component, boolean current) {
 
-		Document xform = component.getContext().getXformsXmlDoc();
+		Document xform = component.getFormDocument().getXformsDocument();
 		Element setValue = xform.createElementNS(FormManagerUtil.xforms_namespace_uri, FormManagerUtil.setvalue_tag);
 		setValue.setAttribute(FormManagerUtil.event_att, FormManagerUtil.DOMActivate_att_val);
 		setValue.setAttribute(FormManagerUtil.value_att, 
@@ -398,29 +398,29 @@ public class XFormsManagerButtonImpl extends XFormsManagerImpl implements XForms
 		setReferAction(component, referAction);
 	}
 	
-	@Override
-	protected void updateReadonly(FormComponent component) {
-		
-		setReadonly(component, component.getProperties().isReadonly());
-	}
-	
-	@Override
-	public void setReadonly(FormComponent component, boolean readonly) {
-		
-		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
-		Bind bind = xformsComponentDataBean.getBind();
-		
-		if(bind == null) {
-
-			bind = Bind.create(component.getContext().getXformsXmlDoc(), "bind."+component.getId(), null, null);
-			xformsComponentDataBean.setBind(bind);
-			xformsComponentDataBean.getElement().setAttribute(FormManagerUtil.bind_att, bind.getId());
-			Nodeset nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
-			bind.setNodeset(nodeset);
-		}
-		
-		bind.setIsRelevant(!readonly);
-	}
+//	@Override
+//	protected void updateReadonly(FormComponent component) {
+//		
+//		setReadonly(component, component.getProperties().isReadonly());
+//	}
+//	
+//	@Override
+//	public void setReadonly(FormComponent component, boolean readonly) {
+//		
+//		ComponentDataBean xformsComponentDataBean = component.getXformsComponentDataBean();
+//		Bind bind = xformsComponentDataBean.getBind();
+//		
+//		if(bind == null) {
+//
+//			bind = Bind.create(component.getContext().getXformsXmlDoc(), "bind."+component.getId(), null, null);
+//			xformsComponentDataBean.setBind(bind);
+//			xformsComponentDataBean.getElement().setAttribute(FormManagerUtil.bind_att, bind.getId());
+//			Nodeset nodeset = Nodeset.create(FormManagerUtil.getFormInstanceModelElement(component.getContext().getXformsXmlDoc()), bind.getId());
+//			bind.setNodeset(nodeset);
+//		}
+//		
+//		bind.setIsRelevant(!readonly);
+//	}
 	
 	@Override
 	public boolean isReadonly(FormComponent component) {

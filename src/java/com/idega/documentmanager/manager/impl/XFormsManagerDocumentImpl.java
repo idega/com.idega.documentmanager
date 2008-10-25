@@ -21,9 +21,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/10/03 07:41:15 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
  */
 public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implements XFormsManagerDocument {
 	
@@ -46,12 +46,12 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getAutofillAction() == null) {
 			
-			Document xform = component.getContext().getXformsXmlDoc();
+			Document xform = component.getFormDocument().getXformsDocument();
 			
 			Element autofillModel = FormManagerUtil.getElementById(xform, FormManagerUtil.autofill_model_id);
 			
 			if(autofillModel == null) {
-				autofillModel = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "autofill-model");
+				autofillModel = FormManagerUtil.getItemElementById(component.getFormDocument().getComponentsXforms(), "autofill-model");
 				autofillModel = (Element)xform.importNode(autofillModel, true);
 				Element headElement = (Element)xform.getElementsByTagName(FormManagerUtil.head_tag).item(0);
 				autofillModel = (Element)headElement.appendChild(autofillModel);
@@ -111,7 +111,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(mainDataInstance == null) {
 		
-			mainDataInstance = FormManagerUtil.getFormSubmissionInstanceElement(component.getContext().getXformsXmlDoc());
+			mainDataInstance = FormManagerUtil.getFormSubmissionInstanceElement(component.getFormDocument().getXformsDocument());
 			componentDocumentDataBean.setFormMainDataInstanceElement(mainDataInstance);
 		}
 		
@@ -129,7 +129,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(dataModel == null) {
 		
-			dataModel = FormManagerUtil.getElementById(component.getContext().getXformsXmlDoc(), FormManagerUtil.submission_model);
+			dataModel = FormManagerUtil.getElementById(component.getFormDocument().getXformsDocument(), FormManagerUtil.submission_model);
 			componentDocumentDataBean.setFormDataModel(dataModel);
 		}
 		
@@ -145,7 +145,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		
 		if(componentDocumentDataBean.getSectionsVisualizationInstance() == null) {
 			
-			Document xforms_doc = component.getContext().getXformsXmlDoc();
+			Document xforms_doc = component.getFormDocument().getXformsDocument();
 			
 			Element instance = FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.head_tag, FormManagerUtil.sections_visualization_instance_id);
 			
@@ -166,7 +166,7 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	
 	public boolean getIsStepsVisualizationUsed(FormComponent component) {
 		
-		Document xforms_doc = component.getContext().getXformsXmlDoc();
+		Document xforms_doc = component.getFormDocument().getXformsDocument();
 		return null != FormManagerUtil.getElementByIdFromDocument(xforms_doc, FormManagerUtil.body_tag, FormManagerUtil.sections_visualization_id);
 	}
 	
@@ -190,14 +190,14 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	protected void updateSubmissionAction(FormComponent component) {
 		
 		PropertiesDocument props = (PropertiesDocument)component.getProperties();
-		Element submissionElement = FormManagerUtil.getSubmissionElement(component.getContext().getXformsXmlDoc());
+		Element submissionElement = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
 		submissionElement.setAttribute(FormManagerUtil.action_att, props.getSubmissionAction());
 	}
 	
 	protected void updateStepsVisualizationUsed(FormComponent component) {
 		
 		PropertiesDocument props = (PropertiesDocument)component.getProperties();
-		Document xforms_doc = component.getContext().getXformsXmlDoc();
+		Document xforms_doc = component.getFormDocument().getXformsDocument();
 		
 		if(props.isStepsVisualizationUsed()) {
 
@@ -240,14 +240,14 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 	
 	public String getSubmissionAction(FormComponent component) {
 		
-		Element submission = FormManagerUtil.getSubmissionElement(component.getContext().getXformsXmlDoc());
+		Element submission = FormManagerUtil.getSubmissionElement(component.getFormDocument().getXformsDocument());
 		return submission.getAttribute(FormManagerUtil.action_att);
 	}
 	
-	@Override
+//	@Override
 	public boolean isReadonly(FormComponent component) {
 		
-		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		Document xformsDoc = component.getFormDocument().getXformsDocument();
 		
 		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
 		
@@ -264,10 +264,10 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		return false;
 	}
 	
-	@Override
+//	@Override
 	public void setReadonly(FormComponent component, boolean readonly) {
 		
-		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		Document xformsDoc = component.getFormDocument().getXformsDocument();
 		
 		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
 		
@@ -290,10 +290,10 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		}
 	}
 	
-	@Override
+//	@Override
 	public void setPdfForm(FormComponent component, boolean generatePdf) {
 		
-		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		Document xformsDoc = component.getFormDocument().getXformsDocument();
 		
 		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
 
@@ -313,12 +313,11 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		} else {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "setPdfForm called on form, but no control instance found. Ignoring.");
 		}
-		
 	}
 	
-	@Override
+//	@Override
 	public boolean isPdfForm(FormComponent component) {
-		Document xformsDoc = component.getContext().getXformsXmlDoc();
+		Document xformsDoc = component.getFormDocument().getXformsDocument();
 		
 		Element controlInstance = FormManagerUtil.getElementById(xformsDoc, FormManagerUtil.controlInstanceID);
 		
@@ -333,6 +332,5 @@ public class XFormsManagerDocumentImpl extends XFormsManagerContainerImpl implem
 		}
 		
 		return false;
-		
 	}
 }
