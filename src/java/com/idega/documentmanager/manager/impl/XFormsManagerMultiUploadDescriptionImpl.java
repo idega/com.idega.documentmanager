@@ -17,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUploadDescription {
@@ -207,7 +207,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_LABEL).toString(), null, 
 		addButtonlabel,
-			component.getFormDocument().getXformsDocument(),
+			component.getContext().getXformsXmlDoc(),
 			localizedText
 	);
 
@@ -227,7 +227,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_REMOVE).toString(), null, 
 		removeButtonlabel,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
    } 
@@ -245,7 +245,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_NAME).toString(), null, 
 		label,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
    }
@@ -264,7 +264,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_DESCRIPTION).toString(), null, 
 		descriptionButtonlabel,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
   } 
@@ -283,7 +283,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_TITLE).toString(), null, 
 		title,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
        
@@ -298,7 +298,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
        
        Element output = (Element) outputXPUT.getNode(xformsComponentDataBean.getElement());
             
-       FormManagerUtil.putLocalizedText( new StringBuilder(component.getId()).append(".info").toString(), FormManagerUtil.localized_entries, output, component.getFormDocument().getXformsDocument(), properties.getErrorMsg());
+       FormManagerUtil.putLocalizedText( new StringBuilder(component.getId()).append(".info").toString(), FormManagerUtil.localized_entries, output, component.getContext().getXformsXmlDoc(), properties.getErrorMsg());
        output.removeAttribute(FormManagerUtil.ref_s_att);
           
        
@@ -314,7 +314,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
 
     public LocalizedStringBean getRemoveButtonLabel(FormComponent component) {
@@ -329,7 +329,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
     public LocalizedStringBean getDescriptionButtonLabel(FormComponent component) {
@@ -342,7 +342,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
     public LocalizedStringBean getUploadingFileDescription(FormComponent component) {
@@ -355,7 +355,7 @@ public class XFormsManagerMultiUploadDescriptionImpl extends XFormsManagerImpl i
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
 

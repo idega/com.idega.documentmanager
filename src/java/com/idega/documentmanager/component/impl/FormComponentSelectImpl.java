@@ -8,16 +8,16 @@ import com.idega.documentmanager.manager.XFormsManagerSelect;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormComponentSelectImpl extends FormComponentImpl implements ComponentSelect {
 	
 	@Override
 	public XFormsManagerSelect getXFormsManager() {
 		
-		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerSelect();
+		return getContext().getXformsManagerFactory().getXformsManagerSelect();
 	}
 	
 	@Override

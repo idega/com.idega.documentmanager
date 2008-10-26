@@ -6,7 +6,7 @@
       xmlns:idega="http://idega.com/xforms"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <head>
-        <title><xf:output ref="instance('localized_strings')/form-title[@lang=instance('localized_strings')/current_language]" model="data_model" /></title>
+        <title><xf:output ref="instance('localized_strings')/form.title[@lang=instance('localized_strings')/current_language]" model="data_model" /></title>
 
         <xf:model id="submission_model" schema="#fb-schema">
             <xf:instance id="data-instance" xmlns="">
@@ -15,34 +15,35 @@
                 </data>
             </xf:instance>
                      
-	        <xf:instance id="control-instance">
-				<control xmlns="">
-	                <required>true</required>
-	                <readonly>false</readonly>
-	                <submission>false</submission>
-	                <generatePdf>false</generatePdf>
-	                <submissionButton/>
-				</control>
-			</xf:instance>
+        <xf:instance id="control-instance">
+			<control xmlns="">
+				<readonly>false</readonly>
+                <submission>false</submission>
+                <generatePdf>false</generatePdf>
+                <sendLinkSubmission>false</sendLinkSubmission>
+                <submissionButton/>
+                <controlsButton/>
+			</control>
+		</xf:instance>
 		
-			<xf:instance xmlns="" id="error-instance">
-	            <data>
-	                <error for=""/>
-	            </data>
-	        </xf:instance>
-			
-			<xf:bind id="errorsGroup" nodeset="instance('error-instance')/error" relevant="instance('control-instance')/submission = 'true' and count-non-empty(instance('error-instance')/error)!=0"/>
-	        <xf:bind id="errors" nodeset="instance('error-instance')/error[. != '']"/>
-	        
-	        <xf:bind id="bind-submissionButton" nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'" />
-		
-	        <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" >
-	        	<idega:toggle ev:event="xforms-submit-done" case="fbc_4"/>
-	        </xf:submission>
+		<xf:bind id="errorsGroup" nodeset="instance('error-instance')/error" relevant="instance('control-instance')/submission = 'true' and count-non-empty(instance('error-instance')/error)!=0"/>
+        <xf:bind id="errors" nodeset="instance('error-instance')/error[. != '']"/>
+        <xf:instance xmlns="" id="error-instance">
+            <data>
+                <error for=""/>
+            </data>
+        </xf:instance>
+	
+        <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" >
+        	<idega:toggle ev:event="xforms-submit-done" case="fbc_4"/>
+        </xf:submission>
+    
+	    <xf:action ev:event="xforms-submit-error" id="submission-error">
+	        <xf:message level="modeless" ref="instance('localized_strings')/page-1-error.label[@lang=instance('localized_strings')/current_language]"/>
+	    </xf:action>
 	    
-		    <xf:action ev:event="xforms-submit-error" id="submission-error">
-		        <xf:message level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
-		    </xf:action>
+	    <xf:bind id="bind.submissionButton" nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'" />
+        <xf:bind id="bind.controlsButton" nodeset="instance('control-instance')/controlsButton" relevant="instance('control-instance')/generatePdf != 'true'" />
 			
         </xf:model>
         <xf:model id="data_model">
@@ -50,27 +51,26 @@
 		        <localized_strings>
 			        <default_language>en</default_language>
 	         		<current_language>en</current_language>
-	         		<form-title lang="en">My new form</form-title>
-	         		<form-title lang="is_IS">My new form</form-title>
-	         		<page-1-label lang="en">First section</page-1-label>
-	         		<page-1-label lang="is_IS">Svæði</page-1-label>
-	         		<page-2-label lang="en">Submitted</page-2-label>
-	         		<page-2-label lang="is_IS">Sent</page-2-label>
-	         		<page-1-submit_button-label lang="en">Submit</page-1-submit_button-label>
-	         		<page-1-submit_button-label lang="is_IS">Senda</page-1-submit_button-label>
-	         		<submission-error_message lang="en">Submission error. Please check your form!</submission-error_message>
-	         		<submission-error_message lang="is_IS">Villa varð við að senda formið vinsamlegast athugið hvort stjörnumerktir reitir hafi allir verið útfylltir og að engar villur séu í forminu/</submission-error_message>
-	         		<submission-success_message lang="en">Form submitted, thank You!</submission-success_message>
-	         		<submission-success_message lang="is_IS">Formið hefur verið sent Impru til athugunar og þú hefur fengið sendan hlekk sem þú getur notað til að skoða stöðu málsins. Þú getur einnig skráð þig inn til að sjá skilaboð tengd málinu og til að sjá öll þín mál hjá Impru á einum stað.</submission-success_message>
+	         		<form.title lang="en">My new form</form.title>
+	         		<form.title lang="is_IS">My new form</form.title>
+	         		<page-1.label lang="en">First section</page-1.label>
+	         		<page-1.label lang="is_IS">Svæði</page-1.label>
+	         		<page-2.label lang="en">Submitted</page-2.label>
+	         		<page-2.label lang="is_IS">Sent</page-2.label>
+	         		<page-1-submit.label lang="en">Submit</page-1-submit.label>
+	         		<page-1-submit.label lang="is_IS">Senda</page-1-submit.label>
+	         		<page-1-error.label lang="en">Submission error. Please check your form!</page-1-error.label>
+	         		<page-1-error.label lang="is_IS">Villa varð við að senda formið vinsamlegast athugið hvort stjörnumerktir reitir hafi allir verið útfylltir og að engar villur séu í forminu/</page-1-error.label>
+	         		<page-2.info lang="en">Form submitted, thank You!</page-2.info>
+	         		<page-2.info lang="is_IS">Formið hefur verið sent Impru til athugunar og þú hefur fengið sendan hlekk sem þú getur notað til að skoða stöðu málsins. Þú getur einnig skráð þig inn til að sjá skilaboð tengd málinu og til að sjá öll þín mál hjá Impru á einum stað.</page-2.info>
 	         	</localized_strings>
 	        </xf:instance>
 	        
 	        <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
             
             <xf:action ev:event="xforms-ready">
-                <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
                 <xf:setvalue model="data_model" ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
-                <xf:setvalue if="instance('control-instance')/generatePdf='true'" model="submission_model" ref="instance('control-instance')/required" value="'false'"/>
+                <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
             </xf:action>
 			
 	      </xf:model>
@@ -87,35 +87,39 @@
                 </xf:repeat>
             </xf:group>
             
-            <idega:setError ev:event="idega-validation-error" id="formSetErrorHandler" ref="instance('error-instance')/error"/>
+            <idega:setError ev:event="idega-validation-error" id="formSetErrorHandler" if="instance('saveForm-instance')/savePhase != 'true'" ref="instance('error-instance')/error"/>
             
 	        <idega:switch>
-		        <idega:case id="fbc_1" show="instance('control-instance')/generatePdf='true'">
+		        <idega:case id="fbc_1">
 			   	  <xf:group appearance="full">
-			   	  	<xf:label ref="instance('localized_strings')/page-1-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			   	  	<div class="fbc_button_area" id="fbc_2" type="fbc_button_area">
-                        <xf:trigger class="fbc_button_submit" id="fbc_3" type="fbc_button_submit" bind="bind-submissionButton">
-                            <xf:label model="data_model" ref="instance('localized_strings')/page-1-submit_button-label[@lang=instance('localized_strings')/current_language]"/>
-                            <xf:action ev:event="DOMActivate">
-                                <xf:setvalue ref="instance('control-instance')/submission" value="'true'"/>
-                                <idega:dispatch name="idega-validate" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
-                                <xf:dispatch name="xforms-rebuild" target="data_model"/>
-                                <xf:dispatch name="xforms-recalculate" target="data_model"/>
-                                <xf:dispatch name="xforms-revalidate" target="data_model"/>
-                                <xf:dispatch name="xforms-refresh" target="data_model"/>
-                                <xf:action if="count-non-empty(instance('error-instance')/error)=0">
-                                    <xf:send submission="submit_data_submission"/>
-                                </xf:action>
-                                <xf:message if="count-non-empty(instance('error-instance')/error)!=0" level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
+			   	  	<xf:label ref="instance('localized_strings')/page-1.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			   	  	<div id="fbc_2" name="fbc_button_area" class="fbc_button_area">
+			   	  	
+			   	  	<xf:trigger bind="bind.submissionButton" class="fbc_button_submit" id="fbc_3" name="fbc_button_submit">
+			   	  	
+			   	  	    <xf:label model="data_model" ref="instance('localized_strings')/page-1-submit.label[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:action ev:event="DOMActivate">
+                            <xf:setvalue ref="instance('control-instance')/submission" value="'true'"/>
+                            <idega:dispatch name="idega-validate" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                            <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                            <xf:dispatch name="xforms-recalculate" target="data_model"/>
+                            <xf:dispatch name="xforms-revalidate" target="data_model"/>
+                            <xf:dispatch name="xforms-refresh" target="data_model"/>
+                            <xf:action if="count-non-empty(instance('error-instance')/error)=0">
+                                <xf:send submission="submit_data_submission"/>
                             </xf:action>
-                        </xf:trigger>
-                    </div>
+                            <xf:message if="count-non-empty(instance('error-instance')/error)!=0" level="modeless" ref="instance('localized_strings')/page-1-error.label[@lang=instance('localized_strings')/current_language]"/>
+                                    
+                        </xf:action>
+                    </xf:trigger>
+                     
+			   	  	</div>
 			   	  </xf:group>
 		   	  </idega:case>
-		   	  <idega:case id="fbc_4" type="thx_page">
+		   	  <idega:case id="fbc_4" name="thx_page">
 			   	  <xf:group appearance="full">
-			   	  	<xf:label ref="instance('localized_strings')/page-2-label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-			   	  	<xf:output ref="instance('localized_strings')/submission-success_message[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			   	  	<xf:label ref="instance('localized_strings')/page-2.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
+			   	  	<xf:output ref="instance('localized_strings')/page-2.info[@lang=instance('localized_strings')/current_language]" model="data_model" />
 			   	  </xf:group>
 		   	  </idega:case>
 	   	  </idega:switch>

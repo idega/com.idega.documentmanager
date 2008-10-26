@@ -6,18 +6,17 @@ import com.idega.documentmanager.business.component.properties.PropertiesCompone
 import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.util.FormManagerUtil;
-import com.idega.documentmanager.xform.Bind;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class ComponentProperties implements PropertiesComponent {
 	
 	private boolean required = false;
-//	private boolean readonly = false;
+	private boolean readonly = false;
 	private LocalizedStringBean label;
 	private LocalizedStringBean errorMsg;
 	private LocalizedStringBean helpText;
@@ -83,8 +82,8 @@ public class ComponentProperties implements PropertiesComponent {
 		.append(autofillKey)
 		.append("\nhelp text: ")
 		.append(helpText)
-//		.append("\nreadonly: ")
-//		.append(readonly)
+		.append("\nreadonly: ")
+		.append(readonly)
 		.append("\nvalidationText: ")
 		.append(validationText)
 		.toString();
@@ -136,18 +135,18 @@ public class ComponentProperties implements PropertiesComponent {
 	public void setPlainVariable(Variable variable) {
 		this.variable = variable;
 	}
-//	public boolean isReadonly() {
-//		return readonly;
-//	}
-//	public void setReadonly(boolean readonly) {
-//		
-//		this.readonly = readonly;
-//		component.update(ConstUpdateType.READ_ONLY);
-//	}
-//	
-//	public void setPlainReadonly(boolean readonly) {
-//		this.readonly = readonly;
-//	}
+	public boolean isReadonly() {
+		return readonly;
+	}
+	public void setReadonly(boolean readonly) {
+		
+		this.readonly = readonly;
+		component.update(ConstUpdateType.READ_ONLY);
+	}
+	
+	public void setPlainReadonly(boolean readonly) {
+		this.readonly = readonly;
+	}
 	
 	public LocalizedStringBean getValidationText() {
 	    return validationText;
@@ -162,19 +161,4 @@ public class ComponentProperties implements PropertiesComponent {
 	    this.validationText = validationText;
 	}
 	
-	public boolean isHasValidationConstraints() {
-		
-		if(isRequired())
-			return true;
-		
-		Bind bind = component.getXformsComponentDataBean().getBind();
-		
-		if(bind != null) {
-			
-			if((bind.getType() != null && bind.getType().length() != 0) || ((bind.getConstraint() != null && bind.getConstraint().length() != 0)))
-				return true;
-		}
-		
-		return false;
-	}
 }

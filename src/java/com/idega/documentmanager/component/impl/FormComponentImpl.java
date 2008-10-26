@@ -11,42 +11,47 @@ import com.idega.documentmanager.component.FormComponent;
 import com.idega.documentmanager.component.FormComponentContainer;
 import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.FormDocument;
-import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
+import com.idega.documentmanager.component.beans.ComponentDataBean;
 import com.idega.documentmanager.component.properties.impl.ComponentProperties;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
+import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.manager.HtmlManager;
 import com.idega.documentmanager.manager.XFormsManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormComponentImpl implements FormComponent, Component {
 	
 	private  String componentId;
-	private FormDocument formDocument;
-	private ComponentDataBean xformsComponentDataBean;
-//	private DMContext context;
 	
-	protected FormComponent nextSibling;
+	protected FormComponent componentAfterMe;
 	protected String type;
+	
 	protected FormComponentContainer parent;
+	
 	protected PropertiesComponent properties;
-//	protected boolean created = false;
-//	protected boolean load = false;
+	protected boolean created = false;
+	protected boolean load = false;
 	
-//	public DMContext getContext() {
-//		return context;
-//	}
-//
-//	public void setContext(DMContext context) {
-//		this.context = context;
-//	}
+	private FormDocument formDocument;
 	
-	/*
+	private ComponentDataBean xformsComponentDataBean;
+	
+	private DMContext context;
+	
+	public DMContext getContext() {
+		return context;
+	}
+
+	public void setContext(DMContext context) {
+		this.context = context;
+	}
+	
 	public void render() {
 		
 		if(load || !created) {
@@ -90,61 +95,15 @@ public class FormComponentImpl implements FormComponent, Component {
 			load = false;
 		}
 	}
-	*/
-	
-	public void create() {
-		
-		XFormsManager xformsManager = getXFormsManager();
-		
-		xformsManager.loadXFormsComponentByTypeFromComponentsXForm(this, type);
-		xformsManager.addComponentToDocument(this);
-		
-		setProperties();
-		changeBindNames();
-		
-		FormDocument formDocument = getFormDocument();
-		formDocument.setFormDocumentModified(true);
-		tellAboutMe();
-		
-		if(FormComponentFactory.getInstance().isNormalFormElement(this)) {
-
-			FormComponentPage confirmationPage = formDocument.getFormConfirmationPage();
-			
-			if(confirmationPage != null) {
-				getXFormsManager().loadConfirmationElement(this, confirmationPage);
-			}
-		}
-	}
-	
-	public void load() {
-		
-		XFormsManager xformsManager = getXFormsManager();
-		
-		xformsManager.loadXFormsComponentFromDocument(this);
-		
-		setProperties();
-		
-//		those two could be moved to container who's calling this
-		getFormDocument().setFormDocumentModified(true);
-		tellAboutMe();
-		
-		if(FormComponentFactory.getInstance().isNormalFormElement(this)) {
-
-//			perhaps just lazyload
-			getXFormsManager().loadConfirmationElement(this, null);
-		}
-//		created = true;
-//		load = false;
-	}
 	
 	public void addToConfirmationPage() {
 		
 		if(FormComponentFactory.getInstance().isNormalFormElement(this)) {
 			
-			FormComponentPage confirmationPage = getFormDocument().getFormConfirmationPage();
+			FormComponentPage confirmation_page = (FormComponentPage)formDocument.getConfirmationPage();
 			
-			if(confirmationPage != null) {
-				getXFormsManager().loadConfirmationElement(this, confirmationPage);
+			if(confirmation_page != null) {
+				getXFormsManager().loadConfirmationElement(this, confirmation_page);
 			}
 		}
 	}
@@ -162,8 +121,9 @@ public class FormComponentImpl implements FormComponent, Component {
 		properties.setPlainAutofillKey(getXFormsManager().getAutofillKey(this));
 		properties.setPlainHelpText(getXFormsManager().getHelpText(this));
 		properties.setPlainVariable(getXFormsManager().getVariable(this));
-//		properties.setPlainReadonly(getXFormsManager().isReadonly(this));
+		properties.setPlainReadonly(getXFormsManager().isReadonly(this));
 		properties.setPlainValidationText(getXFormsManager().getValidationText(this));
+
 	}
 	
 	protected void changeBindNames() {
@@ -182,41 +142,42 @@ public class FormComponentImpl implements FormComponent, Component {
 	protected void tellAboutMe() {
 
 		String componentId = getId();
-//		parent.tellComponentId(componentId);
-		FormComponentContainer parent = getParent();
-		List<String> id_list = parent.getContainedComponentsIds();
+		parent.tellComponentId(componentId);
+		List<String> id_list = parent.getContainedComponentsIdList();
 
 		for (int i = 0; i < id_list.size(); i++) {
 			
 			if(id_list.get(i).equals(componentId) && i != 0) {
 				
-				((FormComponent)parent.getContainedComponent(id_list.get(i-1))).setNextSibling(this);
+				((FormComponent)parent.getComponent(id_list.get(i-1))).setComponentAfterThis(this);
 				break;
 			}
 		}
 	}
 	
-	public void setNextSibling(FormComponent component) {
+	public void setComponentAfterThis(FormComponent component) {
 		
-		nextSibling = component;
+		componentAfterMe = component;
 	}
 	
-	public void setNextSiblingRerender(FormComponent nextSibling) {
+	public void setComponentAfterThisRerender(FormComponent component) {
 		
-		FormComponent formerNextSibling = this.nextSibling;
-		this.nextSibling = nextSibling;
+		XFormsManager xforms_manager = getXFormsManager();
 		
-		if(nextSibling != null && formerNextSibling != null && !formerNextSibling.getId().equals(nextSibling.getId())) {
+		FormComponent previous_component_after_me = componentAfterMe;
+		componentAfterMe = component;
+		
+		if(component != null && previous_component_after_me != null && !previous_component_after_me.getId().equals(component.getId())) {
 
-			getXFormsManager().moveComponent(this, nextSibling.getId());
+			xforms_manager.moveComponent(this, component.getId());
 			
-		} else if(formerNextSibling == null && nextSibling != null) {
+		} else if(previous_component_after_me == null && component != null) {
 			
-			getXFormsManager().moveComponent(this, nextSibling.getId());
+			xforms_manager.moveComponent(this, component.getId());
 			
-		} else if(nextSibling == null && formerNextSibling != null) {
+		} else if(component == null && previous_component_after_me != null) {
 			
-			getXFormsManager().moveComponent(this, null);
+			xforms_manager.moveComponent(this, null);
 		}
 	}
 	
@@ -235,9 +196,9 @@ public class FormComponentImpl implements FormComponent, Component {
 		this.type = type;
 	}
 	
-//	public void setLoad(boolean load) {
-//		this.load = load;
-//	}
+	public void setLoad(boolean load) {
+		this.load = load;
+	}
 	
 	public Element getHtmlRepresentation(Locale locale) throws Exception {
 		
@@ -257,12 +218,12 @@ public class FormComponentImpl implements FormComponent, Component {
 
 	public XFormsManager getXFormsManager() {
 		
-		return getFormDocument().getContext().getXformsManagerFactory().getXformsManager();
+		return getContext().getXformsManagerFactory().getXformsManager();
 	}
 	
 	protected HtmlManager getHtmlManager() {
 		
-		return getFormDocument().getContext().getHtmlManagerFactory().getHtmlManager();
+		return getContext().getHtmlManagerFactory().getHtmlManager();
 	}
 	
 	public String getType() {
@@ -272,8 +233,8 @@ public class FormComponentImpl implements FormComponent, Component {
 	public void remove() {
 		
 		getXFormsManager().removeComponentFromXFormsDocument(this);
-		getFormDocument().setFormDocumentModified(true);
-		getParent().unregisterComponent(getId());
+		formDocument.setFormDocumentModified(true);
+		parent.unregisterComponent(getId());
 	}
 	
 	public void setParent(FormComponentContainer parent) {
@@ -289,11 +250,11 @@ public class FormComponentImpl implements FormComponent, Component {
 		
 		return "\nComponent id: "+getId()+" component class: "+getClass();
 	}
-	public FormComponent getNextSibling() {
-		return nextSibling;
+	public FormComponent getComponentAfterThis() {
+		return componentAfterMe;
 	}
-	public void setFormDocument(FormDocument formDocument) {
-		this.formDocument = formDocument;
+	public void setFormDocument(FormDocument form_document) {
+		this.formDocument = form_document;
 	}
 	
 	public FormDocument getFormDocument() {
@@ -307,26 +268,26 @@ public class FormComponentImpl implements FormComponent, Component {
 		switch (what) {
 		case LABEL:
 			getHtmlManager().clearHtmlComponents(this);
-			getFormDocument().setFormDocumentModified(true);
+			formDocument.setFormDocumentModified(true);
 			changeBindNames();
 			break;
 			
 		case ERROR_MSG:
 			getHtmlManager().clearHtmlComponents(this);
-			getFormDocument().setFormDocumentModified(true);
+			formDocument.setFormDocumentModified(true);
 			break;
 			
 		case HELP_TEXT:
 			getHtmlManager().clearHtmlComponents(this);
-			getFormDocument().setFormDocumentModified(true);
+			formDocument.setFormDocumentModified(true);
 			break;
 			
 		case CONSTRAINT_REQUIRED:
-			getFormDocument().setFormDocumentModified(true);
+			formDocument.setFormDocumentModified(true);
 			break;
 		case VALIDATION:
-			getHtmlManager().clearHtmlComponents(this);
-		    getFormDocument().setFormDocumentModified(true);
+		    	getHtmlManager().clearHtmlComponents(this);
+			formDocument.setFormDocumentModified(true);
 			break;
 		
 		case P3P_TYPE:
@@ -344,13 +305,13 @@ public class FormComponentImpl implements FormComponent, Component {
 	}
 	
 	public void clear() {
-		nextSibling = null;
+		componentAfterMe = null;
 		setId(null);
 		type = null;
 		parent = null;
 		properties = null;
-//		created = false;
-//		load = false;
+		created = false;
+		load = false;
 		formDocument = null;
 	}
 	
@@ -363,19 +324,19 @@ public class FormComponentImpl implements FormComponent, Component {
 		this.xformsComponentDataBean = xformsComponentDataBean;
 	}
 	
-//	public void setReadonly(boolean readonly) {
-//		getXFormsManager().setReadonly(this, readonly);
-//	}
-//	
-//	public boolean isReadonly() {
-//		return getXFormsManager().isReadonly(this);
-//	}
+	public void setReadonly(boolean readonly) {
+		getXFormsManager().setReadonly(this, readonly);
+	}
 	
-//	public void setPdfForm(boolean generatePdf) {
-//		getXFormsManager().setPdfForm(this, generatePdf);
-//	}
-//	
-//	public boolean isPdfForm() {
-//		return getXFormsManager().isPdfForm(this);
-//	}
+	public boolean isReadonly() {
+		return getXFormsManager().isReadonly(this);
+	}
+	
+	public void setPdfForm(boolean generatePdf) {
+		getXFormsManager().setPdfForm(this, generatePdf);
+	}
+	
+	public boolean isPdfForm() {
+		return getXFormsManager().isPdfForm(this);
+	}
 }

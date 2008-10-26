@@ -15,9 +15,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XFormsManagerSelect {
 
@@ -59,7 +59,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		super.addComponentToDocument(component);
 		
-		Document xforms_doc = component.getFormDocument().getXformsDocument();
+		Document xforms_doc = component.getContext().getXformsXmlDoc();
 		
 		ComponentSelectDataBean xformsComponentDataBean = (ComponentSelectDataBean)component.getXformsComponentDataBean();
 		
@@ -138,7 +138,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 		
 		LocalizedItemsetBean itemset_bean = new LocalizedItemsetBean();
 		itemset_bean.setLocalDataSrcElement(local_instance);
-		itemset_bean.setComponentsXFormsDocument(component.getFormDocument().getContext().getCacheManager().getComponentsXforms());
+		itemset_bean.setComponentsXFormsDocument(component.getContext().getCacheManager().getComponentsXforms());
 		itemset_bean.setComponent(component);
 		
 		return itemset_bean;
@@ -198,7 +198,7 @@ public class XFormsManagerSelectImpl extends XFormsManagerImpl implements XForms
 			
 			if(itemset == null) {
 				
-				itemset = FormManagerUtil.getItemElementById(component.getFormDocument().getContext().getCacheManager().getComponentsXforms(), "itemset");
+				itemset = FormManagerUtil.getItemElementById(component.getContext().getCacheManager().getComponentsXforms(), "itemset");
 				itemset = (Element)component_element.getOwnerDocument().importNode(itemset, true);
 				component_element.appendChild(itemset);
 			}

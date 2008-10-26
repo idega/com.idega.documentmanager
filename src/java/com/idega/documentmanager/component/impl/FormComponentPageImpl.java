@@ -10,9 +10,9 @@ import com.idega.documentmanager.manager.XFormsManagerPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormComponentPageImpl extends FormComponentContainerImpl implements Page, FormComponentPage {
 	
@@ -35,7 +35,7 @@ public class FormComponentPageImpl extends FormComponentContainerImpl implements
 	@Override
 	public XFormsManagerPage getXFormsManager() {
 		
-		return getFormDocument().getContext().getXformsManagerFactory().getXformsManagerPage();
+		return getContext().getXformsManagerFactory().getXformsManagerPage();
 	}
 	
 	@Override
@@ -54,12 +54,12 @@ public class FormComponentPageImpl extends FormComponentContainerImpl implements
 		
 		return button_area_id == null ? null : (ButtonArea)getContainedComponent(button_area_id);
 	}
-	public ButtonArea createButtonArea(String nextSiblingId) throws NullPointerException {
+	public ButtonArea createButtonArea(String component_after_this_id) throws NullPointerException {
 		
 		if(getButtonArea() != null)
-			throw new IllegalArgumentException("Button area already exists in the page");
+			throw new IllegalArgumentException("Button area already exists in the page, remove first");
 		
-		return (ButtonArea)addComponent(FormComponentFactory.fbc_button_area, nextSiblingId);
+		return (ButtonArea)addComponent(FormComponentFactory.fbc_button_area, component_after_this_id);
 	}
 	public void setButtonAreaComponentId(String button_area_id) {
 		this.button_area_id = button_area_id;

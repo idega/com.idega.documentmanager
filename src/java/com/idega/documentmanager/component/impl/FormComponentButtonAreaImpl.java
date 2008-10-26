@@ -13,9 +13,9 @@ import com.idega.documentmanager.component.FormComponentPage;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormComponentButtonAreaImpl extends FormComponentContainerImpl implements ButtonArea, FormComponentButtonArea {
 
@@ -30,15 +30,15 @@ public class FormComponentButtonAreaImpl extends FormComponentContainerImpl impl
 			(Button)getContainedComponent(getButtonsTypeIdMapping().get(buttonType));
 	}
 	
-	public Button addButton(ConstButtonType buttonType, String nextSiblingId) {
+	public Button addButton(ConstButtonType buttonType, String componentAfterThisId) throws NullPointerException {
 		
 		if(buttonType == null)
-			throw new IllegalArgumentException("Button type not provided");
+			throw new NullPointerException("Button type provided null");
 		
 		if(getButtonsTypeIdMapping().containsKey(buttonType))
-			throw new IllegalArgumentException("Button by type provided: "+buttonType+" already exists in the button area");
+			throw new IllegalArgumentException("Button by type provided: "+buttonType+" already exists in the button area, remove first");
 		
-		return (Button)addComponent(buttonType.toString(), nextSiblingId);
+		return (Button)addComponent(buttonType.toString(), componentAfterThisId);
 	}
 	
 	protected Map<String, String> getButtonsTypeIdMapping() {
@@ -49,29 +49,11 @@ public class FormComponentButtonAreaImpl extends FormComponentContainerImpl impl
 		return buttons_type_id_mapping;
 	}
 	
-//	@Override
-//	public void render() {
-//		super.render();
-//		((FormComponentPage)parent).setButtonAreaComponentId(getId());
-//	}
-	
 	@Override
-	public void create() {
-		super.create();
-		getParent().setButtonAreaComponentId(getId());
+	public void render() {
+		super.render();
+		((FormComponentPage)parent).setButtonAreaComponentId(getId());
 	}
-	
-	@Override
-	public void load() {
-		super.load();
-		getParent().setButtonAreaComponentId(getId());
-	}
-	
-	@Override
-	public FormComponentPage getParent() {
-		return (FormComponentPage)super.getParent();
-	}
-	
 	@Override
 	public void remove() {
 		super.remove();

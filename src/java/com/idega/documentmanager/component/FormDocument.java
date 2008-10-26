@@ -5,16 +5,16 @@ import java.util.Locale;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.idega.documentmanager.business.component.Page;
 import com.idega.documentmanager.business.component.PageThankYou;
 import com.idega.documentmanager.business.component.properties.PropertiesDocument;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
-import com.idega.documentmanager.context.DMContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public interface FormDocument extends FormComponentContainer {
 
@@ -22,13 +22,13 @@ public interface FormDocument extends FormComponentContainer {
 	
 	public abstract boolean isFormDocumentModified();
 	
-	public abstract Document getComponentsXml(Locale locale);
+	public abstract Document getComponentsXml(FormComponent component, Locale locale);
 	
 	public abstract Long getFormId();
 	
 	public abstract Locale getDefaultLocale();
 	
-	public abstract FormComponentPage getFormConfirmationPage();
+	public abstract Page getConfirmationPage();
 	
 	public abstract PageThankYou getThxPage();
 	
@@ -51,10 +51,4 @@ public interface FormDocument extends FormComponentContainer {
 	public abstract String getFormType();
 	
 	public abstract LocalizedStringBean getFormTitle();
-	
-	public abstract Document getXformsDocument();
-	
-	public abstract Document getComponentsXforms();
-	
-	public abstract DMContext getContext();
 }

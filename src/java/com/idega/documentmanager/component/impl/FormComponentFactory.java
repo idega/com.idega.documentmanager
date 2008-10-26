@@ -13,9 +13,9 @@ import com.idega.repository.data.Singleton;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ƒåivilis</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormComponentFactory implements Singleton {
 	
@@ -59,7 +59,7 @@ public class FormComponentFactory implements Singleton {
 		types.add("fbc_textarea");
 		types.add("fbc_secret");
 		types.add("fbc_email");
-		types.add("fbc_upload");
+		types.add("fbc_upload_file");
 		types.add("xf:input");
 		types.add("xf:secret");
 		types.add("xf:textarea");
@@ -116,10 +116,10 @@ public class FormComponentFactory implements Singleton {
 		return me;
 	}
 	
-	public FormComponent getFormComponentByType(String componentType) {
+	public FormComponent getFormComponentByType(String component_type) {
 		
-		FormComponent component = recognizeFormComponent(componentType);
-		component.setType(componentType);
+		FormComponent component = recognizeFormComponent(component_type);
+		component.setType(component_type);
 		
 		return component;
 	}

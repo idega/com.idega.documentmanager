@@ -17,9 +17,9 @@ import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:arunas@idega.com">Arūnas Vasmanas</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * 
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	XFormsManagerMultiUpload {
@@ -180,7 +180,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_LABEL).toString(), null, 
 		addButtonlabel,
-			component.getFormDocument().getXformsDocument(),
+			component.getContext().getXformsXmlDoc(),
 			localizedText
 	);
 
@@ -199,7 +199,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_NAME).toString(), null, 
 		label,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
   }
@@ -218,7 +218,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_REMOVE).toString(), null, 
 		removeButtonlabel,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
    } 
@@ -237,7 +237,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 
 	FormManagerUtil.putLocalizedText(!FormManagerUtil.isEmpty(ref) ? null : new StringBuilder(component.getId()).append(APPEND_TITLE).toString(), null, 
 		title,
-		component.getFormDocument().getXformsDocument(),
+		component.getContext().getXformsXmlDoc(),
 		localizedText
 	);
        
@@ -252,7 +252,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
 	
     }
 
@@ -266,7 +266,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
 	
     }
     
@@ -279,7 +279,7 @@ public class XFormsManagerMultiUploadImpl extends XFormsManagerImpl implements
 	if (label == null)
 	    return null;
 	
-	return FormManagerUtil.getElementLocalizedStrings(label, component.getFormDocument().getXformsDocument());
+	return FormManagerUtil.getElementLocalizedStrings(label, component.getContext().getXformsXmlDoc());
     }
     
 

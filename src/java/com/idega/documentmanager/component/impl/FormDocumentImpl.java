@@ -24,7 +24,6 @@ import com.idega.documentmanager.component.FormComponentPage;
 import com.idega.documentmanager.component.beans.LocalizedStringBean;
 import com.idega.documentmanager.component.properties.impl.ComponentPropertiesDocument;
 import com.idega.documentmanager.component.properties.impl.ConstUpdateType;
-import com.idega.documentmanager.context.DMContext;
 import com.idega.documentmanager.form.impl.Form;
 import com.idega.documentmanager.generator.ComponentsGenerator;
 import com.idega.documentmanager.generator.impl.ComponentsGeneratorImpl;
@@ -33,9 +32,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  *
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class FormDocumentImpl extends FormComponentContainerImpl implements com.idega.documentmanager.business.Document, com.idega.documentmanager.component.FormDocument {
 	
@@ -52,7 +51,6 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	private Map<Locale, Document> localizedComponentsDocuments;
 	
 	private Form form;
-	private DMContext context;
 	
 	public Form getForm() {
 		return form;
@@ -92,7 +90,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		return getForm().isFormDocumentModified();
 	}
 	
-	public Document getComponentsXml(Locale locale) {
+	public Document getComponentsXml(FormComponent component, Locale locale) {
 		
 		Map<Locale, Document> localizedComponentsDocuments = getLocalizedComponentsDocuments();
 		
@@ -104,7 +102,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 
 //				TODO: change this to spring bean etc (now relies on impl)
 				ComponentsGenerator componentsGenerator = ComponentsGeneratorImpl.getInstance();
-				Document xformClone = (Document)getContext().getXformsXmlDoc().cloneNode(true);
+				Document xformClone = (Document)component.getContext().getXformsXmlDoc().cloneNode(true);
 
 				FormManagerUtil.modifyXFormsDocumentForViewing(xformClone);
 				FormManagerUtil.setCurrentFormLocale(xformClone, locale);
@@ -158,8 +156,8 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		return getForm().getDefaultLocale();
 	}
 
-	public Page addPage(String nextSiblingPageId) {
-		Page page = (Page)super.addComponent(FormComponentFactory.page_type, nextSiblingPageId);
+	public Page addPage(String page_after_this_id) throws NullPointerException {
+		Page page = (Page)super.addComponent(FormComponentFactory.page_type, page_after_this_id);
 		componentsOrderChanged();
 		return page;
 	}
@@ -170,12 +168,12 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	public Page getPage(String page_id) {
 		return (Page)getContainedComponent(page_id);
 	}
-//	@Override
-//	public void tellComponentId(String component_id) {
-//		getForm().tellComponentId(component_id);
-//	}
+	@Override
+	public void tellComponentId(String component_id) {
+		getForm().tellComponentId(component_id);
+	}
 	public List<String> getContainedPagesIdList() {
-		return getContainedComponentsIds();
+		return getContainedComponentsIdList();
 	}
 	
 	public String generateNewComponentId() {
@@ -249,15 +247,15 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		setConfirmationPageId(null);
 		setThxPageId(null);
 		
-		for (String comp_id : getContainedComponentsIds()) {
+		for (String comp_id : getContainedComponentsIdList()) {
 			
 			FormComponentPage page = (FormComponentPage)contained_components.get(comp_id);
 			if(page == null)
 				throw new NullPointerException("Component, which id was provided in list was not found. Provided: "+getId());
 			
 			page.setPageSiblings(
-					i == 0 ? null : (FormComponentPage)contained_components.get(getContainedComponentsIds().get(i - 1)),
-					(i+1) == components_amount ? null : (FormComponentPage)contained_components.get(getContainedComponentsIds().get(i + 1))
+					i == 0 ? null : (FormComponentPage)contained_components.get(getContainedComponentsIdList().get(i - 1)),
+					(i+1) == components_amount ? null : (FormComponentPage)contained_components.get(getContainedComponentsIdList().get(i + 1))
 			);
 			
 			page.pagesSiblingsChanged();
@@ -280,7 +278,7 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 	@Override
 	public void rearrangeComponents() {
 		
-		List<String> contained_components_id_list = getContainedComponentsIds();
+		List<String> contained_components_id_list = getContainedComponentsIdList();
 		int components_amount = contained_components_id_list.size();
 		Map<String, FormComponent> contained_components = getContainedComponents();
 		
@@ -294,17 +292,17 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 				
 				if(i != components_amount-1) {
 					
-					page.setNextSiblingRerender(
+					page.setComponentAfterThisRerender(
 						contained_components.get(
 								contained_components_id_list.get(i+1)
 						)
 					);
 				} else
-					page.setNextSiblingRerender(null);
+					page.setComponentAfterThisRerender(null);
 				
 				page.setPageSiblings(
-						i == 0 ? null : (FormComponentPage)contained_components.get(getContainedComponentsIds().get(i - 1)),
-						(i+1) == components_amount ? null : (FormComponentPage)contained_components.get(getContainedComponentsIds().get(i + 1))
+						i == 0 ? null : (FormComponentPage)contained_components.get(getContainedComponentsIdList().get(i - 1)),
+						(i+1) == components_amount ? null : (FormComponentPage)contained_components.get(getContainedComponentsIdList().get(i + 1))
 				);
 				page.pagesSiblingsChanged();
 				
@@ -341,14 +339,9 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		setFormType(formDocument.getFormType());
 		setFormId(formDocument.getFormId());
 	}
-	
 	public Page getConfirmationPage() {
 	
-		return (Page)getFormConfirmationPage();
-	}
-	public FormComponentPage getFormConfirmationPage() {
-	
-		return getConfirmationPageId() == null ? null : (FormComponentPage)getContainedComponent(getConfirmationPageId());
+		return getConfirmationPageId() == null ? null : (Page)getContainedComponent(getConfirmationPageId());
 	}
 	public PageThankYou getThxPage() {
 		
@@ -372,14 +365,14 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 			getRegisteredForLastPageIdPages().add(register_page_id);
 	}
 	
-	public Page addConfirmationPage(String nextSiblingPageId) {
+	public Page addConfirmationPage(String page_after_this_id) {
 
 		if(getConfirmationPage() != null)
 			throw new IllegalArgumentException("Confirmation page already exists in the form");
 		
-		Page page = (Page)super.addComponent(FormComponentFactory.confirmation_page_type, nextSiblingPageId);
-		
+		Page page = (Page)super.addComponent(FormComponentFactory.confirmation_page_type, page_after_this_id);
 		componentsOrderChanged();
+		
 		addToConfirmationPage();
 		
 		return page;
@@ -520,38 +513,27 @@ public class FormDocumentImpl extends FormComponentContainerImpl implements com.
 		return localizedComponentsDocuments;
 	}
 	
-//	@Override
+	@Override
 	public boolean isReadonly() {
 		return getXFormsManager().isReadonly(this);
 	}
 
-//	@Override
+	@Override
 	public void setReadonly(boolean readonly) {
 
 		getXFormsManager().setReadonly(this, readonly);
 	}
 	
-//	@Override
+	@Override
 	public void setPdfForm(boolean generatePdf) {
 
 		getXFormsManager().setPdfForm(this, generatePdf);
 	}
 	
-//	@Override
+	@Override
 	public boolean isPdfForm() {
 
 		return getXFormsManager().isPdfForm(this);
 	}
-	
-	public DMContext getContext() {
-		return context;
-	}
 
-	public void setContext(DMContext context) {
-		this.context = context;
-	}
-	
-	public Document getComponentsXforms() {
-		return getContext().getCacheManager().getComponentsXforms();
-	}
 }

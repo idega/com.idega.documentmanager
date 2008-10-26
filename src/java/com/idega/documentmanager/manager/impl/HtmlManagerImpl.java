@@ -14,9 +14,9 @@ import com.idega.documentmanager.util.FormManagerUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/10/25 18:30:18 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:10 $ by $Author: anton $
  */
 public class HtmlManagerImpl implements HtmlManager {
 	
@@ -57,7 +57,7 @@ public class HtmlManagerImpl implements HtmlManager {
 	
 	protected Document getXFormsDocumentHtmlRepresentation(FormComponent component, Locale locale) throws Exception {
 		FormDocument formDocument = component.getFormDocument();
-		Document componentsXml = formDocument.getComponentsXml(locale);
+		Document componentsXml = formDocument.getComponentsXml(component, locale);
 		
 		return componentsXml;
 	}

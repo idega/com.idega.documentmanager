@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -23,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:11 $ by $Author: anton $
  */
 public class Form {
 	
@@ -52,7 +51,7 @@ public class Form {
 
 		Form form = new Form(context);
 		form.setContext(context);
-//		form.formDocument.setLoad(true);
+		form.formDocument.setLoad(true);
 		
 		context.setXformsXmlDoc(context.getCacheManager().getFormXformsTemplateCopy());
 		form.loadDocumentInternal(null);
@@ -72,18 +71,6 @@ public class Form {
 	}
 	
 	public String generateNewComponentId() {
-		
-		if(lastComponentId == 0) {
-			
-			Set<String> allIds = FormManagerUtil.getAllComponentsIds(formDocument.getXformsDocument());
-			
-			for (String id : allIds) {
-				int idNr = FormManagerUtil.parseIdNumber(id);
-				
-				if(idNr > lastComponentId)
-					lastComponentId = idNr;
-			}
-		}
 		
 		return FormManagerUtil.CTID+(++lastComponentId);
 	}
@@ -136,7 +123,7 @@ public class Form {
 		
 		Form form = new Form(context);
 		form.setContext(context);
-//		form.formDocument.setLoad(true);
+		form.formDocument.setLoad(true);
 		
 		PersistedFormDocument persistedFormDocument = form.loadPersistedFormDocument(formId);
 
@@ -153,7 +140,7 @@ public class Form {
 		
 		Form form = new Form(context);
 		form.setContext(context);
-//		form.formDocument.setLoad(true);
+		form.formDocument.setLoad(true);
 		
 		PersistedFormDocument persistedFormDocument = form.takeAndloadFormDocument(formIdToTakeFrom);
 
@@ -166,7 +153,7 @@ public class Form {
 	public static Form loadDocument(Document xformsXmlDoc, DMContext context) {
 		
 		Form form = new Form(context);
-//		form.formDocument.setLoad(true);
+		form.formDocument.setLoad(true);
 		form.setContext(context);
 		context.setXformsXmlDoc(xformsXmlDoc);
 		
@@ -220,7 +207,7 @@ public class Form {
 			builder = XmlUtil.getDocumentBuilder();
 		
 		clear();
-//		formDocument.setLoad(true);
+		formDocument.setLoad(true);
 		
 		ByteArrayInputStream bais = new ByteArrayInputStream(srcXml.getBytes("UTF-8"));
 		Document xformsXmlDoc = builder.parse(new InputSource(bais));
@@ -236,13 +223,13 @@ public class Form {
 		return defaultDocumentLocale;
 	}
 	
-//	public void tellComponentId(String component_id) {
-//		
-//		int id_number = FormManagerUtil.parseIdNumber(component_id);
-//		
-//		if(id_number > lastComponentId)
-//			lastComponentId = id_number;
-//	}
+	public void tellComponentId(String component_id) {
+		
+		int id_number = FormManagerUtil.parseIdNumber(component_id);
+		
+		if(id_number > lastComponentId)
+			lastComponentId = id_number;
+	}
 	
 	public void clear() {
 		

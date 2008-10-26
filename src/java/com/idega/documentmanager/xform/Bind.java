@@ -7,13 +7,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.idega.documentmanager.util.FormManagerUtil;
+import com.idega.util.CoreConstants;
 import com.idega.util.xml.XPathUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  *
- * Last modified: $Date: 2008/10/25 18:30:19 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/26 16:47:12 $ by $Author: anton $
  */
 public class Bind implements Cloneable {
 
@@ -25,7 +26,6 @@ public class Bind implements Cloneable {
 	private Element bindElement;
 	private Nodeset nodeset;
 	private String type;
-	private String constraint;
 	private String p3pType;
 	private Boolean isRequired;
 	private Boolean readonly;
@@ -95,23 +95,6 @@ public class Bind implements Cloneable {
 			getBindElement().setAttribute(FormManagerUtil.type_att, type);
 	}
 	
-	public String getConstraint() {
-		
-		if(constraint == null)
-			constraint = getBindElement().getAttribute(FormManagerUtil.constraint_att);
-		
-		return constraint;
-	}
-	public void setConstraint(String constraint) {
-		
-		this.constraint = constraint;
-		
-		if(constraint == null)
-			getBindElement().removeAttribute(FormManagerUtil.constraint_att);
-		else
-			getBindElement().setAttribute(FormManagerUtil.constraint_att, constraint);
-	}
-	
 	/**
 	 * locates bind element in the xforms document using xpath //xf:bind[@id=$bindId]
 	 * creates new Bind object, which contains bind relevant data
@@ -179,7 +162,6 @@ public class Bind implements Cloneable {
 		return bind;
 	}
 	
-//	TODO: use not bindId, but component id. and create bindId here
 	public static Bind create(Document xform, String bindId, String modelId, Nodeset nodeset) {
 		
 		Bind bind = locate(xform, bindId, modelId);
@@ -253,7 +235,7 @@ public class Bind implements Cloneable {
 		this.isRequired = isRequired;
 		
 		if(isRequired)
-			getBindElement().setAttribute(FormManagerUtil.required_att, "instance('control-instance')/required = 'true'");
+			getBindElement().setAttribute(FormManagerUtil.required_att, "not(instance('control-instance')/required = 'false')");
 		else
 			getBindElement().removeAttribute(FormManagerUtil.required_att);
 	}
@@ -262,7 +244,7 @@ public class Bind implements Cloneable {
 		
 		if(isRequired == null) {
 			Element bind = getBindElement();
-			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && bind.getAttribute(FormManagerUtil.required_att).length() != 0;
+			isRequired = bind.hasAttribute(FormManagerUtil.required_att) && !CoreConstants.EMPTY.equals(bind.getAttribute(FormManagerUtil.required_att));
 		}
 		
 		return isRequired;
@@ -272,7 +254,7 @@ public class Bind implements Cloneable {
 		
 		if(readonly == null) {
 			Element bind = getBindElement();
-			readonly = bind.hasAttribute(FormManagerUtil.readonly_att) && bind.getAttribute(FormManagerUtil.readonly_att).length() != 0;
+			readonly = bind.hasAttribute(FormManagerUtil.readonly_att) && bind.getAttribute(FormManagerUtil.readonly_att).equals(FormManagerUtil.xpath_true);
 		}
 		
 		return readonly;
