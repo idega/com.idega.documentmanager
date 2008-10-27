@@ -7,9 +7,9 @@ import java.util.Date;
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version $Revision: 1.1 $
  *
- * Last modified: $Date: 2008/04/10 01:08:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/27 20:20:50 $ by $Author: civilis $
  */
-public class PersistedForm {
+public class _PersistedForm {
 
 	private String displayName;
 	private Long formId;
