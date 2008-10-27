@@ -22,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2008/10/26 16:47:11 $ by $Author: anton $
+ * Last modified: $Date: 2008/10/27 17:04:37 $ by $Author: arunas $
  */
 public class Form {
 	
@@ -55,9 +55,14 @@ public class Form {
 		
 		context.setXformsXmlDoc(context.getCacheManager().getFormXformsTemplateCopy());
 		form.loadDocumentInternal(null);
+//		TODO formTitle get only current title  
+		Locale currentLocale = formTitle.getLanguagesKeySet().iterator().next();
+		
+		LocalizedStringBean formDocumentTitle = form.formDocument.getFormTitle();
+		formDocumentTitle.setString(currentLocale, formTitle.getString(currentLocale));
 		
 		if(formTitle != null)
-			form.formDocument.setFormTitle(formTitle);
+			form.formDocument.setFormTitle(formDocumentTitle);
 		
 		form.formDocument.setFormId(null);
 		form.formDocument.setFormType(formType);
