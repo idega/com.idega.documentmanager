@@ -8,9 +8,9 @@ import com.idega.documentmanager.component.FormDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
- *          Last modified: $Date: 2008/10/27 20:21:20 $ by $Author: civilis $
+ *          Last modified: $Date: 2008/10/28 10:33:15 $ by $Author: civilis $
  */
 public interface PersistenceManager {
 
@@ -36,7 +36,7 @@ public interface PersistenceManager {
 	 * @throws IOException
 	 */
 	public abstract Long saveSubmittedData(Long formId, InputStream is,
-			String identifier) throws IOException;
+			String identifier, boolean finalSubmission) throws IOException;
 
 	/**
 	 * 
