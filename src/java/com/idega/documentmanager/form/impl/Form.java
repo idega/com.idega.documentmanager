@@ -22,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2008/10/27 17:04:37 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/28 09:07:20 $ by $Author: arunas $
  */
 public class Form {
 	
@@ -56,10 +56,13 @@ public class Form {
 		context.setXformsXmlDoc(context.getCacheManager().getFormXformsTemplateCopy());
 		form.loadDocumentInternal(null);
 //		TODO formTitle get only current title  
-		Locale currentLocale = formTitle.getLanguagesKeySet().iterator().next();
-		
+
 		LocalizedStringBean formDocumentTitle = form.formDocument.getFormTitle();
-		formDocumentTitle.setString(currentLocale, formTitle.getString(currentLocale));
+		for (Locale currentLocale : formTitle.getLanguagesKeySet()) 
+			formDocumentTitle.setString(currentLocale, formTitle.getString(currentLocale));
+//		tmp solution
+		Locale currentDefaultLocale = formTitle.getLanguagesKeySet().iterator().next();
+		form.setDefaultDocumentLocale(currentDefaultLocale);
 		
 		if(formTitle != null)
 			form.formDocument.setFormTitle(formDocumentTitle);
@@ -220,10 +223,15 @@ public class Form {
 		loadDocumentInternal(null);
 	}
 	
+	protected void setDefaultDocumentLocale(Locale defaultDocumentLocale) {
+		this.defaultDocumentLocale = defaultDocumentLocale;
+	}
+
 	public Locale getDefaultLocale() {
 		
 		if(defaultDocumentLocale == null)
 			defaultDocumentLocale = FormManagerUtil.getDefaultFormLocale(getContext().getXformsXmlDoc());
+			//defaultDocumentLocale = currentUser.getPreferredLocale();
 		
 		return defaultDocumentLocale;
 	}
