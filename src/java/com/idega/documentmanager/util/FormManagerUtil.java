@@ -34,9 +34,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  *
- * Last modified: $Date: 2008/10/26 16:47:12 $ by $Author: anton $
+ * Last modified: $Date: 2008/10/28 10:56:31 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -70,8 +70,9 @@ public class FormManagerUtil {
 	public static final String title_tag = "title";
 	public static final String nodeset_att = "nodeset";
 	public static final String group_tag = "xf:group";
-//	public static final String switch_tag = "xf:switch";
-//	public static final String case_tag = "xf:case";
+	public static final String switch_tag = "xf:switch";
+//	TODO enabled xf:case and xf:switch
+	public static final String case_tag = "xf:case";
 	public static final String idegans_switch_tag = "idega:switch";
 	public static final String idegans_case_tag = "idega:case";
 	public static final String submit_tag = "xf:submit";
@@ -754,10 +755,14 @@ public class FormManagerUtil {
 		
 //		TODO: use better way. probably just xforms property, as it is done when viewing form in pdf mode
 //		the idea here seems that all pages need to be visible (as with pdf)
-		
+//		TODO added xf:switch tmp soliution
 		NodeList tags = xforms_doc.getElementsByTagName(idegans_case_tag);
 		Element switch_element = (Element)xforms_doc.getElementsByTagName(idegans_switch_tag).item(0);
-		
+		if (switch_element == null){
+			tags = xforms_doc.getElementsByTagName(case_tag);
+			switch_element = (Element)xforms_doc.getElementsByTagName(switch_tag).item(0);
+		}
+
 		Element switch_parent = (Element)switch_element.getParentNode();
 		
 		for (int i = 0; i < tags.getLength(); i++) {
