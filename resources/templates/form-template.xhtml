@@ -34,8 +34,8 @@
             </data>
         </xf:instance>
 	
-        <xf:submission id="submit_data_submission" action="webdav:/files/forms/submissions/" method="put" replace="none" >
-        	<idega:toggle ev:event="xforms-submit-done" case="fbc_4"/>
+        <xf:submission action="standalone:/nouri" id="submit_data_submission" method="post" ref="instance('data-instance')" replace="none">
+            <idega:toggle ev:event="xforms-submit-done" case="fbc_4"/>
         </xf:submission>
     
 	    <xf:action ev:event="xforms-submit-error" id="submission-error">
