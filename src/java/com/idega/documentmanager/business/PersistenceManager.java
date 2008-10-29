@@ -8,9 +8,9 @@ import com.idega.documentmanager.component.FormDocument;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
- *          Last modified: $Date: 2008/10/28 10:33:15 $ by $Author: civilis $
+ *          Last modified: $Date: 2008/10/29 11:25:18 $ by $Author: civilis $
  */
 public interface PersistenceManager {
 
@@ -55,4 +55,6 @@ public interface PersistenceManager {
 			throws IOException;
 
 	public abstract List<Submission> getAllStandaloneFormsSubmissions();
+	
+	public abstract Submission getSubmission(long submissionId);
 }
