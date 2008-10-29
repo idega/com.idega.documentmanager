@@ -34,9 +34,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  *
- * Last modified: $Date: 2008/10/29 08:27:17 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/29 09:48:17 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -540,7 +540,6 @@ public class FormManagerUtil {
 		
 		Node text_node = element.getOwnerDocument().createTextNode(value);
 		element.appendChild(text_node);
-		DOMUtil.prettyPrintDOM(element);
 	}
 	
 	/**
