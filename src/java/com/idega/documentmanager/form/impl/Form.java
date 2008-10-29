@@ -22,9 +22,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2008/10/28 09:07:20 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/29 08:27:17 $ by $Author: arunas $
  */
 public class Form {
 	
@@ -224,6 +224,8 @@ public class Form {
 	}
 	
 	protected void setDefaultDocumentLocale(Locale defaultDocumentLocale) {
+		
+		FormManagerUtil.setDefaultFormLocale(getContext().getXformsXmlDoc(), defaultDocumentLocale);
 		this.defaultDocumentLocale = defaultDocumentLocale;
 	}
 

@@ -34,9 +34,9 @@ import com.idega.util.xml.XmlUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  *
- * Last modified: $Date: 2008/10/28 10:56:31 $ by $Author: arunas $
+ * Last modified: $Date: 2008/10/29 08:27:17 $ by $Author: arunas $
  */
 public class FormManagerUtil {
 	
@@ -416,6 +416,18 @@ public class FormManagerUtil {
 			setElementsTextNodeValue(current_language_node_list.item(0), localeStr);
 		}		
 	}
+	//TODO set default language tmp soliution
+	public static void setDefaultFormLocale(Document form_xforms, Locale locale) {
+		Element loc_model = getElementByIdFromDocument(form_xforms, head_tag, data_mod);
+		Element loc_strings = (Element)loc_model.getElementsByTagName(loc_tag).item(0);
+		NodeList current_language_node_list = loc_strings.getElementsByTagName(default_language_tag);
+		
+		if(current_language_node_list != null && current_language_node_list.getLength() != 0) {
+			//String localeStr = locale.toString().toLowerCase();
+			String localeStr = locale.toString();
+			setElementsTextNodeValue(current_language_node_list.item(0), localeStr);
+		}		
+	}
 	
 	public static LocalizedStringBean getErrorLabelLocalizedStrings(Element component, Document xforms_doc) {
 		
@@ -528,6 +540,7 @@ public class FormManagerUtil {
 		
 		Node text_node = element.getOwnerDocument().createTextNode(value);
 		element.appendChild(text_node);
+		DOMUtil.prettyPrintDOM(element);
 	}
 	
 	/**
