@@ -685,9 +685,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	    </xf:trigger>
 	 	<xf:trigger id="fbc_button_submit" name="fbc_button_submit">
 			<xf:label ref="instance('localized_strings')/button_submit.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
-					<xf:action ev:event="DOMActivate" if="instance('control-instance')/enable='true'">
-								<xf:setvalue ref="instance('control-instance')/enable" value="'false'"/>
-								<xf:setvalue ref="instance('control-instance')/validation_event" value="'submit'"/>								
+					<xf:action ev:event="DOMActivate">
 								<xf:send submission="submit_data_submission"/>			
 					</xf:action>
 	        	<xf:toggle ev:event="DOMActivate" />
@@ -695,8 +693,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	    <xf:trigger id="fbc_button_save" name="fbc_button_save">    
 			<xf:label ref="instance('localized_strings')/button_save.label[@lang=instance('localized_strings')/current_language]" model="data_model" />
 				<xf:setvalue ev:event="DOMActivate" ref="instance('control-instance')/required" value="'false'"/>
-					   	  	<xf:action if="instance('control-instance')/enable='true'" ev:event="DOMActivate">
-					   	  			<xf:setvalue ref="instance('control-instance')/enable" value = "'false'"/>
+					   	  	<xf:action  ev:event="DOMActivate">
 					   	  			<xf:send  submission="save_data_submission"/>
 					    	</xf:action>
 	        	<xf:toggle ev:event="DOMActivate" />			   	  						
