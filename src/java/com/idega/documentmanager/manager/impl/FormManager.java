@@ -29,9 +29,9 @@ import com.idega.idegaweb.IWMainApplication;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/07/14 09:23:09 $ by $Author: civilis $
+ * Last modified: $Date: 2008/11/05 08:54:43 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service("xformsDocumentManager")
@@ -167,8 +167,8 @@ public class FormManager implements DocumentManager {
 		return persistenceManager;
 	}
 
-	@Autowired
-	@XFormPersistenceType("slide")
+//	@Autowired
+//	@XFormPersistenceType("slide")
 	public void setPersistenceManager(PersistenceManager persistenceManager) {
 		this.persistenceManager = persistenceManager;
 	}
