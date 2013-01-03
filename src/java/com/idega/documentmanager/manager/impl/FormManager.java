@@ -201,7 +201,7 @@ public class FormManager implements DocumentManager {
 		return xformsManagerFactory;
 	}
 
-	@Autowired
+	@Autowired(required=false)
 	public void setXformsManagerFactory(XFormsManagerFactory xformsManagerFactory) {
 		this.xformsManagerFactory = xformsManagerFactory;
 	}
@@ -210,7 +210,7 @@ public class FormManager implements DocumentManager {
 		return htmlManagerFactory;
 	}
 
-	@Autowired
+	@Autowired(required=false)
 	public void setHtmlManagerFactory(HtmlManagerFactory htmlManagerFactory) {
 		this.htmlManagerFactory = htmlManagerFactory;
 	}
